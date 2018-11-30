@@ -9,4 +9,4 @@ link: compile
 	g++ $(wildcard *.o) -o sfml-app -L$(SFML-path)\lib $(Libs)
 
 run: link
-	sfml-app.exe
+	sfml-app
