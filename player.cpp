@@ -17,7 +17,7 @@ sf::RectangleShape Player::getSprite() const
 void Player::jump()
 {
     if(positionY == groundHeight)
-        velocityY = -20.f;
+        velocityY = -.1f;
 }
 
 void Player::updatePosition()

@@ -1,9 +1,9 @@
-SFML-path := ./SFML
+SFML-path := E:\Program\SFML
 Libs := -lsfml-graphics -lsfml-window -lsfml-system -static-libgcc -static-libstdc++
 SrcFiles := $(wildcard *.cpp)
 
 compile: $(SrcFiles)
-	g++ $(SrcFiles) -c -I$(SFML-path)\Include -static
+	g++ $(SrcFiles) -c -I$(SFML-path)\Include
 
 link: compile	
 	g++ $(wildcard *.o) -o sfml-app -L$(SFML-path)\lib $(Libs)

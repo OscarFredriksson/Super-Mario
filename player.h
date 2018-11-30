@@ -22,7 +22,7 @@ private:
 
     float velocityY = 0;
 
-    float gravity = 1;
+    float gravity = .00005f;
 
 
     sf::RectangleShape body;
