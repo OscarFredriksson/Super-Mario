@@ -23,7 +23,7 @@ void Player::jump()
 void Player::updatePosition()
 {
         positionY += velocityY;
-        velocityY += gravity;
+        velocityY += getGravity();
   
         if(positionY > groundHeight)    positionY = groundHeight;
 

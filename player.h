@@ -1,6 +1,10 @@
-#include <SFML/graphics.hpp>
+#ifndef PLAYER_H
+#define PLAYER_H
 
-class Player
+#include <SFML/graphics.hpp>
+#include "game.h"
+
+class Player: public Game
 {
 public:
     Player();
@@ -22,8 +26,9 @@ private:
 
     float velocityY = 0;
 
-    float gravity = .5f;
-
+    
 
     sf::RectangleShape body;
 };
+
+#endif
