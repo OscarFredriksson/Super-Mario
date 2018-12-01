@@ -5,7 +5,7 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1000, 600), "");
- 
+    window.setFramerateLimit(60);
     sf::RectangleShape ground(sf::Vector2f(1000.f, 600.f));
     ground.setPosition(sf::Vector2f(0.f, 522.f));
     ground.setOutlineThickness(20.f);
