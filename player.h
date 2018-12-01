@@ -2,9 +2,9 @@
 #define PLAYER_H
 
 #include <SFML/graphics.hpp>
-#include "game.h"
+#include "world.h"
 
-class Player: public Game
+class Player: public World
 {
 public:
     Player();

@@ -6,11 +6,8 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(1000, 600), "");
     window.setFramerateLimit(60);
-    sf::RectangleShape ground(sf::Vector2f(1000.f, 600.f));
-    ground.setPosition(sf::Vector2f(0.f, 522.f));
-    ground.setOutlineThickness(20.f);
-    ground.setFillColor(sf::Color::Green);
-    ground.setOutlineColor(sf::Color(0, 100, 0));
+    
+    World world;
 
     Player player;
     
@@ -28,12 +25,12 @@ int main()
             player.jump();
         }
 
-        window.clear(sf::Color::White);
+        window.clear(sf::Color::Cyan);
 
         player.updatePosition();
 
+        window.draw(world.getGroundSprite());
         window.draw(player.getSprite());
-        window.draw(ground);
 
         window.display();
     }
