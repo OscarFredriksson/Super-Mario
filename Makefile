@@ -1,4 +1,4 @@
-#SFML-path := ./SFML
+SFML-path := ./SFML
 Libs := -lsfml-graphics -lsfml-window -lsfml-system #-static-libgcc -static-libstdc++
 SrcFiles := $(wildcard *.cpp)
 

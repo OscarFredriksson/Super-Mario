@@ -13,19 +13,31 @@ public:
 
     void jump();
 
+    void moveLeft();
+
+    void moveRight();
+
     void updatePosition();
+
+    float getHeight() const;
+
+    float getWidth() const;
 
 private:
     const float height = 100.f;
+    const float outlinethickness = 2.f;
     const float width = 50.f;
 
-    float groundHeight = 400.f;
+    const float atGroundPos;
 
-    float positionX = 400.f;
-    float positionY = groundHeight;
+    float positionX = 450.f;
+    float positionY = 0.f;
+
+    const float moveSpeed = 10.f;
+    const float stopSpeed = 0.9f;  //I procent
 
     float velocityY = 0;
-
+    float velocityX = 0;
     
 
     sf::RectangleShape body;

@@ -4,11 +4,11 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1000, 600), "");
-    window.setFramerateLimit(60);
-    
     World world;
 
+    sf::RenderWindow window(sf::VideoMode(world.getWidth(), 600.f), "");
+    window.setFramerateLimit(60);
+    
     Player player;
     
     while (window.isOpen())
@@ -20,10 +20,9 @@ int main()
                 window.close();
         }
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    
-        {
-            player.jump();
-        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    player.jump();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.moveRight();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  player.moveLeft();
 
         window.clear(sf::Color::Cyan);
 
