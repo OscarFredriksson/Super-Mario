@@ -22,6 +22,7 @@ public:
     float getHeight() const;
 
     float getWidth() const;
+     
 
 private:
     const float height = 100.f;

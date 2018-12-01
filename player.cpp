@@ -38,7 +38,7 @@ void Player::updatePosition()
     positionY += velocityY;
     velocityY += getGravity();
 
-    if(positionY > atGroundPos)    
+    if(body.getGlobalBounds().contains(getGroundSprite().getPosition()))    
     {
         positionY = atGroundPos;
         velocityY = 0;
