@@ -23,25 +23,29 @@ public:
 
     float getWidth() const;
      
+    float positionX = 200.f;
+    float positionY = 0.f;
 
 private:
     const float height = 100.f;
-    const float outlinethickness = 2.f;
     const float width = 50.f;
 
-    const float atGroundPos;
+    bool atGround = false;
 
-    float positionX = 450.f;
-    float positionY = 0.f;
+    
 
     const float moveSpeed = 10.f;
-    const float stopSpeed = 0.9f;  //I procent
+    const float stopSpeed = 0;//0.9f;  //I procent
 
     float velocityY = 0;
     float velocityX = 0;
     
 
     sf::RectangleShape body;
+
+    void handleJump();
+
+    void validHorisontalMove();
 };
 
 #endif

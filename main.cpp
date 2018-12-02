@@ -26,9 +26,12 @@ int main()
 
         window.clear(sf::Color::Cyan);
 
+        std::vector<sf::RectangleShape> ground = world.getObjects();
+
+        for(auto obj: ground)   window.draw(obj);
+
         player.updatePosition();
 
-        window.draw(world.getGroundSprite());
         window.draw(player.getSprite());
 
         window.display();

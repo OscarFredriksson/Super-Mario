@@ -1,15 +1,11 @@
 #include "player.h"
+#include <iostream>
 
 Player::Player():
-    body(sf::Vector2f(width, height)),
-    atGroundPos(getGroundPosition() - getHeight())
+    body(sf::Vector2f(width, height))
 {
-    positionY = atGroundPos;
-
     body.setPosition(sf::Vector2f(positionX, positionY));
     body.setFillColor(sf::Color::Red);
-    body.setOutlineColor(sf::Color::Black);
-    body.setOutlineThickness(outlinethickness);
 }
 
 sf::RectangleShape Player::getSprite() const
@@ -19,7 +15,11 @@ sf::RectangleShape Player::getSprite() const
 
 void Player::jump()
 {    
-    if(positionY == atGroundPos)   velocityY = -10.f;
+    if(atGround)   
+    {
+        velocityY = -10.f;
+        atGround = false;
+    }
 }
 
 void Player::moveLeft()
@@ -34,36 +34,80 @@ void Player::moveRight()
 
 void Player::updatePosition()
 {
-    //Hoppa
-    positionY += velocityY;
-    velocityY += getGravity();
-
-    if(body.getGlobalBounds().contains(getGroundSprite().getPosition()))    
+    if(!atGround)    
     {
-        positionY = atGroundPos;
-        velocityY = 0;
+        positionY += velocityY;
+        velocityY += getGravity();  
     }
-    
-    //Flytta i sidled
+
+    float prevX = positionX;
+
     positionX  += velocityX; 
     velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
 
-    if(positionX < outlinethickness)   
-        positionX = outlinethickness;
-    
-    if(positionX > World::getWidth() - getWidth()- outlinethickness)  
-        positionX = World::getWidth() - getWidth() - outlinethickness;
-    
+    body.setPosition(positionX, positionY); //Sätt positionen för att kunna använta intersect-funktionen
 
-    body.setPosition(positionX, positionY);  
+    validHorisontalMove();
+
+    handleJump();
+
+    body.setPosition(positionX, positionY); //Sätt positionen igen utifrån de potientalt modifierade x- och y-värdena
 }
 
 float Player::getHeight() const
 {
-    return height + outlinethickness;
+    return height;
 }
 
 float Player::getWidth() const
 {
     return width;
+}
+
+void Player::handleJump()
+{
+    std::vector<sf::RectangleShape> ground = getObjects();
+
+    bool foundGround = false;
+
+    for(auto obj: ground)
+    {
+        if(body.getGlobalBounds().intersects(obj.getGlobalBounds())
+            && obj.getPosition().y >= (positionY + height - 10.f))
+        {
+            positionY = obj.getPosition().y - getHeight() + 1.f;
+
+            velocityY = 0;
+            atGround = true;
+            foundGround = true;
+        }    
+    } 
+
+    if(!foundGround) atGround = false;
+}
+
+void Player::validHorisontalMove()
+{
+    if(positionX < 0)     
+        positionX = 0;
+    if(positionX > (World::getWidth() - width))
+        positionX = World::getWidth() - width;
+    
+    std::vector<sf::RectangleShape> ground = getObjects();
+
+    for(auto obj: ground)
+    {
+        if( body.getGlobalBounds().intersects(obj.getGlobalBounds()) 
+            && obj.getPosition().y < (positionY + height - 1.f))
+        {
+            if((positionX + width) > (obj.getPosition().x + obj.getSize().x))
+            {  
+                positionX = obj.getPosition().x;
+            }
+            if(positionX < obj.getPosition().x)
+            {
+                positionX = obj.getPosition().x - width;
+            }
+        }
+    }
 }

@@ -1,6 +1,8 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include <vector>
+
 #include <SFML/graphics.hpp>
 
 class World
@@ -10,7 +12,7 @@ public:
 
     float getGravity() const;
 
-    sf::RectangleShape getGroundSprite() const;
+    std::vector<sf::RectangleShape> getObjects();
 
     float getGroundPosition() const;
 
@@ -21,7 +23,6 @@ private:
 
     const float groundWidth = 1000.f;
     const float groundHeight = 400.f;
-    const float outlineThickess = 20.f;
 
     const float groundPositionX = 0.f;
     const float groundPositionY = 500.f;
