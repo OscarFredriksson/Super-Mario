@@ -35,7 +35,7 @@ private:
     
 
     const float moveSpeed = 10.f;
-    const float stopSpeed = 0;//0.9f;  //I procent
+    const float stopSpeed = 0.8f;//0.9f;  //I procent
 
     float velocityY = 0;
     float velocityX = 0;

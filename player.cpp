@@ -73,7 +73,7 @@ void Player::handleJump()
     for(auto obj: ground)
     {
         if(body.getGlobalBounds().intersects(obj.getGlobalBounds())
-            && obj.getPosition().y >= (positionY + height - 10.f))
+            && obj.getPosition().y >= (positionY + height - 40.f))
         {
             positionY = obj.getPosition().y - getHeight() + 1.f;
 
@@ -102,7 +102,7 @@ void Player::validHorisontalMove()
         {
             if((positionX + width) > (obj.getPosition().x + obj.getSize().x))
             {  
-                positionX = obj.getPosition().x;
+                positionX = obj.getPosition().x + obj.getSize().x;
             }
             if(positionX < obj.getPosition().x)
             {

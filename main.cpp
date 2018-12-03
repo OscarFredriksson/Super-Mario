@@ -6,7 +6,7 @@ int main()
 {
     World world;
 
-    sf::RenderWindow window(sf::VideoMode(world.getWidth(), 600.f), "");
+    sf::RenderWindow window(sf::VideoMode(world.getWidth(), world.getHeight()), "");
     window.setFramerateLimit(60);
     
     Player player;
