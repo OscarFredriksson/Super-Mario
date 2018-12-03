@@ -28,8 +28,8 @@ private:
     float positionX = 200.f;
     float positionY = 0.f;
 
-    const float height = 100.f;
-    const float width = 50.f;
+    const float height = 50.f;
+    const float width = 25.f;
 
     bool atGround = false;
 

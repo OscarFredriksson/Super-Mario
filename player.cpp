@@ -17,7 +17,7 @@ void Player::jump()
 {    
     if(atGround)   
     {
-        velocityY = -10.f;
+        velocityY = -15.f;
         atGround = false;
     }
 }

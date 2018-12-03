@@ -3,7 +3,7 @@
 
 #include <SFML/graphics.hpp>
 #include <vector>
-#include "wood_block.h"
+#include "Blocks/block.h"
 
 class World
 {
@@ -19,7 +19,7 @@ public:
     static float getHeight();
 
 private:
-    std::vector<Solid_Block*> blocks;
+    std::vector<Block*> blocks;
 
     const float gravity = .5f;
 

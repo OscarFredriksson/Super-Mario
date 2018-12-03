@@ -1,6 +1,6 @@
 SFML-path := ./SFML
 Libs := -lsfml-graphics -lsfml-window -lsfml-system -static-libgcc
-SrcFiles := $(wildcard *.cpp)
+SrcFiles := $(wildcard *.cpp) $(wildcard Blocks/*.cpp)
 
 compile: $(SrcFiles)
 	g++ $(SrcFiles) -c -std=c++17 -I$(SFML-path)/Include 
