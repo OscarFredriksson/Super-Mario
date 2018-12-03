@@ -1,5 +1,5 @@
 SFML-path := ./SFML
-Libs := -lsfml-graphics -lsfml-window -lsfml-system #-static-libgcc -static-libstdc++
+Libs := -lsfml-graphics -lsfml-window -lsfml-system
 SrcFiles := $(wildcard *.cpp)
 
 compile: $(SrcFiles)
