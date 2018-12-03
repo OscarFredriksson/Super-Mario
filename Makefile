@@ -1,4 +1,4 @@
-SFML-path := ./SFML
+#SFML-path := ./SFML
 Libs := -lsfml-graphics -lsfml-window -lsfml-system
 SrcFiles := $(wildcard *.cpp)
 
@@ -10,3 +10,7 @@ link: compile
 
 run: link
 	./sfml-app
+
+clean:
+	rm $(wildcard *.o)
+	rm sfml-app
