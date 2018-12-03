@@ -2,9 +2,7 @@
 
 World::World()
 {
-    ground.push_back(Ground(0, 400, 250).getSprite());
-    ground.push_back(Ground(250, 450, 500).getSprite());
-    ground.push_back(Ground(750, 400, 250).getSprite());
+    blocks.push_back(new Solid_Block(0, 0, 20, 1));
 }
 
 float World::getGravity() const
@@ -14,6 +12,10 @@ float World::getGravity() const
 
 std::vector<sf::RectangleShape> World::getObjects()
 {
+    std::vector<sf::RectangleShape> ground;
+    for(auto block: blocks)
+        ground.push_back(block->getSprite());
+
     return ground;
 }
 

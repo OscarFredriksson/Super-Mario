@@ -42,14 +42,22 @@ void Player::updatePosition()
 
     float prevX = positionX;
 
+    //float prevY = positionY;
+
     positionX  += velocityX; 
     velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
 
     body.setPosition(positionX, positionY); //Sätt positionen för att kunna använta intersect-funktionen
 
-    validHorisontalMove();
+    /*if(!validHorisontalMove())
+    {
+        positionX = prevX;
+        //positionY = prevY;
+    }*/
 
     handleJump();
+
+    validHorisontalMove();
 
     body.setPosition(positionX, positionY); //Sätt positionen igen utifrån de potientalt modifierade x- och y-värdena
 }
@@ -86,7 +94,7 @@ void Player::handleJump()
     if(!foundGround) atGround = false;
 }
 
-void Player::validHorisontalMove()
+bool Player::validHorisontalMove()
 {
     if(positionX < 0)     
         positionX = 0;
@@ -100,14 +108,21 @@ void Player::validHorisontalMove()
         if( body.getGlobalBounds().intersects(obj.getGlobalBounds()) 
             && obj.getPosition().y < (positionY + height - 1.f))
         {
-            if((positionX + width) > (obj.getPosition().x + obj.getSize().x))
-            {  
-                positionX = obj.getPosition().x + obj.getSize().x;
-            }
-            if(positionX < obj.getPosition().x)
+            if(obj.getPosition().y < (positionY + height - 1.f))
             {
-                positionX = obj.getPosition().x - width;
+                if((positionX + width) > (obj.getPosition().x + obj.getSize().x))
+                {  
+                    positionX = obj.getPosition().x + obj.getSize().x + .1f;
+                    velocityX = 0;
+                    
+                }
+                if(positionX < obj.getPosition().x)
+                {
+                    positionX = obj.getPosition().x - width - .1f;
+                    velocityX = 0;
+                }
             }
         }
     }
+    return true;
 }

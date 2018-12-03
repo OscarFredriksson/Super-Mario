@@ -23,19 +23,18 @@ public:
 
     float getWidth() const;
      
+private:
+
     float positionX = 200.f;
     float positionY = 0.f;
 
-private:
     const float height = 100.f;
     const float width = 50.f;
 
     bool atGround = false;
 
-    
-
-    const float moveSpeed = 10.f;
-    const float stopSpeed = 0.8f;//0.9f;  //I procent
+    const float moveSpeed = 7.f;
+    const float stopSpeed = 0.8f;  //I procent
 
     float velocityY = 0;
     float velocityX = 0;
@@ -45,7 +44,7 @@ private:
 
     void handleJump();
 
-    void validHorisontalMove();
+    bool validHorisontalMove();
 };
 
 #endif
