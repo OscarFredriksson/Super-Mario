@@ -2,19 +2,21 @@
 #define SOLID_BLOCK_H
 
 #include <SFML/Graphics.hpp>
-#include "world.h"
 
 class Solid_Block 
 {
 public:
-    Solid_Block(const int x, const int y, const int width, const int height);
+    Solid_Block() = default;
 
-    sf::RectangleShape getSprite() const;
+    //Solid_Block(const int x, const int y, const int width, const int height);
+
+    virtual sf::Sprite getSprite() const = 0;
+
+    float getBlockScale() const;
 
 private:
-    const int blockSize = 50;
+    const float scale = 0.1f;
 
-    sf::RectangleShape block;
 };
 
 #endif

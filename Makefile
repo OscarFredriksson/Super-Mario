@@ -1,12 +1,12 @@
-#SFML-path := ./SFML
-Libs := -lsfml-graphics -lsfml-window -lsfml-system
-SrcFiles := world.cpp solid_block.cpp player.cpp main.cpp #$(wildcard *.cpp)
+SFML-path := ./SFML
+Libs := -lsfml-graphics -lsfml-window -lsfml-system -static-libgcc
+SrcFiles := $(wildcard *.cpp)
 
 compile: $(SrcFiles)
 	g++ $(SrcFiles) -c -std=c++17 -I$(SFML-path)/Include 
 
 link: compile	
-	g++ $(wildcard *.o) -o sfml-app -std=c++17 $(Libs) -L$(SFML-path)/lib 
+	g++ $(wildcard *.o) -o sfml-app -std=c++17 -L$(SFML-path)/lib $(Libs)
 
 run: link
 	./sfml-app

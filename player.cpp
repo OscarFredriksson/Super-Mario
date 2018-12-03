@@ -49,12 +49,6 @@ void Player::updatePosition()
 
     body.setPosition(positionX, positionY); //Sätt positionen för att kunna använta intersect-funktionen
 
-    /*if(!validHorisontalMove())
-    {
-        positionX = prevX;
-        //positionY = prevY;
-    }*/
-
     handleJump();
 
     validHorisontalMove();
@@ -74,7 +68,7 @@ float Player::getWidth() const
 
 void Player::handleJump()
 {
-    std::vector<sf::RectangleShape> ground = getObjects();
+    std::vector<sf::Sprite> ground = getObjects();
 
     bool foundGround = false;
 
@@ -83,7 +77,7 @@ void Player::handleJump()
         if(body.getGlobalBounds().intersects(obj.getGlobalBounds())
             && obj.getPosition().y >= (positionY + height - 40.f))
         {
-            positionY = obj.getPosition().y - getHeight() + 1.f;
+            positionY = obj.getPosition().y - getHeight();
 
             velocityY = 0;
             atGround = true;
@@ -94,25 +88,25 @@ void Player::handleJump()
     if(!foundGround) atGround = false;
 }
 
-bool Player::validHorisontalMove()
+void Player::validHorisontalMove()
 {
     if(positionX < 0)     
         positionX = 0;
     if(positionX > (World::getWidth() - width))
         positionX = World::getWidth() - width;
     
-    std::vector<sf::RectangleShape> ground = getObjects();
+    std::vector<sf::Sprite> ground = getObjects();
 
     for(auto obj: ground)
     {
         if( body.getGlobalBounds().intersects(obj.getGlobalBounds()) 
             && obj.getPosition().y < (positionY + height - 1.f))
         {
-            if(obj.getPosition().y < (positionY + height - 1.f))
-            {
-                if((positionX + width) > (obj.getPosition().x + obj.getSize().x))
+            //if(obj.getPosition().y < (positionY + height - 1.f))
+            //{
+                if((positionX + width) > (obj.getPosition().x + obj.getGlobalBounds().width))
                 {  
-                    positionX = obj.getPosition().x + obj.getSize().x + .1f;
+                    positionX = obj.getPosition().x + obj.getGlobalBounds().width + .1f;
                     velocityX = 0;
                     
                 }
@@ -121,8 +115,7 @@ bool Player::validHorisontalMove()
                     positionX = obj.getPosition().x - width - .1f;
                     velocityX = 0;
                 }
-            }
+            //}
         }
     }
-    return true;
 }

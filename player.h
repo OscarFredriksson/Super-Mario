@@ -44,7 +44,7 @@ private:
 
     void handleJump();
 
-    bool validHorisontalMove();
+    void validHorisontalMove();
 };
 
 #endif

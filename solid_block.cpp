@@ -1,17 +1,8 @@
 #include "solid_block.h"
+#include "world.h"
 
-Solid_Block::Solid_Block(const int x, const int y, const int width, const int height):
-    block(sf::Vector2f(float(width * blockSize), float(height * blockSize)))  
+float Solid_Block::getBlockScale() const
 {
-
-    block.setPosition(sf::Vector2f((float)(x * blockSize), (float)(y * blockSize)));
-    
-    block.setOutlineColor(sf::Color::Black);
-    block.setOutlineThickness(1.f);
-    block.setFillColor(sf::Color::Green); 
+    return scale;
 }
 
-sf::RectangleShape Solid_Block::getSprite() const
-{
-    return block;
-}

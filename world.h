@@ -3,7 +3,7 @@
 
 #include <SFML/graphics.hpp>
 #include <vector>
-#include "solid_block.h"
+#include "wood_block.h"
 
 class World
 {
@@ -12,7 +12,7 @@ public:
 
     float getGravity() const;
 
-    std::vector<sf::RectangleShape> getObjects();
+    std::vector<sf::Sprite> getObjects();
 
     static float getWidth();
 

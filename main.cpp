@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "player.h"
+#include "world.h"
 #include <iostream>
 
 int main()
@@ -26,7 +27,7 @@ int main()
 
         window.clear(sf::Color::Cyan);
 
-        std::vector<sf::RectangleShape> ground = world.getObjects();
+        std::vector<sf::Sprite> ground = world.getObjects();
 
         for(auto obj: ground)   window.draw(obj);
 
