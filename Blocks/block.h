@@ -20,9 +20,9 @@ protected:
     std::string getFilename() const;
 
 private:
-    const float scale = 3.f;
+    const float scale = .5f;
 
-    const int textureSize = 16;
+    const int textureSize = 64;
 
     const std::string filename = "Textures/Blocks.png";
 };

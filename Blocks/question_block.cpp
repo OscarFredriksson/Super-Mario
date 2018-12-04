@@ -7,6 +7,7 @@ Question_Block::Question_Block(const int x, const int y, const int width, const 
 {
     texture.loadFromFile(getFilename(), sf::IntRect(getTextureSize() * positionInFile, 0, getTextureSize(), getTextureSize()));
     texture.setRepeated(true);
+    texture.setSmooth(true);
     block.setTexture(texture);
 
     block.setScale(sf::Vector2f(getBlockScale(), getBlockScale()));

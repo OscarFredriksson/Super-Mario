@@ -16,7 +16,7 @@ private:
     sf::Texture texture;
     sf::Sprite block;
 
-    const int positionInFile = 2;
+    const int positionInFile = 4;
 
     float convertInput(float const input) const;
 };

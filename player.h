@@ -25,7 +25,7 @@ public:
      
 private:
 
-    float positionX = 200.f;
+    float positionX = 100.f;
     float positionY = 0.f;
 
     const float height = 50.f;

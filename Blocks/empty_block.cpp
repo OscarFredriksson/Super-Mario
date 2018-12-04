@@ -1,8 +1,8 @@
-#include "solid_block.h"
+#include "empty_block.h"
 #include <iostream>
 #include "../world.h"
 
-Solid_Block::Solid_Block(const int x, const int y, const int width, const int height):
+Empty_Block::Empty_Block(const int x, const int y, const int width, const int height):
     Block()
 {
     texture.loadFromFile(getFilename(), sf::IntRect(getTextureSize() * positionInFile, 0, getTextureSize(), getTextureSize()));
@@ -17,12 +17,12 @@ Solid_Block::Solid_Block(const int x, const int y, const int width, const int he
     block.setTextureRect(sf::IntRect(0, 0, getTextureSize() * width, getTextureSize() * height));
 } 
 
-sf::Sprite Solid_Block::getSprite() const
+sf::Sprite Empty_Block::getSprite() const
 {
     return block;
 }
 
-float Solid_Block::convertInput(const float input) const
+float Empty_Block::convertInput(const float input) const
 {
     return (float)(input * getBlockScale() * texture.getSize().x);
 }

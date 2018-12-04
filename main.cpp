@@ -7,7 +7,10 @@ int main()
 {
     World world;
 
-    sf::RenderWindow window(sf::VideoMode(world.getWidth(), world.getHeight()), "");
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+
+    sf::RenderWindow window(sf::VideoMode(world.getWidth(), world.getHeight()), "", sf::Style::Default, settings);
     window.setFramerateLimit(60);
     
     Player player;

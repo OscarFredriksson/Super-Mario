@@ -2,22 +2,25 @@
 #include "Blocks/brick_block.h"
 #include "Blocks/ground_block.h"
 #include "Blocks/question_block.h"
-#include "Blocks/solid_block.h"
+#include "Blocks/empty_block.h"
 
 World::World()
 {
     //Platform
-    blocks.push_back(new Ground_Block(0, 2, 20, 2));
+    blocks.push_back(new Ground_Block(0, 1, 25, 2));
     
-    //Tre block i luften
-    blocks.push_back(new Brick_Block(8, 5, 1, 1));
-    blocks.push_back(new Question_Block(9, 5, 1, 1));
+    //Block i luften
     blocks.push_back(new Brick_Block(10, 5, 1, 1));
+    blocks.push_back(new Question_Block(11, 5, 1, 1));
+    blocks.push_back(new Brick_Block(12, 5, 1, 1));
+    blocks.push_back(new Question_Block(13, 5, 1, 1));
+    blocks.push_back(new Brick_Block(14, 5, 1, 1));
+    blocks.push_back(new Question_Block(12, 8, 1, 1));
     
     //Trappa
-    blocks.push_back(new Solid_Block(17, 3, 3, 1));
-    blocks.push_back(new Solid_Block(18, 4, 2, 1));
-    blocks.push_back(new Solid_Block(19, 5, 1, 1));
+    blocks.push_back(new Empty_Block(22, 2, 3, 1));
+    blocks.push_back(new Empty_Block(23, 3, 2, 1));
+    blocks.push_back(new Empty_Block(24, 4, 1, 1));
 }
 
 float World::getGravity() const
