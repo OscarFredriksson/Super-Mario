@@ -42,9 +42,11 @@ private:
 
     sf::RectangleShape body;
 
+    void setVelocity();
+
     void handleJump();
 
-    void validHorisontalMove();
+    void handleHorisontalMove();
 };
 
 #endif

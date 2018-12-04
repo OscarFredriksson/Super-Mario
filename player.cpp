@@ -1,4 +1,5 @@
 #include "player.h"
+
 #include <iostream>
 
 Player::Player():
@@ -32,30 +33,6 @@ void Player::moveRight()
     velocityX = moveSpeed;
 }
 
-void Player::updatePosition()
-{
-    if(!atGround)    
-    {
-        positionY += velocityY;
-        velocityY += getGravity();  
-    }
-
-    float prevX = positionX;
-
-    //float prevY = positionY;
-
-    positionX  += velocityX; 
-    velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
-
-    body.setPosition(positionX, positionY); //Sätt positionen för att kunna använta intersect-funktionen
-
-    handleJump();
-
-    validHorisontalMove();
-
-    body.setPosition(positionX, positionY); //Sätt positionen igen utifrån de potientalt modifierade x- och y-värdena
-}
-
 float Player::getHeight() const
 {
     return height;
@@ -66,6 +43,29 @@ float Player::getWidth() const
     return width;
 }
 
+void Player::updatePosition()
+{
+    setVelocity();
+
+    handleJump();
+
+    handleHorisontalMove();
+}
+ 
+void Player::setVelocity()
+{
+    if(!atGround)    
+    {
+        positionY += velocityY;
+        velocityY += getGravity();  
+    }
+
+    positionX  += velocityX; 
+    velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
+
+    body.setPosition(positionX, positionY);
+}
+
 void Player::handleJump()
 {
     std::vector<sf::Sprite> ground = getObjects();
@@ -74,21 +74,31 @@ void Player::handleJump()
 
     for(auto obj: ground)
     {
-        if(body.getGlobalBounds().intersects(obj.getGlobalBounds())
-            && obj.getPosition().y >= (positionY + height - 40.f))
+        if(body.getGlobalBounds().intersects(obj.getGlobalBounds()))
         {
-            positionY = obj.getPosition().y - getHeight();
+            if( positionY < (obj.getPosition().y + obj.getGlobalBounds().height) 
+                && positionY > obj.getPosition().y)
+            {
+                positionY = obj.getPosition().y + obj.getGlobalBounds().height + 1.f;
+                velocityY = -velocityY;
+            }   
+            if((positionY + height - 25.f) <= obj.getPosition().y)
+            {
+                positionY = obj.getPosition().y - height + 1.f;
 
-            velocityY = 0;
-            atGround = true;
-            foundGround = true;
-        }    
+                velocityY = 0;
+                atGround = true;
+                foundGround = true;
+            } 
+        }
     } 
+    body.setPosition(positionX, positionY);
+
 
     if(!foundGround) atGround = false;
 }
 
-void Player::validHorisontalMove()
+void Player::handleHorisontalMove()
 {
     if(positionX < 0)     
         positionX = 0;
@@ -118,4 +128,5 @@ void Player::validHorisontalMove()
             //}
         }
     }
+    body.setPosition(positionX, positionY);
 }

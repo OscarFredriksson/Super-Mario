@@ -10,7 +10,7 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    sf::RenderWindow window(sf::VideoMode(world.getWidth(), world.getHeight()), "", sf::Style::Default, settings);
+    sf::RenderWindow window(sf::VideoMode(world.getWidth(), world.getHeight()), "Super Mario", sf::Style::Default, settings);
     window.setFramerateLimit(60);
     
     Player player;
