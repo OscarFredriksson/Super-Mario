@@ -10,7 +10,7 @@ class Player: public World
 public:
     Player();
     
-    sf::RectangleShape getSprite() const;
+    sf::Sprite getSprite() const;
 
     void jump();
 
@@ -23,6 +23,16 @@ public:
     float getHeight() const;
 
     float getWidth() const;
+
+    float getPosX() const
+    {
+        return positionX;
+    }
+    
+    float getPosY() const
+    {
+        return positionY;
+    }
      
 private:
 
@@ -42,7 +52,11 @@ private:
     
     std::chrono::high_resolution_clock::time_point landed_time;
 
-    sf::RectangleShape body;
+    //sf::RectangleShape body;
+
+
+    sf::Texture texture;
+    sf::Sprite body;
 
     void setVelocity();
 

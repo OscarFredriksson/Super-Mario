@@ -13,6 +13,14 @@ int main()
     sf::RenderWindow window(sf::VideoMode(world.getWidth(), world.getHeight()), "Super Mario", sf::Style::Default, settings);
     window.setFramerateLimit(60);
 
+    sf::View view;
+
+    const double viewScale = 0.75;
+
+    view.setSize(world.getWidth() * viewScale, world.getHeight() * viewScale);
+
+    window.setView(view);
+
     Player player;
     
     while (window.isOpen())
@@ -37,6 +45,9 @@ int main()
         player.updatePosition();
 
         window.draw(player.getSprite());
+
+        view.setCenter(player.getSprite().getPosition());
+        window.setView(view);
 
         window.display();
     }

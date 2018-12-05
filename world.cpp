@@ -7,7 +7,7 @@
 World::World()
 {
     //Platform
-    blocks.push_back(new Ground_Block(0, 1, 25, 2));
+    blocks.push_back(new Ground_Block(0, 1, 25, 1));
     
     //Block i luften
     blocks.push_back(new Brick_Block(10, 5, 1, 1));

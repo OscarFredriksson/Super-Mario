@@ -3,13 +3,22 @@
 
 
 Player::Player():
-    body(sf::Vector2f(width, height))
+    body()
 {
+    texture.loadFromFile("Textures/Blocks.png", sf::IntRect(64 * 1, 0, 64, 64));
+    texture.setRepeated(true);
+    texture.setSmooth(true);
+    body.setTexture(texture);
+
+    body.setScale(sf::Vector2f(.5f, .5f));
+
     body.setPosition(sf::Vector2f(positionX, positionY));
-    body.setFillColor(sf::Color::Red);
+    
+    body.setTextureRect(sf::IntRect(0, 0, 64 , 128));
+
 }
 
-sf::RectangleShape Player::getSprite() const
+sf::Sprite Player::getSprite() const
 {
     return body;
 }
@@ -154,5 +163,4 @@ void Player::handleHeadBounce()
         }
     } 
     body.setPosition(positionX, positionY);
-
 }
