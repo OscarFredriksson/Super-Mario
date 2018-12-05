@@ -1,0 +1,12 @@
+#ignore binary files:
+*
+!*.*
+!*/
+#-----
+
+.vscode/
+*.o
+*.exe
+
+Old/
+Old_Blocks/
