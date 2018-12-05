@@ -3,6 +3,7 @@
 
 #include <SFML/graphics.hpp>
 #include "world.h"
+#include <chrono>
 
 class Player: public World
 {
@@ -26,7 +27,7 @@ public:
 private:
 
     float positionX = 100.f;
-    float positionY = 0.f;
+    float positionY = 400.f;
 
     const float height = 50.f;
     const float width = 25.f;
@@ -39,6 +40,7 @@ private:
     float velocityY = 0;
     float velocityX = 0;
     
+    std::chrono::high_resolution_clock::time_point landed_time;
 
     sf::RectangleShape body;
 

@@ -1,6 +1,6 @@
 #include "player.h"
-
 #include <iostream>
+
 
 Player::Player():
     body(sf::Vector2f(width, height))
@@ -16,7 +16,11 @@ sf::RectangleShape Player::getSprite() const
 
 void Player::jump()
 {    
-    if(atGround)   
+    auto now = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double> duration = now - landed_time;
+
+    if(atGround && duration.count() > 0.1)   
     {
         velocityY = -12.5f;
         atGround = false;
@@ -82,13 +86,19 @@ void Player::handleJump()
                 positionY = obj.getPosition().y + obj.getGlobalBounds().height + 1.f;
                 velocityY = -velocityY;
             }   
-            if((positionY + height - 25.f) <= obj.getPosition().y)
+            if((positionY + height) <= obj.getPosition().y + 20.f && velocityY >= 0)
             {
+                foundGround = true;
+
                 positionY = obj.getPosition().y - height + 1.f;
 
-                velocityY = 0;
-                atGround = true;
-                foundGround = true;
+                if(!atGround)
+                {
+                    std::cout << "Landed!" << std::endl;
+                    landed_time = std::chrono::high_resolution_clock::now();
+                    atGround = true;
+                }
+
             } 
         }
     } 
@@ -112,20 +122,17 @@ void Player::handleHorisontalMove()
         if( body.getGlobalBounds().intersects(obj.getGlobalBounds()) 
             && obj.getPosition().y < (positionY + height - 1.f))
         {
-            //if(obj.getPosition().y < (positionY + height - 1.f))
-            //{
-                if((positionX + width) > (obj.getPosition().x + obj.getGlobalBounds().width))
-                {  
-                    positionX = obj.getPosition().x + obj.getGlobalBounds().width + .1f;
-                    velocityX = 0;
-                    
-                }
-                if(positionX < obj.getPosition().x)
-                {
-                    positionX = obj.getPosition().x - width - .1f;
-                    velocityX = 0;
-                }
-            //}
+            if((positionX + width) > (obj.getPosition().x + obj.getGlobalBounds().width))
+            {  
+                positionX = obj.getPosition().x + obj.getGlobalBounds().width + 5.f;
+                velocityX = 0;
+                
+            }
+            else if(positionX < obj.getPosition().x)
+            {
+                positionX = obj.getPosition().x - width - .1f;
+                velocityX = 0;
+            }
         }
     }
     body.setPosition(positionX, positionY);
