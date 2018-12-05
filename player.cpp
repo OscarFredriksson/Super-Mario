@@ -94,7 +94,6 @@ void Player::handleJump()
 
                 if(!atGround)
                 {
-                    std::cout << "Landed!" << std::endl;
                     landed_time = std::chrono::high_resolution_clock::now();
                     atGround = true;
                 }
