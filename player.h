@@ -49,6 +49,8 @@ private:
     void handleJump();
 
     void handleHorisontalMove();
+
+    void handleHeadBounce();
 };
 
 #endif

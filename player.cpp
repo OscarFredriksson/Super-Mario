@@ -64,7 +64,7 @@ void Player::setVelocity()
         velocityY += getGravity();  
     }
 
-    positionX  += velocityX; 
+    positionX += velocityX; 
     velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
 
     body.setPosition(positionX, positionY);
@@ -85,19 +85,19 @@ void Player::handleJump()
             {
                 positionY = obj.getPosition().y + obj.getGlobalBounds().height + 1.f;
                 velocityY = -velocityY;
-            }   
-            if((positionY + height) <= obj.getPosition().y + 20.f && velocityY >= 0)
+            }  
+            if((positionY + height) < obj.getPosition().y + 20.f && velocityY >= 0)
             {
-                foundGround = true;
-
                 positionY = obj.getPosition().y - height + 1.f;
+
+                foundGround = true;
 
                 if(!atGround)
                 {
                     landed_time = std::chrono::high_resolution_clock::now();
                     atGround = true;
+                    velocityY = 0;
                 }
-
             } 
         }
     } 
@@ -123,7 +123,7 @@ void Player::handleHorisontalMove()
         {
             if((positionX + width) > (obj.getPosition().x + obj.getGlobalBounds().width))
             {  
-                positionX = obj.getPosition().x + obj.getGlobalBounds().width + 5.f;
+                positionX = obj.getPosition().x + obj.getGlobalBounds().width + .1f;
                 velocityX = 0;
                 
             }
@@ -135,4 +135,24 @@ void Player::handleHorisontalMove()
         }
     }
     body.setPosition(positionX, positionY);
+}
+
+void Player::handleHeadBounce()
+{
+    std::vector<sf::Sprite> ground = getObjects();
+    
+    for(auto obj: ground)
+    {
+        if(body.getGlobalBounds().intersects(obj.getGlobalBounds()))
+        {
+            if( positionY < (obj.getPosition().y + obj.getGlobalBounds().height) 
+                && positionY > obj.getPosition().y)
+            {
+                positionY = obj.getPosition().y + obj.getGlobalBounds().height + 1.f;
+                velocityY = -velocityY;
+            }   
+        }
+    } 
+    body.setPosition(positionX, positionY);
+
 }

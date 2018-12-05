@@ -13,12 +13,6 @@ int main()
     sf::RenderWindow window(sf::VideoMode(world.getWidth(), world.getHeight()), "Super Mario", sf::Style::Default, settings);
     window.setFramerateLimit(60);
 
-    sf::Texture background_text;
-    background_text.loadFromFile("Textures/Background.png", sf::IntRect(1000,0, world.getWidth(), world.getHeight()));
-    
-    sf::Sprite background;
-    background.setTexture(background_text);
-
     Player player;
     
     while (window.isOpen())
@@ -35,7 +29,6 @@ int main()
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  player.moveLeft();
 
         window.clear(sf::Color::Cyan);
-        window.draw(background);
 
         std::vector<sf::Sprite> ground = world.getObjects();
 
