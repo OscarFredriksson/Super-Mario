@@ -1,28 +1,29 @@
 #include "world.h"
+#include "Blocks/ground_block.h"
 #include "Blocks/brick_block.h"
 
 World::World()
 {
-    world[0][0] = new Brick_Block();
+    fillMap();
 
-}
+    map[2][12] = new Ground_Block(2, 12, 1);
 
-float World::getGravity() const
-{
-    return gravity;
 }
 
 float World::getWidth()
 {
-    return width;
+    //return width;
 }
 
 float World::getHeight()
 {
-    return height;
+    //return height;
 }
 
-float World::draw(const sf::Window& window)
+float World::draw(sf::RenderWindow& window)
 {
-    
+    for(int i = 0; i < width; i++)
+        for(int j = 0; j < height; j++)
+            if(map[i][j] != nullptr)
+                window.draw(map[i][j]->getSprite());
 }

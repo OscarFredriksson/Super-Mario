@@ -2,45 +2,54 @@
 #define PLAYER_H
 
 #include <SFML/graphics.hpp>
+#include "game.h"
 #include "world.h"
-#include <chrono>
 
-class Player: public World
+class Player: public Game, public World
 {
 public:
     Player();
-    
-    sf::Sprite getSprite() const;
+
+    sf::Sprite getSprite() const
+    {
+        return body;
+    }
 
     void jump();
 
-    void moveLeft();
-
-    void moveRight();
-
     void updatePosition();
 
-    float getHeight() const;
+    void checkFall();
 
-    float getWidth() const;
-
-    float getPosX() const
+    float left() const
     {
         return positionX;
     }
-    
-    float getPosY() const
+    float right() const
+    {
+        return positionX + width;
+    }
+    float top() const
     {
         return positionY;
+    }
+    float bottom() const
+    {
+        return positionY + height;
+    }
+
+    float draw(sf::RenderWindow& window)
+    {
+        window.draw(body);
     }
      
 private:
 
-    float positionX = 100.f;
-    float positionY = 400.f;
+    float positionX = 2.f;
+    float positionY = 2.f;
 
-    const float height = 50.f;
-    const float width = 25.f;
+    int height = 2;
+    int width = 1;
 
     bool atGround = false;
 
@@ -49,22 +58,12 @@ private:
 
     float velocityY = 0;
     float velocityX = 0;
-    
-    std::chrono::high_resolution_clock::time_point landed_time;
-
-    //sf::RectangleShape body;
 
 
     sf::Texture texture;
     sf::Sprite body;
 
     void setVelocity();
-
-    void handleJump();
-
-    void handleHorisontalMove();
-
-    void handleHeadBounce();
 };
 
 #endif

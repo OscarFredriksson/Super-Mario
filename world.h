@@ -4,28 +4,38 @@
 #include <SFML/graphics.hpp>
 #include <vector>
 #include <string>
-#include "block.h"
+#include "Blocks/block.h"
 
 class World
 {
 public:
     World();
 
-    float getGravity() const;
-
     float getWidth();
 
     float getHeight();
 
-    float draw(const sf::Window& window);
+    float draw(sf::RenderWindow& window);
+
+protected:
+    std::vector<std::vector<Block*>> map;
 
 private:
-    const float gravity = .5f;
+    //const float gravity = .5f;
 
-    const int width = 2000;
-    const int height = 1000;
+    const size_t width = 200;
+    const size_t height = 100;
 
-    Block* world[200][100];
+    void fillMap()
+    {
+        for(int i = 0; i < width; i++)
+        {
+            std::vector<Block*> row;
+            for(int j = 0; j < height; j++)
+                row.push_back(nullptr);
+            map.push_back(row);
+        }
+    }
 };
 
 #endif

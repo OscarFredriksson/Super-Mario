@@ -6,13 +6,15 @@
 class Brick_Block: public Block
 {
 public:
-    Brick_Block(const int width = 1, const int height = 1);
+    Brick_Block() = delete;
 
-    //sf::Sprite getSprite() const override;
+    Brick_Block(int x, int y, const int width = 1, const int height = 1);
 
 private:
     const int xPosInFile = 0;
     const int yPosInFile = 0;
+
+    //const int x, y;
 
 };
 

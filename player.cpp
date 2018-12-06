@@ -10,59 +10,27 @@ Player::Player():
     texture.setSmooth(true);
     body.setTexture(texture);
 
-    body.setScale(sf::Vector2f(.5f, .5f));
-
     body.setPosition(sf::Vector2f(positionX, positionY));
     
     body.setTextureRect(sf::IntRect(0, 0, 64 , 128));
 
 }
 
-sf::Sprite Player::getSprite() const
-{
-    return body;
-}
-
 void Player::jump()
-{    
-    auto now = std::chrono::high_resolution_clock::now();
-
-    std::chrono::duration<double> duration = now - landed_time;
-
-    if(atGround && duration.count() > 0.1)   
+{
+    if(atGround)
     {
-        velocityY = -12.5f;
+        velocityY = -.2f;
         atGround = false;
     }
 }
 
-void Player::moveLeft()
-{
-    velocityX = -moveSpeed;
-}
-
-void Player::moveRight()
-{
-    velocityX = moveSpeed;
-}
-
-float Player::getHeight() const
-{
-    return height;
-}
-
-float Player::getWidth() const
-{
-    return width;
-}
 
 void Player::updatePosition()
 {
     setVelocity();
 
-    handleJump();
-
-    handleHorisontalMove();
+    checkFall();
 }
  
 void Player::setVelocity()
@@ -70,97 +38,25 @@ void Player::setVelocity()
     if(!atGround)    
     {
         positionY += velocityY;
-        velocityY += getGravity();  
+        velocityY += gravity;
     }
 
     positionX += velocityX; 
     velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
 
-    body.setPosition(positionX, positionY);
+    body.setPosition(convertCoords(positionX), convertCoords(positionY));
 }
 
-void Player::handleJump()
+void Player::checkFall()
 {
-    std::vector<sf::Sprite> ground = getObjects();
+    int tempX = left();
+    int tempY = bottom();
 
-    bool foundGround = false;
-
-    for(auto obj: ground)
+    if(map[tempX][tempY] != nullptr)
     {
-        if(body.getGlobalBounds().intersects(obj.getGlobalBounds()))
-        {
-            if( positionY < (obj.getPosition().y + obj.getGlobalBounds().height) 
-                && positionY > obj.getPosition().y)
-            {
-                positionY = obj.getPosition().y + obj.getGlobalBounds().height + 1.f;
-                velocityY = -velocityY;
-            }  
-            if((positionY + height) < obj.getPosition().y + 20.f && velocityY >= 0)
-            {
-                positionY = obj.getPosition().y - height + 1.f;
-
-                foundGround = true;
-
-                if(!atGround)
-                {
-                    landed_time = std::chrono::high_resolution_clock::now();
-                    atGround = true;
-                    velocityY = 0;
-                }
-            } 
-        }
-    } 
-    body.setPosition(positionX, positionY);
-
-
-    if(!foundGround) atGround = false;
-}
-
-void Player::handleHorisontalMove()
-{
-    if(positionX < 0)     
-        positionX = 0;
-    if(positionX > (World::getWidth() - width))
-        positionX = World::getWidth() - width;
-    
-    std::vector<sf::Sprite> ground = getObjects();
-
-    for(auto obj: ground)
-    {
-        if( body.getGlobalBounds().intersects(obj.getGlobalBounds()) 
-            && obj.getPosition().y < (positionY + height - 1.f))
-        {
-            if((positionX + width) > (obj.getPosition().x + obj.getGlobalBounds().width))
-            {  
-                positionX = obj.getPosition().x + obj.getGlobalBounds().width + .1f;
-                velocityX = 0;
-                
-            }
-            else if(positionX < obj.getPosition().x)
-            {
-                positionX = obj.getPosition().x - width - .1f;
-                velocityX = 0;
-            }
-        }
+        positionY = tempY - height; 
+        velocityY = 0;
+        atGround = true;
     }
-    body.setPosition(positionX, positionY);
-}
-
-void Player::handleHeadBounce()
-{
-    std::vector<sf::Sprite> ground = getObjects();
-    
-    for(auto obj: ground)
-    {
-        if(body.getGlobalBounds().intersects(obj.getGlobalBounds()))
-        {
-            if( positionY < (obj.getPosition().y + obj.getGlobalBounds().height) 
-                && positionY > obj.getPosition().y)
-            {
-                positionY = obj.getPosition().y + obj.getGlobalBounds().height + 1.f;
-                velocityY = -velocityY;
-            }   
-        }
-    } 
-    body.setPosition(positionX, positionY);
+    body.setPosition(convertCoords(positionX), convertCoords(positionY));
 }
