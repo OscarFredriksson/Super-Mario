@@ -6,7 +6,10 @@ World::World()
 {
     fillMap();
 
-    map[2][12] = new Ground_Block(2, 12, 1);
+    map[1][11] = new Brick_Block(1, 11);
+    map[2][12] = new Ground_Block(2, 12);
+    map[3][12] = new Ground_Block(3, 12);
+
 
 }
 

@@ -35,8 +35,8 @@ int main()
         }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    player.jump();
-        //if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.moveRight();
-        //if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  player.moveLeft();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.moveRight();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  player.moveLeft();
 
         window.clear(sf::Color::Cyan);
 

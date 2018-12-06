@@ -16,7 +16,7 @@ public:
 protected:
     const int textureSize = 64;
 
-    const float gravity = 0.005f;
+    const float gravity = 0.001f;
 
 private:
     sf::RenderWindow window;

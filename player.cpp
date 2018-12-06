@@ -20,9 +20,19 @@ void Player::jump()
 {
     if(atGround)
     {
-        velocityY = -.2f;
+        velocityY = -jumpSpeed;
         atGround = false;
     }
+}
+
+void Player::moveLeft()
+{
+    velocityX = -moveSpeed;
+}
+
+void Player::moveRight()
+{
+    velocityX = moveSpeed;
 }
 
 
@@ -30,7 +40,11 @@ void Player::updatePosition()
 {
     setVelocity();
 
-    checkFall();
+    checkForGround();
+
+    checkForWall();
+
+    setPosition(positionX, positionY);
 }
  
 void Player::setVelocity()
@@ -44,19 +58,45 @@ void Player::setVelocity()
     positionX += velocityX; 
     velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
 
-    body.setPosition(convertCoords(positionX), convertCoords(positionY));
 }
 
-void Player::checkFall()
+void Player::checkForGround()
 {
-    int tempX = left();
-    int tempY = bottom();
+    if(velocityY < 0)   return; //Om Mario är påväg uppåt fortfarande behöver vi inte kolla
 
-    if(map[tempX][tempY] != nullptr)
+    bool foundGround = false;
+
+    if( map[left() ][bottom()] != nullptr ||    //Kolla vänster hörn
+        map[right()][bottom()] != nullptr)      //Kolla höger hörn
     {
-        positionY = tempY - height; 
-        velocityY = 0;
-        atGround = true;
+        positionY = (int)top(); //casta till int för att avrunda till heltal 
+        foundGround = true;
+
+        if(!atGround)
+        {
+            std::cout << "!" << std::endl;
+
+            velocityY = 0;
+            atGround = true;
+        }
     }
+    
+    if(!foundGround) atGround = false;
+}
+
+void Player::checkForWall()
+{
+    //Kolla vänster
+    if( map[left()][top()   ] != nullptr ||    
+        map[left()][top()+1 ] != nullptr ||
+        map[left()][bottom()] != nullptr)
+    {
+        positionX = left() + 1; //casta till int för att avrunda till heltal 
+        velocityX = 0;
+    }
+}
+
+void Player::setPosition(float x, float y)
+{
     body.setPosition(convertCoords(positionX), convertCoords(positionY));
 }
