@@ -2,8 +2,8 @@
 #include <iostream>
 
 
-Player::Player():
-    body()
+Player::Player(World& world):
+    world(world), body()
 {
     texture.loadFromFile("Textures/Blocks.png", sf::IntRect(64 * 1, 0, 64, 64));
     texture.setRepeated(true);
@@ -22,35 +22,40 @@ void Player::jump()
 
     std::chrono::duration<double> time_on_ground = now - landed_time;
 
-    std::cout << time_on_ground.count() << std::endl;
-
     if(atGround && time_on_ground.count() > 0.1)
     {
-        velocityY = -jumpSpeed;
+        velocityY = jumpSpeed;
         atGround = false;
     }
 }
 
+void Player::endJump()
+{
+    if(velocityY < jumpSpeed/2) velocityY = jumpSpeed/2;
+}
+
 void Player::moveLeft()
 {
-    velocityX = -moveSpeed;
+    velocityX -= moveSpeed;
+    if(velocityX < -maxSpeed) velocityX = -maxSpeed;
 }
 
 void Player::moveRight()
 {
-    velocityX = moveSpeed;
+    velocityX += moveSpeed;
+    if(velocityX > maxSpeed) velocityX = maxSpeed;
 }
 
 
 void Player::updatePosition()
 {
-    positionY += velocityY;
     velocityY += gravity;
+    positionY += velocityY;
     checkForGround();
     checkForRoof();
 
-    positionX += velocityX; 
     velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
+    positionX += velocityX; 
     checkForWall();
 
     setPosition(positionX, positionY);
@@ -58,24 +63,28 @@ void Player::updatePosition()
 
 void Player::checkForGround()
 {
-    if( map[left() ][bottom()] != nullptr ||    //Kolla vänster hörn
-        map[right()][bottom()] != nullptr)      //Kolla höger hörn
+    bool foundGround = false;
+
+    if( world.map[bottom()][left() ] != nullptr ||    //Kolla vänster hörn
+        world.map[bottom()][right()] != nullptr)      //Kolla höger hörn
     {
         positionY = top();
+        foundGround = true;
         velocityY = 0;
-        
+
         if(!atGround)
         {
             atGround = true;
             landed_time = std::chrono::high_resolution_clock::now();
         }
     }
+    if(!foundGround)    atGround = false;
 }
 
 void Player::checkForRoof()
 {
-    if( map[left() ][top()] != nullptr ||    //Kolla vänster hörn
-        map[right()][top()] != nullptr)      //Kolla höger hörn
+    if( world.map[top()][left() ] != nullptr ||    //Kolla vänster hörn
+        world.map[top()][right()] != nullptr)      //Kolla höger hörn
     {
         positionY = top() + 1;
         velocityY = -velocityY;
@@ -85,17 +94,17 @@ void Player::checkForRoof()
 void Player::checkForWall()
 {
     //Kolla vänster
-    if( map[left()][top()   ] != nullptr ||    
-        map[left()][top()+1 ] != nullptr ||
-        map[left()][bottom()] != nullptr )
+    if( world.map[top()   ][left()] != nullptr ||    
+        world.map[top()+1 ][left()] != nullptr ||
+        world.map[bottom()][left()] != nullptr )
     {
         positionX = left() + 1;
         velocityX = 0;
     }
     //Kollar höger
-    if( map[right()][top()   ] != nullptr ||    
-        map[right()][top()+1 ] != nullptr ||
-        map[right()][bottom()] != nullptr)
+    if( world.map[top()   ][right()] != nullptr ||    
+        world.map[top()+1 ][right()] != nullptr ||
+        world.map[bottom()][right()] != nullptr)
     {
         positionX = right() - 1;
         velocityX = 0;

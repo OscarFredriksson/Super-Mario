@@ -6,17 +6,22 @@
 #include "world.h"
 #include <iostream>
 #include <chrono>
+#include "animated_sprite.h"
 
-class Player: public Game, public World
+class Player: public Game
 {
 public:
-    Player();
+    //Player();
+
+    Player(World& world);
 
     sf::Sprite getSprite() const
     {
         return body;
     }
     void jump();
+
+    void endJump();
 
     void moveLeft();
 
@@ -26,17 +31,18 @@ public:
     
     void setPosition(float x, float y);
 
-    
-
     float draw(sf::RenderWindow& window)
     {
         window.draw(body);
     }
      
 private:
-    const float jumpSpeed = .25f;
-    const float moveSpeed = .15f;
-    const float stopSpeed = 0.9f;  //I procent
+    World& world;
+
+    const float jumpSpeed = -.21f;
+    const float moveSpeed = .01f;   //.15f;
+    const float maxSpeed = .15f;
+    const float stopSpeed = 0.95f;  //I procent
 
     float positionX = 3.f;
     float positionY = 2.f;
@@ -50,7 +56,7 @@ private:
     float velocityX = 0;
 
     sf::Texture texture;
-    sf::Sprite body;
+    AnimatedSprite body;
 
     std::chrono::high_resolution_clock::time_point landed_time;
 

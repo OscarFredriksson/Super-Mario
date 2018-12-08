@@ -19,7 +19,7 @@ protected:
     const float gravity = 0.005f;
 
 private:
-    sf::RenderWindow window;
+    //sf::RenderWindow window;
 };
 
 #endif

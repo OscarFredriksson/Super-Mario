@@ -6,6 +6,7 @@
 int main()
 {
     World world;
+    world.loadMap("map.txt");
 
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
@@ -23,7 +24,7 @@ int main()
 
     window.setView(view);
 
-    Player player;
+    Player player(world);
     
     while (window.isOpen())
     {
@@ -38,16 +39,18 @@ int main()
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.moveRight();
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  player.moveLeft();
 
+        if( event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Up)  
+            player.endJump();
+
         window.clear(sf::Color::Cyan);
 
         player.updatePosition();
-
-        view.setCenter(player.getSprite().getPosition());
+        
+        view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, 415));
         window.setView(view);
 
         player.draw(window);
         world.draw(window);
-
 
         window.display();
     }
