@@ -18,7 +18,13 @@ Player::Player():
 
 void Player::jump()
 {
-    if(atGround)
+    auto now = std::chrono::high_resolution_clock::now();
+
+    std::chrono::duration<double> time_on_ground = now - landed_time;
+
+    std::cout << time_on_ground.count() << std::endl;
+
+    if(atGround && time_on_ground.count() > 0.1)
     {
         velocityY = -jumpSpeed;
         atGround = false;
@@ -38,50 +44,42 @@ void Player::moveRight()
 
 void Player::updatePosition()
 {
-    setVelocity();
-
+    positionY += velocityY;
+    velocityY += gravity;
     checkForGround();
+    checkForRoof();
 
+    positionX += velocityX; 
+    velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
     checkForWall();
 
     setPosition(positionX, positionY);
 }
- 
-void Player::setVelocity()
-{
-    if(!atGround)    
-    {
-        positionY += velocityY;
-        velocityY += gravity;
-    }
-
-    positionX += velocityX; 
-    velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
-
-}
 
 void Player::checkForGround()
 {
-    if(velocityY < 0)   return; //Om Mario är påväg uppåt fortfarande behöver vi inte kolla
-
-    bool foundGround = false;
-
     if( map[left() ][bottom()] != nullptr ||    //Kolla vänster hörn
         map[right()][bottom()] != nullptr)      //Kolla höger hörn
     {
-        positionY = (int)top(); //casta till int för att avrunda till heltal 
-        foundGround = true;
-
+        positionY = top();
+        velocityY = 0;
+        
         if(!atGround)
         {
-            std::cout << "!" << std::endl;
-
-            velocityY = 0;
             atGround = true;
+            landed_time = std::chrono::high_resolution_clock::now();
         }
     }
-    
-    if(!foundGround) atGround = false;
+}
+
+void Player::checkForRoof()
+{
+    if( map[left() ][top()] != nullptr ||    //Kolla vänster hörn
+        map[right()][top()] != nullptr)      //Kolla höger hörn
+    {
+        positionY = top() + 1;
+        velocityY = -velocityY;
+    }
 }
 
 void Player::checkForWall()
@@ -89,9 +87,17 @@ void Player::checkForWall()
     //Kolla vänster
     if( map[left()][top()   ] != nullptr ||    
         map[left()][top()+1 ] != nullptr ||
-        map[left()][bottom()] != nullptr)
+        map[left()][bottom()] != nullptr )
     {
-        positionX = left() + 1; //casta till int för att avrunda till heltal 
+        positionX = left() + 1;
+        velocityX = 0;
+    }
+    //Kollar höger
+    if( map[right()][top()   ] != nullptr ||    
+        map[right()][top()+1 ] != nullptr ||
+        map[right()][bottom()] != nullptr)
+    {
+        positionX = right() - 1;
         velocityX = 0;
     }
 }

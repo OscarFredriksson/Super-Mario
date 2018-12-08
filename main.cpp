@@ -42,8 +42,12 @@ int main()
 
         player.updatePosition();
 
+        view.setCenter(player.getSprite().getPosition());
+        window.setView(view);
+
         player.draw(window);
         world.draw(window);
+
 
         window.display();
     }

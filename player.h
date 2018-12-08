@@ -5,6 +5,7 @@
 #include "game.h"
 #include "world.h"
 #include <iostream>
+#include <chrono>
 
 class Player: public Game, public World
 {
@@ -15,15 +16,13 @@ public:
     {
         return body;
     }
-
     void jump();
 
     void moveLeft();
 
     void moveRight();
 
-        void updatePosition();
-
+    void updatePosition();
     
     void setPosition(float x, float y);
 
@@ -35,41 +34,39 @@ public:
     }
      
 private:
+    const float jumpSpeed = .25f;
+    const float moveSpeed = .15f;
+    const float stopSpeed = 0.9f;  //I procent
 
     float positionX = 3.f;
     float positionY = 2.f;
-    float nextX, nextY;
 
     int height = 2;
     int width = 1;
 
     bool atGround = false;
 
-    const float jumpSpeed = .05f;
-    const float moveSpeed = .1f;
-    const float stopSpeed = 0.8f;  //I procent
-
     float velocityY = 0;
     float velocityX = 0;
-
 
     sf::Texture texture;
     sf::Sprite body;
 
+    std::chrono::high_resolution_clock::time_point landed_time;
+
     void checkForGround();
+
+    void checkForRoof();
 
     void checkForWall();
 
-    void setVelocity();
-
     int left() const
     {
-        std::cout << positionX << std::endl;
         return positionX;
     }
     int right() const
     {
-        return positionX + width;
+        return bufferedRoundoff(positionX + width);
     }
     int top() const
     {
@@ -77,10 +74,14 @@ private:
     }
     int bottom() const
     {
-        float toTest = positionY + height;
+        return bufferedRoundoff(positionY + height);
+    }
 
-        if(toTest == (int)toTest)   return toTest - 1;
-        else                        return toTest;
+    int bufferedRoundoff(float i) const
+    {
+        //Om det inte finns några decimaler alls, ge samma ruta som vi står på
+        if(i == (int)i) return i - 1;   
+        else            return i;
     }
 };
 

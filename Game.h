@@ -8,15 +8,15 @@ class Game
 public:
     Game() = default;
 
-    const float convertCoords(const float c) const
+    static const float convertCoords(const float c)
     {
         return c*textureSize;
     }
 
 protected:
-    const int textureSize = 64;
+    static const int textureSize = 64;
 
-    const float gravity = 0.001f;
+    const float gravity = 0.005f;
 
 private:
     sf::RenderWindow window;

@@ -14,9 +14,9 @@ public:
     sf::Sprite getSprite() const;
 
 private:
-    const float scale = .5f;
+    static constexpr float scale = .5f;
 
-    const int textureSize = 64;
+    static constexpr int textureSize = 64;
 
     sf::Texture texture;
     sf::Sprite block;
