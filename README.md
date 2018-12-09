@@ -1,2 +1,2 @@
 # Super-Mario
-Projekt i DT079G
+Projekt i Programmeringsmetodik
