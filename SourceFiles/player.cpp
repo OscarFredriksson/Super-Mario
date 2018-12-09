@@ -3,17 +3,13 @@
 
 
 Player::Player(World& world):
-    world(world), body()
+    world(world)
 {
-    texture.loadFromFile("Textures/Blocks.png", sf::IntRect(64 * 1, 0, 64, 64));
-    texture.setRepeated(true);
-    texture.setSmooth(true);
+    texture.loadFromFile("Textures/Mario.png", sf::IntRect(0, 0, 16, 32));
+
     body.setTexture(texture);
 
     body.setPosition(sf::Vector2f(positionX, positionY));
-    
-    body.setTextureRect(sf::IntRect(0, 0, 64 , 128));
-
 }
 
 void Player::jump()
@@ -36,16 +32,28 @@ void Player::endJump()
 
 void Player::moveLeft()
 {
+    setDirection(Left);
+
     velocityX -= moveSpeed;
     if(velocityX < -maxSpeed) velocityX = -maxSpeed;
 }
 
 void Player::moveRight()
 {
+    setDirection(Right);
+
     velocityX += moveSpeed;
     if(velocityX > maxSpeed) velocityX = maxSpeed;
 }
 
+void Player::setDirection(Direction new_dir)
+{
+    if(dir != new_dir)
+    {
+        dir = new_dir;
+        body.flip();
+    }
+}
 
 void Player::updatePosition()
 {
@@ -104,7 +112,7 @@ void Player::checkForWall()
     //Kollar höger
     if( world.map[top()   ][right()] != nullptr ||    
         world.map[top()+1 ][right()] != nullptr ||
-        world.map[bottom()][right()] != nullptr)
+        world.map[bottom()][right()] != nullptr )
     {
         positionX = right() - 1;
         velocityX = 0;

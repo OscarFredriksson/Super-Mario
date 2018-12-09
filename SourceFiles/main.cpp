@@ -16,7 +16,7 @@ int main()
 
     sf::View view;
 
-    const double viewScale = 2;
+    const double viewScale = 0.5;
 
     view.setSize(640 * viewScale, 480 * viewScale);
 
@@ -46,7 +46,7 @@ int main()
 
         player.updatePosition();
         
-        view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, 415));
+        view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, 100));
         window.setView(view);
 
         player.draw(window);

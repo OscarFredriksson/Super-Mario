@@ -14,7 +14,7 @@ public:
     }
 
 protected:
-    static const int textureSize = 64;
+    static const int textureSize = 16;
 
     const float gravity = 0.005f;
 

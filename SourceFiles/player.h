@@ -1,12 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <SFML/graphics.hpp>
 #include "game.h"
 #include "world.h"
 #include <iostream>
 #include <chrono>
-#include "animated_sprite.h"
+#include "sprite.h"
 
 class Player: public Game
 {
@@ -50,13 +49,21 @@ private:
     int height = 2;
     int width = 1;
 
+    enum Direction
+    {
+        Left,
+        Right
+    };
+
+    Direction dir = Right;
+
     bool atGround = false;
 
     float velocityY = 0;
     float velocityX = 0;
 
     sf::Texture texture;
-    AnimatedSprite body;
+    Sprite body;
 
     std::chrono::high_resolution_clock::time_point landed_time;
 
@@ -65,6 +72,8 @@ private:
     void checkForRoof();
 
     void checkForWall();
+
+    void setDirection(Direction dir);
 
     int left() const
     {

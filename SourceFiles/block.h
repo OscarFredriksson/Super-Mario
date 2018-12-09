@@ -13,9 +13,9 @@ public:
     {
         //Byt INTE plats på dessa, ordningen motsvarar dess plats i texturfilen
         Brick,
-        Question,
-        Empty,
         Ground,
+        Empty,
+        Question,
         GrasslessGround
     };
     
@@ -24,12 +24,12 @@ public:
     sf::Sprite getSprite() const;
 
 private:
-    static constexpr float scale = .5f;
+    static constexpr float scale = 1;//.5f;
 
     sf::Texture texture;
     Sprite block;
 
-    const std::string filename = "Textures/Blocks.png";
+    const std::string filename = "Textures/Old_Blocks.png";
 };
 
 #endif

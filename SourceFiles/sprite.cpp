@@ -1,10 +1,21 @@
 #include "sprite.h"
 #include <iostream>
 
-Sprite::Sprite(sf::Texture& texture)
+int Sprite::getTextureSize() const
 {
-    //texture.setRepeated(true);
-    texture.setSmooth(true);
-    setTexture(texture);
-    setTextureRect(sf::IntRect(0, 0, textureSize, textureSize));
+    return textureSize;
+}
+
+void Sprite::flip()
+{
+    if(getScale().x > 0)
+    {
+        setOrigin({getLocalBounds().width, 0});
+        setScale(sf::Vector2f(-1, 1));
+    }
+    else
+    {
+        setOrigin({0, 0});
+        setScale(sf::Vector2f(1, 1));
+    }
 }

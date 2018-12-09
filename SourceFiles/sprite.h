@@ -8,15 +8,12 @@ class Sprite: public sf::Sprite
 public:
     Sprite() = default;
 
-    Sprite(sf::Texture& texture);
+    int getTextureSize() const;
 
-    int getTextureSize() const
-    {
-        return textureSize;
-    }
+    void flip();
 
 private:
-        const int textureSize = 64;
+    const int textureSize = 16;
 
 
 };
