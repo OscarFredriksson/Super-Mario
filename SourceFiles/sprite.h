@@ -1,7 +1,7 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
-#include "SFML/Graphics.hpp"
+#include <SFML/Graphics.hpp>
 
 class Sprite: public sf::Sprite
 {
