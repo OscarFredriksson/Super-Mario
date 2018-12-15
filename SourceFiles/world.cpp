@@ -28,8 +28,12 @@ void World::loadMap(std::string filename)
                 if(str[j] == '1')   type = Block::Brick;
                 if(str[j] == '2')   type = Block::Question;
                 if(str[j] == '3')   type = Block::Empty;
-                if(str[j] == '4')   type = Block::Grass;
-                if(str[j] == '5')   type = Block::Dirt;
+                if(str[j] == '4')   type = Block::Grass_Top;
+                if(str[j] == '5')   type = Block::Grass_Left_Corner;
+                if(str[j] == '6')   type = Block::Grass_Left;
+                if(str[j] == '7')   type = Block::Dirt;
+                if(str[j] == '8')   type = Block::Grass_Right;
+                if(str[j] == '9')   type = Block::Grass_Right_Corner;
 
                row.push_back(new Block(type, j, i)); //map[j][i] = new Block(type, j, i);
             }

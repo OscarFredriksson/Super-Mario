@@ -16,8 +16,14 @@ public:
         Stone,
         Empty,
         Question,
-        Grass,
-        Dirt
+        Grass_Top,
+        Grass_Left_Corner,
+        Grass_Left,
+        Dirt,
+        Grass_Right,
+        Grass_Right_Corner
+
+        
     };
     
     Block(Type type, const int x, const int y); //, const int xPosInFile, const int yPosInFile);
@@ -25,12 +31,12 @@ public:
     sf::Sprite getSprite() const;
 
 private:
-    static constexpr float scale = 1;//.5f;
+    static constexpr float scale = 1;
 
     sf::Texture texture;
     Sprite block;
 
-    const std::string filename = "Textures/Old_Blocks.png";
+    const std::string filename = "Textures/Blocks.png";
 };
 
 #endif

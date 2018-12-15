@@ -46,7 +46,7 @@ int main()
 
         player.updatePosition();
         
-        view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, 100));
+        view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, 175));
         window.setView(view);
 
         player.draw(window);
