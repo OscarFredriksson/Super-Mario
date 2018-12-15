@@ -1,7 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include <SFML/graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
 #include "block.h"
@@ -13,7 +13,7 @@ public:
 
     void loadMap(std::string filename);
 
-    float draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window);
 
     std::vector<std::vector<Block*>> map;
 

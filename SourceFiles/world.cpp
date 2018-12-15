@@ -44,7 +44,7 @@ void World::loadMap(std::string filename)
     file.close();
 }
 
-float World::draw(sf::RenderWindow& window)
+void World::draw(sf::RenderWindow& window)
 {
     for(int i = 0; i < map.size(); i++)
         for(int j = 0; j < map[i].size(); j++)

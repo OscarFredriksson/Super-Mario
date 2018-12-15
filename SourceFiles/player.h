@@ -30,7 +30,7 @@ public:
     
     void setPosition(float x, float y);
 
-    float draw(sf::RenderWindow& window)
+    void draw(sf::RenderWindow& window)
     {
         window.draw(body);
     }
