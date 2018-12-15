@@ -13,10 +13,11 @@ public:
     {
         //Byt INTE plats på dessa, ordningen motsvarar dess plats i texturfilen
         Brick,
-        Ground,
+        Stone,
         Empty,
         Question,
-        GrasslessGround
+        Grass,
+        Dirt
     };
     
     Block(Type type, const int x, const int y); //, const int xPosInFile, const int yPosInFile);

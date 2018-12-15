@@ -9,5 +9,4 @@
 *.o
 *.exe
 
-Old/
-Old_Blocks/
+*.db
