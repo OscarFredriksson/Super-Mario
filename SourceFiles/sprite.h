@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
+
 class Sprite: public sf::Sprite
 {
 public:
@@ -12,10 +13,12 @@ public:
 
     void flip();
 
+
+
 private:
     const int textureSize = 16;
-
-
+    
+    
 };
 
 #endif

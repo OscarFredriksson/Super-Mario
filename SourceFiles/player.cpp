@@ -1,15 +1,14 @@
 #include "player.h"
 #include <iostream>
 
-
 Player::Player(World& world):
     world(world)
 {
-    texture.loadFromFile("Textures/Mario.png", sf::IntRect(0, 0, 16, 32));
+    texture.loadFromFile("Textures/Mario.png", sf::IntRect(0, 0, 48, 32));
 
-    body.setTexture(texture);
+    sprite.setTexture(texture);
 
-    body.setPosition(sf::Vector2f(positionX, positionY));
+    sprite.setPosition(sf::Vector2f(positionX, positionY));
 }
 
 void Player::jump()
@@ -51,7 +50,7 @@ void Player::setDirection(Direction new_dir)
     if(dir != new_dir)
     {
         dir = new_dir;
-        body.flip();
+        sprite.flip();
     }
 }
 
@@ -66,6 +65,7 @@ void Player::updatePosition()
     positionX += velocityX; 
     checkForWall();
 
+    //sprite.update();
     setPosition(positionX, positionY);
 }
 
@@ -121,5 +121,5 @@ void Player::checkForWall()
 
 void Player::setPosition(float x, float y)
 {
-    body.setPosition(convertCoords(positionX), convertCoords(positionY));
+    sprite.setPosition(convertCoords(positionX), convertCoords(positionY));
 }

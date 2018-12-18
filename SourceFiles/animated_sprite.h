@@ -1,14 +1,30 @@
 #ifndef ANIMATED_SPRITE_H
 #define ANIMATED_SPRITE_H
 
-#include "SFML/Graphics/Sprite.hpp"
+#include "sprite.h"
+#include <chrono>
 
-class AnimatedSprite: public sf::Sprite
+class AnimatedSprite: public Sprite
 {
 public:
-    AnimatedSprite();
+    AnimatedSprite() = default;
 
-//private:
+    void update() const;
+
+    void setTexture(const sf::Texture& texture);
+
+
+
+private:
+    sf::Texture texture;
+
+
+    using clock = std::chrono::high_resolution_clock;
+    clock::time_point start = clock::now();
+    static constexpr double speed = 1.0;
+
+    static const int startTexture = 0;
+    static const int endTexture = 2; 
 
 };
 

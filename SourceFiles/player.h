@@ -5,7 +5,7 @@
 #include "world.h"
 #include <iostream>
 #include <chrono>
-#include "sprite.h"
+#include "animated_sprite.h"
 
 class Player: public Game
 {
@@ -16,7 +16,7 @@ public:
 
     sf::Sprite getSprite() const
     {
-        return body;
+        return sprite;
     }
     void jump();
 
@@ -32,7 +32,7 @@ public:
 
     void draw(sf::RenderWindow& window)
     {
-        window.draw(body);
+        window.draw(sprite);
     }
      
 private:
@@ -63,7 +63,7 @@ private:
     float velocityX = 0;
 
     sf::Texture texture;
-    Sprite body;
+    Sprite sprite;
 
     std::chrono::high_resolution_clock::time_point landed_time;
 

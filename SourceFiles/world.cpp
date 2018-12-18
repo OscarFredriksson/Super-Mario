@@ -24,7 +24,6 @@ void World::loadMap(std::string filename)
             if(str[j] == 'X')   row.push_back(nullptr);
             else {
                 Block::Type type;
-
                 if(str[j] == '1')   type = Block::Brick;
                 if(str[j] == '2')   type = Block::Question;
                 if(str[j] == '3')   type = Block::Empty;

@@ -1,4 +1,4 @@
-SFML-path := ./SFML
+#SFML-path := ./SFML
 Libs := -lsfml-graphics -lsfml-window -lsfml-system
 SrcFiles := $(wildcard SourceFiles/*.cpp)
 
