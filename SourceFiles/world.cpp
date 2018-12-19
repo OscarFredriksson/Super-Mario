@@ -6,7 +6,7 @@
 void World::loadMap(std::string filename)
 {
     std::ifstream file;
-    file.open("map.txt");
+    file.open("Levels/Level-1.txt");
     if(!file.is_open())
     {
         std::cerr << "Kunde inte öppna filen..." << std::endl;

@@ -17,16 +17,10 @@ void Player::jump()
     if(!jumpKeyReleased)    return;
     jumpKeyReleased = false;
 
-    auto now = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> time_on_ground = now - landed_time;
-
-    if(time_on_ground.count() > 0.1)
+    if(atGround)
     {
-        if(atGround)
-        {
-            velocityY = jumpSpeed;
-            atGround = false;
-        }
+        velocityY = jumpSpeed;
+        atGround = false;
     }
 }
 
@@ -95,7 +89,6 @@ void Player::checkForGround()
         {
             sprite.set(0);
             atGround = true;
-            landed_time = std::chrono::high_resolution_clock::now();
         }
     }
     if(!foundGround)    atGround = false;

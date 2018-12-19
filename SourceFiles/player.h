@@ -4,7 +4,6 @@
 #include "game.h"
 #include "world.h"
 #include <iostream>
-#include <chrono>
 #include "animated_sprite.h"
 
 class Player: public Game
@@ -72,8 +71,6 @@ private:
 
     sf::Texture texture;
     AnimatedSprite sprite;
-
-    std::chrono::high_resolution_clock::time_point landed_time;
 
     void checkForGround();
 
