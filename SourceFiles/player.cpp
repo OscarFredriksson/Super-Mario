@@ -5,7 +5,7 @@
 Player::Player(World& world):
     world(world)
 {
-    texture.loadFromFile("Textures/Mario.png", sf::IntRect(0, 0, 48, 32));
+    texture.loadFromFile("Textures/Mario.png", sf::IntRect(0, 0, 80, 32));
 
     sprite.setTexture(texture);
 
@@ -14,20 +14,26 @@ Player::Player(World& world):
 
 void Player::jump()
 {
-    auto now = std::chrono::high_resolution_clock::now();
+    if(!jumpKeyReleased)    return;
+    jumpKeyReleased = false;
 
+    auto now = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> time_on_ground = now - landed_time;
 
-    if(atGround && time_on_ground.count() > 0.1)
+    if(time_on_ground.count() > 0.1)
     {
-        velocityY = jumpSpeed;
-        atGround = false;
+        if(atGround)
+        {
+            velocityY = jumpSpeed;
+            atGround = false;
+        }
     }
 }
 
 void Player::endJump()
-{
+{    
     if(velocityY < jumpSpeed/2) velocityY = jumpSpeed/2;
+    jumpKeyReleased = true;
 }
 
 void Player::moveLeft()
@@ -48,9 +54,7 @@ void Player::moveRight()
 
 void Player::setDirection(Direction new_dir)
 {
-    if(!sprite.isStarted()) sprite.start();
-
-
+    horisontalButtonHeld = true;
     if(dir != new_dir)
     {
         dir = new_dir;
@@ -60,6 +64,10 @@ void Player::setDirection(Direction new_dir)
 
 void Player::updatePosition()
 {
+    if(!atGround)                   sprite.set(4);
+    else if(horisontalButtonHeld)   sprite.update(0, 2);
+    else                            sprite.update(0, 0);
+    
     velocityY += gravity;
     positionY += velocityY;
     checkForGround();
@@ -67,11 +75,8 @@ void Player::updatePosition()
 
     velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
     positionX += velocityX; 
-    checkForWall();
+    checkForWall(); 
 
-    if(fabsf(velocityX) < 0.05f)  sprite.stop();
-
-    sprite.update(fabsf(velocityX));
     setPosition(positionX, positionY);
 }
 
@@ -88,6 +93,7 @@ void Player::checkForGround()
 
         if(!atGround)
         {
+            sprite.set(0);
             atGround = true;
             landed_time = std::chrono::high_resolution_clock::now();
         }

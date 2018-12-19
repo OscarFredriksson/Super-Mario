@@ -13,6 +13,8 @@ public:
 
     void flip();
 
+    //void setTextureRect(int x, int y, int height, int width) override;
+
 
 
 private:

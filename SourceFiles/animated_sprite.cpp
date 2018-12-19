@@ -6,38 +6,30 @@ AnimatedSprite::AnimatedSprite()
     setTextureRect(sf::IntRect(0, 0, 16, 32));
 }
 
-void AnimatedSprite::update(const float velocity)
+void AnimatedSprite::update(const int startTexture, const int endTexture)
+{   
+    if(currentTexture < endTexture)    
+        animate(endTexture);
+    else                                    
+        animate(startTexture);  
+}   
+
+void AnimatedSprite::animate(const int targetTexture)
 {
-    if(stopped) return;
+    if(targetTexture == currentTexture) return;
 
     auto now = clock::now();
 
     std::chrono::duration<double> duration = now - lastframe;
     if(duration.count() > speed)
     {
-         int x = getTextureRect().left + getTextureSize();
-
-        if(x ==  (3 * getTextureSize()) || x == getTextureSize())
-            goingRight = !goingRight;
-
-        if(x == (3 * getTextureSize()))   x = getTextureSize();
-        if(x == (2 * getTextureSize()) && !goingRight)
-            x = 0;
-
+        int x;
+        if(currentTexture < targetTexture)  x = getTextureRect().left + getTextureSize();
+        else                                x = getTextureRect().left - getTextureSize();
+   
         setTextureRect(sf::IntRect(x, 0, 16, 32));
-        
+        currentTexture = x/getTextureSize();
+
         lastframe = clock::now();
     }
-}   
-
-void AnimatedSprite::stop()
-{
-    stopped = true;
-    setTextureRect(sf::IntRect(0, 0, 16, 32));
-}
-
-void AnimatedSprite::start()
-{
-    stopped = false;
-    lastframe = clock::now();
 }

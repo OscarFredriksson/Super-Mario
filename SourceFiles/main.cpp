@@ -35,12 +35,20 @@ int main()
                 window.close();
         }
 
+        if( event.type == sf::Event::KeyReleased)
+        {
+            if(event.key.code == sf::Keyboard::Up)  
+                player.endJump();
+            if(event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right)
+                player.endWalk();
+        }
+    
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    player.jump();
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.moveRight();
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  player.moveLeft();
 
-        if( event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Up)  
-            player.endJump();
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            player.endWalk();
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.moveRight();
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  player.moveLeft();
 
         window.clear(sf::Color::Cyan);
 

@@ -10,8 +10,6 @@
 class Player: public Game
 {
 public:
-    //Player();
-
     Player(World& world);
 
     sf::Sprite getSprite() const
@@ -26,6 +24,11 @@ public:
 
     void moveRight();
 
+    void endWalk()
+    {
+        horisontalButtonHeld = false;
+    }
+
     void updatePosition();
     
     void setPosition(float x, float y);
@@ -38,7 +41,7 @@ public:
 private:
     World& world;
 
-    const float jumpSpeed = -.21f;
+    const float jumpSpeed = -.25f;
     const float moveSpeed = .01f;   //.15f;
     const float maxSpeed = .15f;
     const float stopSpeed = 0.95f;  //I procent
@@ -58,6 +61,11 @@ private:
     Direction dir = Right;
 
     bool atGround = false;
+    bool animateJump = false;
+
+    bool horisontalButtonHeld = false;
+
+    bool jumpKeyReleased = true;
 
     float velocityY = 0;
     float velocityX = 0;

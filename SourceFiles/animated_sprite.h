@@ -9,28 +9,30 @@ class AnimatedSprite: public Sprite
 public:
     AnimatedSprite();
 
-    void update(const float velocity);
-
-    void stop();
-
-    void start();
-
-    bool isStarted() const
+    void set(const int texture)
     {
-        return !stopped;
-    };
+        currentTexture = texture;
+        setTextureRect(sf::IntRect(texture * getTextureSize(), 0, 16, 32));
+    }
+
+    void update(const int startTexture, const int endTexture);
 
 private:
     using clock = std::chrono::high_resolution_clock;
     clock::time_point lastframe;
     static constexpr double speed = 0.075;
 
-    static const int startTexture = 0;
-    static const int endTexture = 2; 
+   int currentTexture = 0;
 
-    bool goingRight = true;
 
     bool stopped = true;
+
+    void animate(const int targetFrame);
+
+    void stop(const float velocity);
+
+    
+
 
 };
 

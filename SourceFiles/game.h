@@ -16,7 +16,7 @@ public:
 protected:
     static const int textureSize = 16;
 
-    const float gravity = 0.005f;
+    const float gravity = 0.0075f;
 
 private:
     //sf::RenderWindow window;
