@@ -1,24 +1,43 @@
 #include "animated_sprite.h"
+#include <iostream>
 
-
-void AnimatedSprite::update() const
+AnimatedSprite::AnimatedSprite()
 {
+    setTextureRect(sf::IntRect(0, 0, 16, 32));
+}
+
+void AnimatedSprite::update(const float velocity)
+{
+    if(stopped) return;
+
     auto now = clock::now();
 
-    std::chrono::duration<double> duration = now - start;
+    std::chrono::duration<double> duration = now - lastframe;
     if(duration.count() > speed)
     {
-        int x = getTextureRect().left;
+         int x = getTextureRect().left + getTextureSize();
 
-        //getTexture().setTextureRect(sf::IntRect(0, 0, 16, 32));
+        if(x ==  (3 * getTextureSize()) || x == getTextureSize())
+            goingRight = !goingRight;
 
+        if(x == (3 * getTextureSize()))   x = getTextureSize();
+        if(x == (2 * getTextureSize()) && !goingRight)
+            x = 0;
 
+        setTextureRect(sf::IntRect(x, 0, 16, 32));
+        
+        lastframe = clock::now();
     }
-}    
+}   
 
-
-void AnimatedSprite::setTexture(const sf::Texture& in_texture)
+void AnimatedSprite::stop()
 {
-    texture = in_texture;
-    setTexture(texture);
+    stopped = true;
+    setTextureRect(sf::IntRect(0, 0, 16, 32));
+}
+
+void AnimatedSprite::start()
+{
+    stopped = false;
+    lastframe = clock::now();
 }

@@ -7,24 +7,30 @@
 class AnimatedSprite: public Sprite
 {
 public:
-    AnimatedSprite() = default;
+    AnimatedSprite();
 
-    void update() const;
+    void update(const float velocity);
 
-    void setTexture(const sf::Texture& texture);
+    void stop();
 
+    void start();
 
+    bool isStarted() const
+    {
+        return !stopped;
+    };
 
 private:
-    sf::Texture texture;
-
-
     using clock = std::chrono::high_resolution_clock;
-    clock::time_point start = clock::now();
-    static constexpr double speed = 1.0;
+    clock::time_point lastframe;
+    static constexpr double speed = 0.075;
 
     static const int startTexture = 0;
     static const int endTexture = 2; 
+
+    bool goingRight = true;
+
+    bool stopped = true;
 
 };
 

@@ -1,5 +1,6 @@
 #include "player.h"
 #include <iostream>
+#include <cmath>
 
 Player::Player(World& world):
     world(world)
@@ -47,6 +48,9 @@ void Player::moveRight()
 
 void Player::setDirection(Direction new_dir)
 {
+    if(!sprite.isStarted()) sprite.start();
+
+
     if(dir != new_dir)
     {
         dir = new_dir;
@@ -65,7 +69,9 @@ void Player::updatePosition()
     positionX += velocityX; 
     checkForWall();
 
-    //sprite.update();
+    if(fabsf(velocityX) < 0.05f)  sprite.stop();
+
+    sprite.update(fabsf(velocityX));
     setPosition(positionX, positionY);
 }
 

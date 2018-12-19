@@ -63,7 +63,7 @@ private:
     float velocityX = 0;
 
     sf::Texture texture;
-    Sprite sprite;
+    AnimatedSprite sprite;
 
     std::chrono::high_resolution_clock::time_point landed_time;
 
