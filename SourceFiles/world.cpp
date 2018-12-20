@@ -33,6 +33,10 @@ void World::loadMap(std::string filename)
                 if(str[j] == '7')   type = Block::Dirt;
                 if(str[j] == '8')   type = Block::Grass_Right;
                 if(str[j] == '9')   type = Block::Grass_Right_Corner;
+                if(str[j] == 'A')   type = Block::Pipe_Top_Left;
+                if(str[j] == 'B')   type = Block::Pipe_Top_Right;
+                if(str[j] == 'C')   type = Block::Pipe_Left;
+                if(str[j] == 'D')   type = Block::Pipe_Right;
 
                row.push_back(new Block(type, j, i)); //map[j][i] = new Block(type, j, i);
             }

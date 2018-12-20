@@ -21,9 +21,11 @@ public:
         Grass_Left,
         Dirt,
         Grass_Right,
-        Grass_Right_Corner
-
-        
+        Grass_Right_Corner,
+        Pipe_Top_Left,
+        Pipe_Top_Right,
+        Pipe_Left,
+        Pipe_Right
     };
     
     Block(Type type, const int x, const int y); //, const int xPosInFile, const int yPosInFile);
