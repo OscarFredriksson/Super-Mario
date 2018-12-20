@@ -20,10 +20,10 @@ public:
 private:
     using clock = std::chrono::high_resolution_clock;
     clock::time_point lastframe;
-    static constexpr double speed = 0.075;
+    static constexpr double speed = .1;
 
-   int currentTexture = 0;
-
+    int currentTexture = 0;
+    bool goingRight = true;
 
     bool stopped = true;
 

@@ -8,9 +8,13 @@ AnimatedSprite::AnimatedSprite()
 
 void AnimatedSprite::update(const int startTexture, const int endTexture)
 {   
-    if(currentTexture < endTexture)    
+    if(currentTexture == endTexture || currentTexture == 0)
+        goingRight = !goingRight;
+
+    if(currentTexture <= endTexture && goingRight)
         animate(endTexture);
-    else                                    
+
+    else                               
         animate(startTexture);  
 }   
 
@@ -28,8 +32,8 @@ void AnimatedSprite::animate(const int targetTexture)
         else                                x = getTextureRect().left - getTextureSize();
    
         setTextureRect(sf::IntRect(x, 0, 16, 32));
+        
         currentTexture = x/getTextureSize();
-
         lastframe = clock::now();
     }
 }
