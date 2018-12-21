@@ -1,6 +1,8 @@
 #include "sprite.h"
 #include <iostream>
 
+
+
 int Sprite::getTextureSize() const
 {
     return textureSize;
@@ -18,4 +20,9 @@ void Sprite::flip()
         setOrigin({0, 0});
         setScale(sf::Vector2f(1, 1));
     }
+}
+
+void Sprite::setPosition(float x, float y)
+{
+    sf::Sprite::setPosition(convertCoords(x), convertCoords(y));
 }

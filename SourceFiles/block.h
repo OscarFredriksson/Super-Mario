@@ -4,9 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "sprite.h"
-#include "game.h"
 
-class Block: public Sprite, public Game
+class Block: public Sprite
 {
 public:
     enum Type

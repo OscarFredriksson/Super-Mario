@@ -38,7 +38,7 @@ void World::loadMap(std::string filename)
                 if(str[j] == 'C')   type = Block::Pipe_Left;
                 if(str[j] == 'D')   type = Block::Pipe_Right;
 
-               row.push_back(new Block(type, j, i)); //map[j][i] = new Block(type, j, i);
+               row.push_back(new Block(type, j, i)); 
             }
         }
         map.push_back(row);
@@ -53,4 +53,19 @@ void World::draw(sf::RenderWindow& window)
         for(int j = 0; j < map[i].size(); j++)
             if(map[i][j] != nullptr)
                 window.draw(map[i][j]->getSprite());
+}
+
+int World::rightBoundary() const
+{
+    return map[0].size();
+} 
+
+bool World::isSolidBlock(const int x, const int y) const
+{
+    return map[x][y] != nullptr;
+}
+
+float World::getGravity() const
+{
+    return gravity;
 }

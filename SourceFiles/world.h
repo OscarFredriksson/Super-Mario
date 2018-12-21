@@ -15,13 +15,17 @@ public:
 
     void draw(sf::RenderWindow& window);
 
-    std::vector<std::vector<Block*>> map;
+    int rightBoundary() const;
 
-protected:
+    bool isSolidBlock(const int x, const int y) const;  
+
+    float getGravity() const;  
 
 private:
-    const size_t width = 200;
-    const size_t height = 100;
+    std::vector<std::vector<Block*>> map;
+
+    const float gravity = 0.0075f;
+
 };
 
 #endif

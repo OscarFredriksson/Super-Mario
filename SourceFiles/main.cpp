@@ -47,14 +47,21 @@ int main()
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             player.endWalk();
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) player.moveRight();
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  player.moveLeft();
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) 
+            player.move(Player::Right);
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  
+            player.move(Player::Left);
 
         window.clear(sf::Color::Cyan);
 
         player.updatePosition();
         
+    
         view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, 175));
+        
+        if(view.getCenter().x < view.getSize().x/2)
+            view.setCenter(sf::Vector2f(view.getSize().x/2, 175));
+        
         window.setView(view);
 
         player.draw(window);

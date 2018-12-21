@@ -6,11 +6,11 @@ compile: $(SrcFiles)
 	g++ $(SrcFiles) -c -std=c++17 -I$(SFML-path)/Include 
 
 link: compile	
-	g++ $(wildcard *.o) -o sfml-app -std=c++17 -L$(SFML-path)/lib $(Libs)
+	g++ $(wildcard *.o) -o main -std=c++17 -L$(SFML-path)/lib $(Libs)
 
 run: link
-	./sfml-app
+	./main
 
 clean:
 	rm $(wildcard *.o)
-	rm sfml-app
+	rm main

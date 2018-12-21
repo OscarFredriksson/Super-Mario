@@ -9,7 +9,7 @@ Player::Player(World& world):
 
     sprite.setTexture(texture);
 
-    sprite.setPosition(sf::Vector2f(positionX, positionY));
+    //sprite.setPosition(positionX, positionY);
 }
 
 void Player::jump()
@@ -30,30 +30,16 @@ void Player::endJump()
     jumpKeyReleased = true;
 }
 
-void Player::moveLeft()
+void Player::move(Direction dir)
 {
-    setDirection(Left);
-
-    velocityX -= moveSpeed;
-    if(velocityX < -maxSpeed) velocityX = -maxSpeed;
+    setDirection(dir);
+    velocityX = velocityX + dir * moveSpeed;
+    if(fabsf(velocityX) > maxSpeed) velocityX = dir * maxSpeed;
 }
 
-void Player::moveRight()
+void Player::endWalk()
 {
-    setDirection(Right);
-
-    velocityX += moveSpeed;
-    if(velocityX > maxSpeed) velocityX = maxSpeed;
-}
-
-void Player::setDirection(Direction new_dir)
-{
-    horisontalButtonHeld = true;
-    if(dir != new_dir)
-    {
-        dir = new_dir;
-        sprite.flip();
-    }
+    horisontalButtonHeld = false;
 }
 
 void Player::updatePosition()
@@ -62,7 +48,7 @@ void Player::updatePosition()
     else if(horisontalButtonHeld)   sprite.update(0, 2);
     else                            sprite.update(0, 0);
     
-    velocityY += gravity;
+    velocityY += world.getGravity();
     positionY += velocityY;
     checkForGround();
     checkForRoof();
@@ -74,12 +60,54 @@ void Player::updatePosition()
     setPosition(positionX, positionY);
 }
 
+void Player::setPosition(float x, float y)
+{
+    sprite.setPosition(positionX, positionY);
+}
+
+void Player::draw(sf::RenderWindow& window)
+{
+    window.draw(sprite);
+}
+
+sf::Sprite Player::getSprite() const
+{
+    return sprite;
+}
+
+
+//---------------Privata funktioner----------------
+
+int Player::bufferedRoundoff(float i) const
+{
+    //Om det inte finns några decimaler alls, ge samma ruta som vi står på
+    if(i == (int)i) return i - 1;   
+    else            return i;
+}
+
+int Player::left() const
+{
+    return positionX;
+}
+int Player::right() const
+{
+    return bufferedRoundoff(positionX + width);
+}
+int Player::top() const
+{
+    return positionY;
+}
+int Player::bottom() const
+{
+    return bufferedRoundoff(positionY + height);
+}
+
 void Player::checkForGround()
 {
     bool foundGround = false;
 
-    if( world.map[bottom()][left() ] != nullptr ||    //Kolla vänster hörn
-        world.map[bottom()][right()] != nullptr)      //Kolla höger hörn
+    if( world.isSolidBlock(bottom(), left()) ||    //Kolla vänster hörn
+        world.isSolidBlock(bottom(), right()))      //Kolla höger hörn
     {
         positionY = top();
         foundGround = true;
@@ -96,8 +124,8 @@ void Player::checkForGround()
 
 void Player::checkForRoof()
 {
-    if( world.map[top()][left() ] != nullptr ||    //Kolla vänster hörn
-        world.map[top()][right()] != nullptr)      //Kolla höger hörn
+    if( world.isSolidBlock( top(), left() ) ||   //Kolla vänster hörn
+        world.isSolidBlock( top(), right() ) )   //Kolla höger hörn
     {
         positionY = top() + 1;
         velocityY = -velocityY;
@@ -106,25 +134,46 @@ void Player::checkForRoof()
 
 void Player::checkForWall()
 {
+
+    //Kolla vänster världgräns
+    if(positionX < 0)
+    {
+        positionX = 0;
+        velocityX = 0;
+    }
+
+    //Kolla höger världsgräns
+    if(positionX > world.rightBoundary() - width)
+    {
+        positionX = world.rightBoundary() - width;
+        velocityX = 0;
+    }
+
     //Kolla vänster
-    if( world.map[top()   ][left()] != nullptr ||    
-        world.map[top()+1 ][left()] != nullptr ||
-        world.map[bottom()][left()] != nullptr )
+    if( world.isSolidBlock( top(),    left() ) ||    
+        world.isSolidBlock( top()+1,  left() ) ||
+        world.isSolidBlock( bottom(), left() ) )
     {
         positionX = left() + 1;
         velocityX = 0;
     }
+
     //Kollar höger
-    if( world.map[top()   ][right()] != nullptr ||    
-        world.map[top()+1 ][right()] != nullptr ||
-        world.map[bottom()][right()] != nullptr )
+    if( world.isSolidBlock( top(),    right() ) ||    
+        world.isSolidBlock( top()+1,  right() ) ||
+        world.isSolidBlock( bottom(), right() ) )
     {
         positionX = right() - 1;
         velocityX = 0;
     }
 }
 
-void Player::setPosition(float x, float y)
+void Player::setDirection(Direction new_dir)
 {
-    sprite.setPosition(convertCoords(positionX), convertCoords(positionY));
+    horisontalButtonHeld = true;
+    if(dir != new_dir)
+    {
+        dir = new_dir;
+        sprite.flip();
+    }
 }

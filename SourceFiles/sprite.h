@@ -13,14 +13,17 @@ public:
 
     void flip();
 
-    //void setTextureRect(int x, int y, int height, int width) override;
-
+    void setPosition(float x, float y);
 
 
 private:
-    const int textureSize = 16;
-    
-    
+    static const int textureSize = 16;
+
+    float convertCoords(const float c) const
+    {
+        return c*textureSize;
+    }
+        
 };
 
 #endif

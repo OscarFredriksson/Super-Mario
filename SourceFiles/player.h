@@ -1,76 +1,47 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "game.h"
 #include "world.h"
 #include <iostream>
 #include "animated_sprite.h"
 
-class Player: public Game
+class Player
 {
 public:
     Player(World& world);
 
-    sf::Sprite getSprite() const
-    {
-        return sprite;
-    }
     void jump();
 
     void endJump();
 
-    void moveLeft();
-
-    void moveRight();
-
-    void endWalk()
+    enum Direction
     {
-        horisontalButtonHeld = false;
-    }
+        Left = -1,
+        Right = 1
+    };
+
+    void move(Direction dir);
+
+    void endWalk();
 
     void updatePosition();
     
     void setPosition(float x, float y);
 
-    void draw(sf::RenderWindow& window)
-    {
-        window.draw(sprite);
-    }
+    void draw(sf::RenderWindow& window);
+
+    sf::Sprite getSprite() const;
      
 private:
-    World& world;
+    int bufferedRoundoff(float i) const;
 
-    const float jumpSpeed = -.25f;
-    const float moveSpeed = .01f;   //.15f;
-    const float maxSpeed = .15f;
-    const float stopSpeed = 0.95f;  //I procent
+    int left() const;
 
-    float positionX = 3.f;
-    float positionY = 2.f;
+    int right() const;
 
-    int height = 2;
-    int width = 1;
+    int top() const;
 
-    enum Direction
-    {
-        Left,
-        Right
-    };
-
-    Direction dir = Right;
-
-    bool atGround = false;
-    bool animateJump = false;
-
-    bool horisontalButtonHeld = false;
-
-    bool jumpKeyReleased = true;
-
-    float velocityY = 0;
-    float velocityX = 0;
-
-    sf::Texture texture;
-    AnimatedSprite sprite;
+    int bottom() const;
 
     void checkForGround();
 
@@ -80,29 +51,36 @@ private:
 
     void setDirection(Direction dir);
 
-    int left() const
-    {
-        return positionX;
-    }
-    int right() const
-    {
-        return bufferedRoundoff(positionX + width);
-    }
-    int top() const
-    {
-        return positionY;
-    }
-    int bottom() const
-    {
-        return bufferedRoundoff(positionY + height);
-    }
+    
+    //-----Variabler och konstanter------------
+    
+    World& world;
 
-    int bufferedRoundoff(float i) const
-    {
-        //Om det inte finns några decimaler alls, ge samma ruta som vi står på
-        if(i == (int)i) return i - 1;   
-        else            return i;
-    }
+    sf::Texture texture;
+    AnimatedSprite sprite;
+    int height = 2;
+    int width = 1;
+
+    Direction dir = Right;
+
+    const float jumpSpeed = -.25f;
+    const float moveSpeed = .01f;
+    const float maxSpeed = .15f;
+    const float stopSpeed = 0.95f;  //I procent
+
+    float positionX = 10.f;
+    float positionY = 2.f;
+    float velocityY = 0;
+    float velocityX = 0;
+
+
+    bool atGround = false;
+    
+    bool animateJump = false;
+
+    bool horisontalButtonHeld = false;
+
+    bool jumpKeyReleased = true;
 };
 
 #endif

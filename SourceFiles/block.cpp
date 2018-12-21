@@ -9,7 +9,7 @@ Block::Block(Type type, const int x, const int y)
 
     block.setTexture(texture);
 
-    block.setPosition(convertCoords(x), convertCoords(y));
+    block.setPosition(x, y);
 }
 
 sf::Sprite Block::getSprite() const
