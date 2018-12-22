@@ -21,7 +21,7 @@ void World::loadMap(std::string filename)
 
         for(int j = 0; j < str.length(); j++)
         {
-            if(str[j] == 'X')   row.push_back(nullptr);
+            if(str[j] == '-')   row.push_back(nullptr);
             else {
                 Block::Type type;
                 if(str[j] == '1')   type = Block::Brick;
