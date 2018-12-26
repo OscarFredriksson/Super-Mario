@@ -3,7 +3,8 @@
 #include <cmath>
 
 Player::Player(World& world):
-    world(world)
+    world(world),
+    jumpSound(jumpSound_path)
 {
     texture.loadFromFile("Textures/Mario.png", sf::IntRect(0, 0, 80, 32));
 
@@ -14,11 +15,14 @@ Player::Player(World& world):
 
 void Player::jump()
 {
+
+
     if(!jumpKeyReleased)    return;
     jumpKeyReleased = false;
 
     if(atGround)
     {
+        jumpSound.play();
         velocityY = jumpSpeed;
         atGround = false;
     }

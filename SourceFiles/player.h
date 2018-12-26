@@ -4,6 +4,9 @@
 #include "world.h"
 #include <iostream>
 #include "animated_sprite.h"
+#include "sound.h"
+#include <string>
+
 
 class Player
 {
@@ -60,6 +63,9 @@ private:
     AnimatedSprite sprite;
     int height = 2;
     int width = 1;
+
+    std::string jumpSound_path = "Sounds/jump.wav";
+    Sound jumpSound;
 
     Direction dir = Right;
 
