@@ -11,7 +11,6 @@ public:
 
 private:
     sf::SoundBuffer buffer;
-
 };
 
 #endif

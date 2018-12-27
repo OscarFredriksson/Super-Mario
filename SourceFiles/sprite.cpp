@@ -1,8 +1,6 @@
 #include "sprite.h"
 #include <iostream>
 
-
-
 int Sprite::getTextureSize() const
 {
     return textureSize;

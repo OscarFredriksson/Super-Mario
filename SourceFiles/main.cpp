@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "player.h"
 #include "world.h"
+#include "enemy.h"
 #include <iostream>
 
 int main()
@@ -25,6 +26,8 @@ int main()
     window.setView(view);
 
     Player player(world);
+
+    Enemy enemy(world);
     
     while (window.isOpen())
     {
@@ -55,6 +58,7 @@ int main()
         window.clear(sf::Color::Cyan);
 
         player.updatePosition();
+        enemy.updatePosition();
         
     
         view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, 175));
@@ -64,8 +68,9 @@ int main()
         
         window.setView(view);
 
-        player.draw(window);
         world.draw(window);
+        player.draw(window);
+        enemy.draw(window);
 
         window.display();
     }

@@ -3,8 +3,8 @@
 #include <SFML/Graphics.hpp>
 
 Block::Block(Type type, const int x, const int y)
- //:block(texture)
 {
+    sf::Texture texture;
     texture.loadFromFile(filename, sf::IntRect(getTextureSize() * type, 0, getTextureSize(), getTextureSize()));
 
     block.setTexture(texture);

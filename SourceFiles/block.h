@@ -1,7 +1,6 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
-#include <SFML/Graphics.hpp>
 #include <string>
 #include "sprite.h"
 
@@ -34,7 +33,6 @@ public:
 private:
     static constexpr float scale = 1;
 
-    sf::Texture texture;
     Sprite block;
 
     const std::string filename = "Textures/Blocks.png";
