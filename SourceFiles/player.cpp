@@ -48,18 +48,14 @@ void Player::endWalk()
 
 void Player::updatePosition()
 {
-    if(!onGround())                   sprite.set(4);
-    else if(horisontalButtonHeld)   sprite.update(0, 2);
-    else                            sprite.update(0, 0);
+    if(!onGround())                             sprite.set(4);
+    else if(sprite.getCurrentTexture() == 4)    sprite.set(0);
+    else if(horisontalButtonHeld)               sprite.update(0, 2);
+    else                                        sprite.update(0, 0);
     
     Character::updatePosition();
-    setPosition(getPositionX(), getPositionY());
 
-}
-
-void Player::setPosition(float x, float y)
-{
-    sprite.setPosition(x, y);
+    sprite.setPosition(getPositionX(), getPositionY());
 }
 
 void Player::draw(sf::RenderWindow& window)

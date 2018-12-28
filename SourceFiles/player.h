@@ -18,10 +18,8 @@ public:
 
     void endWalk();
 
-    void updatePosition();
+    void updatePosition() override;
     
-    void setPosition(float x, float y);
-
     void draw(sf::RenderWindow& window) override;
 
     sf::Sprite getSprite() const;

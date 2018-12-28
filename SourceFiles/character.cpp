@@ -8,6 +8,62 @@ Character::Character(World& world, const int width, const int height):
     height(height)
 {}
 
+void Character::setJumpSpeed(const float value)
+{
+    jumpSpeed = value;
+}
+
+void Character::setMoveSpeed(const float value)
+{
+    moveSpeed = value;
+}
+
+void Character::setMaxSpeed(const float value)
+{
+    maxSpeed = value;
+}
+
+void Character::setStopSpeed(const float value)
+{
+    stopSpeed = value;
+}
+
+void Character::setVerticalVelocity(const float value)
+{
+    velocityY = value;
+}
+
+void Character::setHorisontalVelocity(const float value)
+{
+    velocityX = value;
+}
+
+float Character::getVerticalVelocity() const
+{
+    return velocityY;
+}
+
+float Character::getHorisontalVelocity() const
+{
+    return velocityX;
+}
+
+float Character::getPositionX() const
+{
+    return positionX;
+}
+
+float Character::getPositionY() const
+{
+    return positionY;
+}
+
+void Character::setPosition(const float x, const float y)
+{
+    positionX = x;
+    positionY = y;
+}
+
 void Character::move(Direction dir)
 {
     setDirection(dir);
@@ -15,13 +71,16 @@ void Character::move(Direction dir)
     if(fabsf(velocityX) > maxSpeed) velocityX = dir * maxSpeed;
 }
 
+void Character::jump()
+{
+    setVerticalVelocity(jumpSpeed);
+}
+
 void Character::updatePosition()
 {   
     velocityY += world.getGravity();
     positionY += velocityY;
-
     checkForGround();
-
     checkForRoof();
 
     velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
@@ -29,8 +88,23 @@ void Character::updatePosition()
     checkForWall(); 
 }
 
+Character::Direction Character::getDirection() const
+{
+    return dir;
+}
 
-//---------------Privata funktioner----------------
+void Character::setDirection(Direction new_dir)
+{
+    if(dir != new_dir)  dir = new_dir;
+}
+
+bool Character::onGround() const
+{
+    return _onGround;
+}
+
+
+//---------Privata funktioner---------------
 
 int Character::bufferedRoundoff(float i) const
 {
@@ -63,8 +137,7 @@ void Character::checkForGround()
     {
         positionY = top();
         velocityY = 0;
-
-        if(!_onGround)  _onGround = true;
+        _onGround = true;
     }
     else    _onGround = false;
 }
@@ -121,7 +194,3 @@ void Character::checkForWall()
     }
 }
 
-void Character::setDirection(Direction new_dir)
-{
-    if(dir != new_dir)  dir = new_dir;
-}

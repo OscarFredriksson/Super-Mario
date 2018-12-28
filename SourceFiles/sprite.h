@@ -15,23 +15,15 @@ public:
 
     void setPosition(float x, float y);
 
-    void setTexture(sf::Texture _texture)
-    {
-        texture = _texture;
-        sf::Sprite::setTexture(texture);
-    };
+    void setTexture(sf::Texture _texture);
 
 protected:
     sf::Texture texture;    //Behöver nås av grundklassen sf::Sprite
 
 private:
-    static const int textureSize = 16;
+    const int textureSize = 16;
 
-    float convertCoords(const float c) const
-    {
-        return c*textureSize;
-    }
-        
+    float convertCoords(const float c) const;
 };
 
 #endif

@@ -6,17 +6,30 @@ AnimatedSprite::AnimatedSprite()
     setTextureRect(sf::IntRect(0, 0, 16, 32));
 }
 
+void AnimatedSprite::set(const int texture)
+{
+    currentTexture = texture;
+    setTextureRect(sf::IntRect(texture * getTextureSize(), 0, 16, 32));
+}
+
 void AnimatedSprite::update(const int startTexture, const int endTexture)
 {   
+    static bool goingRight = true;
+
     if(currentTexture == endTexture || currentTexture == 0)
         goingRight = !goingRight;
 
     if(currentTexture <= endTexture && goingRight)
         animate(endTexture);
-
     else                               
         animate(startTexture);  
 }   
+
+int AnimatedSprite::getCurrentTexture() const
+{
+    return currentTexture;
+}
+
 
 void AnimatedSprite::animate(const int targetTexture)
 {

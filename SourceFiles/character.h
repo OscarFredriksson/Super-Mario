@@ -12,6 +12,28 @@ class Character
 public:
     Character(World& world, const int width, const int height);
 
+    void setJumpSpeed(const float value);
+
+    void setMoveSpeed(const float value);
+
+    void setMaxSpeed(const float value);
+
+    void setStopSpeed(const float value);
+
+    void setVerticalVelocity(const float value);
+    
+    void setHorisontalVelocity(const float value);
+    
+    float getVerticalVelocity() const;
+
+    float getHorisontalVelocity() const;
+
+    float getPositionX() const;
+
+    float getPositionY() const;
+
+    void setPosition(const float x, const float y);
+
     enum Direction
     {
         Left = -1,
@@ -20,85 +42,25 @@ public:
 
     virtual void move(Direction dir);
 
+    void jump();
+
     virtual void updatePosition();
+
+    Direction getDirection() const;
     
-    //void setPosition(float x, float y);
+    void setDirection(Direction dir);
+
+    bool onGround() const;
+
+    virtual void draw(sf::RenderWindow& window) = 0;
+
+private:
 
     void checkForGround();
 
     void checkForRoof();
 
     void checkForWall();
-
-    void setDirection(Direction dir);
-
-    virtual void draw(sf::RenderWindow& window) = 0;
-
-    void setJumpSpeed(const float value)
-    {
-        jumpSpeed = value;
-    }
-
-    void setMoveSpeed(const float value)
-    {
-        moveSpeed = value;
-    }
-
-    void setMaxSpeed(const float value)
-    {
-        maxSpeed = value;
-    }
-
-    void setStopSpeed(const float value)
-    {
-        stopSpeed = value;
-    }
-
-    void setVerticalVelocity(const float value)
-    {
-        velocityY = value;
-    }
-
-    void setHorisontalVelocity(const float value)
-    {
-        velocityX = value;
-    }
-
-    float getVerticalVelocity() const
-    {
-        return velocityY;
-    }
-
-    float getHorisontalVelocity() const
-    {
-        return velocityX;
-    }
-
-    float getPositionX() const
-    {
-        return positionX;
-    }
-
-    float getPositionY() const
-    {
-        return positionY;
-    }
-
-    void setPosition(const float x, const float y)
-    {
-        positionX = x;
-        positionY = y;
-    }
-
-    void jump()
-    {
-        setVerticalVelocity(jumpSpeed);
-    }
-
-    bool onGround() const
-    {
-        return _onGround;
-    }
 
     int bufferedRoundoff(float i) const;
 
@@ -110,12 +72,7 @@ public:
 
     int bottom() const;
 
-    Direction getDirection() const
-    {
-        return dir;
-    }
 
-private:
     //-----Variabler och konstanter------------
     
     World& world;
