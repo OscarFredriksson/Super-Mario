@@ -22,8 +22,6 @@ void Character::updatePosition()
 
     checkForGround();
 
-    std::cout << velocityY << " " << positionY << std::endl;
-
     checkForRoof();
 
     velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
@@ -60,22 +58,15 @@ int Character::bottom() const
 
 void Character::checkForGround()
 {
-    bool foundGround = false;
-
     if( world.isSolidBlock(bottom(), left()) ||    //Kolla vänster hörn
         world.isSolidBlock(bottom(), right()))      //Kolla höger hörn
     {
         positionY = top();
-        foundGround = true;
         velocityY = 0;
 
-        if(!_onGround)
-        {
-            std::cout << "Landade" << std::endl;
-            _onGround = true;
-        }
+        if(!_onGround)  _onGround = true;
     }
-    if(!foundGround)    _onGround = false;
+    else    _onGround = false;
 }
 
 void Character::checkForRoof()
