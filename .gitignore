@@ -10,3 +10,4 @@
 *.exe
 
 *.db
+*.DS_Store
