@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Time.hpp>
 #include <iostream>
+#include <SFML/Audio.hpp>
 
 Game::Game(const int width, const int height, const std::string title):
     window(sf::VideoMode(width, height), title),
@@ -47,12 +48,21 @@ void Game::displayGameOver(sf::RenderWindow& window)
     sf::Text text("GAME OVER", font);
     text.setCharacterSize(50);
     text.setFillColor(sf::Color::White);
+    text.setOrigin(text.getGlobalBounds().width/2, text.getGlobalBounds().height/2);
 
-    sf::View view;
-    view.setSize(window.getSize().x, window.getSize().y);
-    view.setCenter(text.getPosition().x + text.getGlobalBounds().width/2, text.getPosition().y + text.getGlobalBounds().height/2);
+    window.setView(window.getDefaultView());
 
-    window.setView(view);
+    text.setPosition(window.getSize().x/2, window.getSize().y/2);
+    
+
+    const std::string music_path = "Sounds/game_over.wav";
+    sf::Music gameOver_music;
+    if(!gameOver_music.openFromFile(music_path))
+        std::cout << "Failed to load \"" << music_path << "\"" << std::endl;
+    
+    gameOver_music.play();
+
+    sf::sleep(sf::seconds(1));
 
     window.clear(sf::Color::Black);
     window.draw(text);
