@@ -10,6 +10,9 @@ public:
 
     Enemy(World& world);
 
+    /*~Enemy() override
+    {};*/
+
     void updatePosition() override;
 
     void draw(sf::RenderWindow& window) override;

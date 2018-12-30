@@ -78,14 +78,18 @@ void Character::jump()
 
 void Character::updatePosition()
 {   
-    velocityY += world.getGravity();
-    positionY += velocityY;
-    checkForGround();
-    checkForRoof();
 
-    velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
-    positionX += velocityX; 
-    checkForWall(); 
+        velocityY += world.getGravity();
+        positionY += velocityY;
+        checkForGround();
+        if(!isAlive())  return;
+
+        checkForRoof();
+
+        velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
+        positionX += velocityX; 
+        checkForWall();
+    
 }
 
 Character::Direction Character::getDirection() const
@@ -132,6 +136,12 @@ int Character::bottom() const
 
 void Character::checkForGround()
 {
+    if(positionY > world.bottomBoundary() - height)
+    {
+        _isAlive = false;
+        return;
+    }
+
     if( world.isSolidBlock(bottom(), left()) ||    //Kolla vänster hörn
         world.isSolidBlock(bottom(), right()))      //Kolla höger hörn
     {
@@ -156,9 +166,9 @@ void Character::checkForWall()
 {
 
     //Kolla vänster världgräns
-    if(positionX < 0)
+    if(positionX < world.leftBoundary())
     {
-        positionX = 0;
+        positionX = world.leftBoundary();
         velocityX = 0;
     }
 

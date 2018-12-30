@@ -15,7 +15,13 @@ public:
 
     void draw(sf::RenderWindow& window);
 
+    int leftBoundary() const;
+
     int rightBoundary() const;
+
+    int topBoundary() const;
+
+    int bottomBoundary() const;
 
     bool isSolidBlock(const int x, const int y) const;  
 

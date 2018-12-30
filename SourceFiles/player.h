@@ -23,6 +23,10 @@ public:
     void draw(sf::RenderWindow& window) override;
 
     sf::Sprite getSprite() const;
+
+    ~Player() override
+    {
+    };
      
 private:
     void setDirection(Direction dir);

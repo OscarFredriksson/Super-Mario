@@ -1,9 +1,14 @@
 #include "game.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Time.hpp>
+#include <iostream>
 
-Game::Game():
+Game::Game(const int width, const int height, const std::string title):
+    window(sf::VideoMode(width, height), title),
     player(world)
 {
+    window.setFramerateLimit(60);
+
     enemies.emplace_back(std::make_unique<Enemy>(world));
 
     world.loadMap("map.txt");
@@ -11,51 +16,62 @@ Game::Game():
 
 void Game::run()
 {
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
-
-    sf::RenderWindow window(sf::VideoMode(640, 480), title, sf::Style::Default, settings);
-    window.setFramerateLimit(60);
-
     sf::View view;
-
-    const double viewScale = 0.5;
-
-    view.setSize(640 * viewScale, 480 * viewScale);
-
-    view.setCenter(640, 480);
-
+    const double viewZoom = 0.5;
+    view.setSize(window.getSize().x * viewZoom, window.getSize().y * viewZoom);
     window.setView(view);
 
-    
     while (window.isOpen())
     {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        if( event.type == sf::Event::KeyReleased)
-        {
-            if(event.key.code == sf::Keyboard::Up)  
-                player.endJump();
-            if(event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right)
-                player.endWalk();
-        }
-    
-        handleInputs();
+        handleInputs(window);
 
         updateObjects(window, view);
-        
+
+        if(gameOver)    
+        {
+            displayGameOver(window);
+            return;
+        }
+
         drawObjects(window);
     }
 
 }
 
-void Game::handleInputs()
+void Game::displayGameOver(sf::RenderWindow& window)
 {
+    sf::Font font;
+    if(!font.loadFromFile("Fonts/SuperMario.ttf"))
+        std::cout << "Failed to open font" << std::endl;
+    
+    sf::Text text("GAME OVER", font);
+    text.setCharacterSize(50);
+    text.setFillColor(sf::Color::White);
+
+    sf::View view;
+    view.setSize(window.getSize().x, window.getSize().y);
+    view.setCenter(text.getPosition().x + text.getGlobalBounds().width/2, text.getPosition().y + text.getGlobalBounds().height/2);
+
+    window.setView(view);
+
+    window.clear(sf::Color::Black);
+    window.draw(text);
+    window.display();
+
+    sf::sleep(sf::seconds(2));
+}
+
+void Game::handleInputs(sf::RenderWindow& window)
+{
+    //-------Handle window events-------
+    sf::Event event;
+    while (window.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+            window.close();
+    }
+
+    //--------Handle keypress------
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    player.jump();
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -64,12 +80,27 @@ void Game::handleInputs()
         player.move(Player::Right);
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  
         player.move(Player::Left);
+
+    //----------Handle keyrelease---------
+    if( event.type == sf::Event::KeyReleased)
+    {
+        if(event.key.code == sf::Keyboard::Up)  
+            player.endJump();
+        if(event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right)
+            player.endWalk();
+    }
 }
 
 void Game::updateObjects(sf::RenderWindow& window, sf::View& view)
 {
     player.updatePosition();
+
+    if(!player.isAlive())
+    {
+        gameOver = true;
+    }
         
+
     std::for_each(enemies.begin(), enemies.end(), [](std::unique_ptr<Enemy>& e)
     {
         e->updatePosition();
@@ -90,7 +121,7 @@ void Game::drawObjects(sf::RenderWindow& window)
     world.draw(window);
     player.draw(window);
 
-    std::for_each(enemies.begin(), enemies.end(), [&](std::unique_ptr<Enemy>& e)
+    std::for_each(enemies.begin(), enemies.end(), [&window](std::unique_ptr<Enemy>& e)
     {
         e->draw(window);
     });

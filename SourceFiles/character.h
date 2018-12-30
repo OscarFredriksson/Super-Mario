@@ -12,6 +12,9 @@ class Character
 public:
     Character(World& world, const int width, const int height);
 
+    virtual ~Character()
+    {};
+
     void setJumpSpeed(const float value);
 
     void setMoveSpeed(const float value);
@@ -54,6 +57,11 @@ public:
 
     virtual void draw(sf::RenderWindow& window) = 0;
 
+    bool isAlive() const
+    {
+        return _isAlive;
+    }
+
 private:
 
     void checkForGround();
@@ -93,6 +101,8 @@ private:
     float positionY = 2.f;
 
     Direction dir = Right;
+
+    bool _isAlive = true;
 
 };
 

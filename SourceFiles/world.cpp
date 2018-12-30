@@ -55,10 +55,25 @@ void World::draw(sf::RenderWindow& window)
                 window.draw(map[i][j]->getSprite());
 }
 
+int World::leftBoundary() const
+{
+    return 0;
+}
+
 int World::rightBoundary() const
 {
     return map[0].size();
 } 
+
+int World::topBoundary() const
+{
+    return 0;
+}
+
+int World::bottomBoundary() const
+{
+    return map.size();
+}
 
 bool World::isSolidBlock(const int x, const int y) const
 {
