@@ -24,7 +24,6 @@ private:
     void updateObjects(sf::RenderWindow& window, sf::View& view);
 
     void drawObjects(sf::RenderWindow& window);
-    
 
     bool gameOver = false;
 

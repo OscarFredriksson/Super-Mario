@@ -5,6 +5,7 @@
 
 Player::Player(World& world):
     Character(world, width, height),
+    sprite(width, height),
     jumpSound(jumpSound_path)
 {
     setMaxSpeed(maxSpeed);
@@ -12,7 +13,9 @@ Player::Player(World& world):
     setJumpSpeed(jumpSpeed);
 
     sf::Texture texture;
-    texture.loadFromFile("Textures/Mario.png", sf::IntRect(0, 0, 80, 32));
+    const std::string texture_path = "Textures/Mario.png";
+    if(!texture.loadFromFile(texture_path))
+        std::cerr << "Failed to load \"" << texture_path << "\"\n";
 
     sprite.setTexture(texture);
 }
@@ -48,8 +51,8 @@ void Player::endWalk()
 
 void Player::updatePosition()
 {
-    if(!onGround())                             sprite.set(4);
-    else if(sprite.getCurrentTexture() == 4)    sprite.set(0);
+    if(!onGround())                             sprite.set(3);
+    else if(sprite.getCurrentTexture() == 3)    sprite.set(0);
     else if(horisontalButtonHeld)               sprite.update(0, 2);
     else                                        sprite.update(0, 0);
     

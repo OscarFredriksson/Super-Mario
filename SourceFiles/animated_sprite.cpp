@@ -1,9 +1,12 @@
 #include "animated_sprite.h"
 #include <iostream>
 
-AnimatedSprite::AnimatedSprite()
+AnimatedSprite::AnimatedSprite(const int width, const int height, const double speed):
+    width(width),
+    height(height),
+    speed(speed)
 {
-    setTextureRect(sf::IntRect(0, 0, 16, 32));
+    setTextureRect(sf::IntRect(0, 0, width * getTextureSize(), height * getTextureSize()));
 }
 
 void AnimatedSprite::set(const int texture)
@@ -14,8 +17,6 @@ void AnimatedSprite::set(const int texture)
 
 void AnimatedSprite::update(const int startTexture, const int endTexture)
 {   
-    static bool goingRight = true;
-
     if(currentTexture == endTexture || currentTexture == 0)
         goingRight = !goingRight;
 
@@ -44,7 +45,7 @@ void AnimatedSprite::animate(const int targetTexture)
         if(currentTexture < targetTexture)  x = getTextureRect().left + getTextureSize();
         else                                x = getTextureRect().left - getTextureSize();
    
-        setTextureRect(sf::IntRect(x, 0, 16, 32));
+        setTextureRect(sf::IntRect(x, 0, width * getTextureSize(), height * getTextureSize()));
         
         currentTexture = x/getTextureSize();
         lastframe = clock::now();

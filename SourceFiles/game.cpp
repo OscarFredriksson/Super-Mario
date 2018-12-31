@@ -42,8 +42,9 @@ void Game::run()
 void Game::displayGameOver(sf::RenderWindow& window)
 {
     sf::Font font;
-    if(!font.loadFromFile("Fonts/SuperMario.ttf"))
-        std::cout << "Failed to open font" << std::endl;
+    const std::string font_path = "Fonts/SuperMario.ttf";
+    if(!font.loadFromFile(font_path))
+        std::cerr << "Failed to load \"" << font_path << "\"\n";
     
     sf::Text text("GAME OVER", font);
     text.setCharacterSize(50);
@@ -52,13 +53,14 @@ void Game::displayGameOver(sf::RenderWindow& window)
 
     window.setView(window.getDefaultView());
 
-    text.setPosition(window.getSize().x/2, window.getSize().y/2);
-    
+    text.setPosition(window.getSize().x/2, window.getSize().y/2.5);
 
-    const std::string music_path = "Sounds/game_over.wav";
+
+
     sf::Music gameOver_music;
+    const std::string music_path = "Sounds/game_over.wav";
     if(!gameOver_music.openFromFile(music_path))
-        std::cout << "Failed to load \"" << music_path << "\"" << std::endl;
+        std::cerr << "Failed to open \"" << music_path << "\"\n";
     
     gameOver_music.play();
 

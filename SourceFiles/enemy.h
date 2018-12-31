@@ -2,16 +2,13 @@
 #define ENEMY_H
 
 #include "character.h"
-#include "sprite.h"
+#include "animated_sprite.h"
 
 class Enemy: public Character
 {
 public:
 
     Enemy(World& world);
-
-    /*~Enemy() override
-    {};*/
 
     void updatePosition() override;
 
@@ -24,7 +21,7 @@ private:
 
     const float moveSpeed = .05f;
 
-    Sprite sprite;
+    AnimatedSprite sprite;
 
     void flip();
 

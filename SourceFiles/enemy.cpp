@@ -1,9 +1,11 @@
 #include "enemy.h"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 
 Enemy::Enemy(World& world):
-    Character(world, width, height)
+    Character(world, width, height),
+    sprite(width, height, 0.1)
 {
     setHorisontalVelocity(moveSpeed);
     setStopSpeed(1);
@@ -11,19 +13,22 @@ Enemy::Enemy(World& world):
     Character::setPosition(30.f, 2.f);
 
     sf::Texture texture;
-    texture.loadFromFile("Textures/Blocks.png", sf::IntRect(0, 0, 16, 16));
+    const std::string texture_path = "Textures/Goomba.png";
+    if(!texture.loadFromFile(texture_path))
+        std::cerr << "Failed to load \"" << texture_path << "\"\n";
 
     sprite.setTexture(texture);
 }
 
 void Enemy::updatePosition()
 {
+    sprite.update(0, 1);
+
     if(getHorisontalVelocity() == 0)
     {
         flip();
         setHorisontalVelocity(moveSpeed * getDirection());
     }
-
 
     Character::updatePosition();
 

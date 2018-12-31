@@ -5,7 +5,8 @@
 Block::Block(Type type, const int x, const int y)
 {
     sf::Texture texture;
-    texture.loadFromFile(filename, sf::IntRect(getTextureSize() * type, 0, getTextureSize(), getTextureSize()));
+    if(!texture.loadFromFile(filename, sf::IntRect(getTextureSize() * type, 0, getTextureSize(), getTextureSize())))
+        std::cerr << "Failed to load \"" << filename << "\"\n";
 
     block.setTexture(texture);
 

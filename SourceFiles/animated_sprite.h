@@ -7,7 +7,7 @@
 class AnimatedSprite: public Sprite
 {
 public:
-    AnimatedSprite();
+    AnimatedSprite(const int width, const int height, const double speed = 0.1);
 
     void set(const int texture);
 
@@ -19,8 +19,12 @@ private:
     
     using clock = std::chrono::high_resolution_clock;
     clock::time_point lastframe;
+
+    bool goingRight = true;
     
-    static constexpr double speed = .1;
+    const double speed = .1;
+
+    const int width, height;
 
     int currentTexture = 0;
 
