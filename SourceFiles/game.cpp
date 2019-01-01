@@ -22,6 +22,12 @@ void Game::run()
     view.setSize(window.getSize().x * viewZoom, window.getSize().y * viewZoom);
     window.setView(view);
 
+    if(!music.openFromFile(music_path))
+        std::cerr << "Failed to open \"" << music_path << "\"\n";
+    
+    music.setLoop(true);
+    music.play();
+
     while (window.isOpen())
     {
         handleInputs(window);
@@ -62,6 +68,7 @@ void Game::displayGameOver(sf::RenderWindow& window)
     if(!gameOver_music.openFromFile(music_path))
         std::cerr << "Failed to open \"" << music_path << "\"\n";
     
+    music.stop();
     gameOver_music.play();
 
     sf::sleep(sf::seconds(1));

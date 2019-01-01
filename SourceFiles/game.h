@@ -33,6 +33,9 @@ private:
 
     std::vector<std::unique_ptr<Enemy>> enemies;
 
+    sf::Music music;
+    const std::string music_path = "Sounds/main_theme.wav";
+
 };
 
 #endif

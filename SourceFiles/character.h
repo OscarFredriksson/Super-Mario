@@ -93,7 +93,8 @@ private:
     float jumpSpeed = 0;
     float moveSpeed = 0;
     float maxSpeed = 0;
-    float stopSpeed = 0.95f;  //I procent
+    //float stopSpeed = 0.95f;  //I procent
+    float stopSpeed = 0.005f;
 
     float velocityY = 0;
     float velocityX = 0;

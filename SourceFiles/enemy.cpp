@@ -8,9 +8,9 @@ Enemy::Enemy(World& world):
     sprite(width, height, 0.1)
 {
     setHorisontalVelocity(moveSpeed);
-    setStopSpeed(1);
+    setStopSpeed(0);
 
-    Character::setPosition(30.f, 2.f);
+    Character::setPosition(40.f, 2.f);
 
     sf::Texture texture;
     const std::string texture_path = "Textures/Goomba.png";

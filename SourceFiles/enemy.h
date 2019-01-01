@@ -7,7 +7,6 @@
 class Enemy: public Character
 {
 public:
-
     Enemy(World& world);
 
     void updatePosition() override;
@@ -19,7 +18,7 @@ private:
     static const int height = 1;
     static const int width = 1;
 
-    const float moveSpeed = .05f;
+    const float moveSpeed = .04f;
 
     AnimatedSprite sprite;
 

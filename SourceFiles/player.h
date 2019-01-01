@@ -23,10 +23,6 @@ public:
     void draw(sf::RenderWindow& window) override;
 
     sf::Sprite getSprite() const;
-
-    ~Player() override
-    {
-    };
      
 private:
     void setDirection(Direction dir);
@@ -45,7 +41,6 @@ private:
     const float jumpSpeed = -.25f;
     const float moveSpeed = .01f;
     const float maxSpeed = .15f;
-    const float stopSpeed = 0.95f;  //I procent
     
     bool animateJump = false;
 

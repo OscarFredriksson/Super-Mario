@@ -86,7 +86,9 @@ void Character::updatePosition()
 
         checkForRoof();
 
-        velocityX *= stopSpeed;  //Sänk hastigheten för att tillslut stanna
+        if(fabsf(velocityX) < stopSpeed)    velocityX = 0;
+        else if(velocityX > 0)              velocityX -= stopSpeed;
+        else                                velocityX += stopSpeed;
         positionX += velocityX; 
         checkForWall();
     
