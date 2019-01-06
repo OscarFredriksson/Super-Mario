@@ -1,12 +1,11 @@
-#SFML-path := ./SFML
 Libs := -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 SrcFiles := $(wildcard SourceFiles/*.cpp)
 
 compile: $(SrcFiles)
-	g++ $(SrcFiles) -c -g -std=c++17 -I$(SFML-path)/Include 
+	g++ $(SrcFiles) -c -std=c++17 
 
 link: compile	
-	g++ $(wildcard *.o) -o main -std=c++17 -L$(SFML-path)/lib $(Libs)
+	g++ $(wildcard *.o) -o main -std=c++17 $(Libs)
 
 run: link
 	./main

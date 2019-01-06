@@ -1,6 +1,6 @@
 #include "game.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/System/Time.hpp>
+#include <SFML/System.hpp>
 #include <iostream>
 #include <SFML/Audio.hpp>
 #include <cmath>
@@ -15,8 +15,7 @@ Game::Game(const int width, const int height, const std::string title):
     
     enemies.emplace_back(std::make_unique<Enemy>(20.f, 2.f, world));
 
-
-    world.loadMap("map.txt");
+    world.loadMap("Levels/Level-1.txt");
 }
 
 void Game::run()
