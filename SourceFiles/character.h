@@ -62,6 +62,21 @@ public:
         return _isAlive;
     }
 
+    float leftBoundary() const
+    {
+        return positionX;
+    }
+
+    float rightBoundary() const
+    {
+        return positionX + width;
+    }
+
+    float topBoundary() const
+    {
+        return positionY;
+    }
+
 private:
 
     void checkForGround();
@@ -93,7 +108,6 @@ private:
     float jumpSpeed = 0;
     float moveSpeed = 0;
     float maxSpeed = 0;
-    //float stopSpeed = 0.95f;  //I procent
     float stopSpeed = 0.005f;
 
     float velocityY = 0;

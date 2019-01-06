@@ -114,21 +114,21 @@ void Game::updateObjects(sf::RenderWindow& window, sf::View& view)
 {
     player.updatePosition();
 
-    if(!player.isAlive())
-    {
-        gameOver = true;
-    }
+    if(!player.isAlive())   gameOver = true;
         
-
     std::for_each(enemies.begin(), enemies.end(), [](std::unique_ptr<Enemy>& e)
     {
         e->updatePosition();
     });
+
+    checkForEnemyCollision();
+
+    const int viewHeight = 175;
     
-    view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, 175));
+    view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, viewHeight));
     
     if(view.getCenter().x < view.getSize().x/2)
-        view.setCenter(sf::Vector2f(view.getSize().x/2, 175));
+        view.setCenter(sf::Vector2f(view.getSize().x/2, viewHeight));
     
     window.setView(view);
 }
@@ -146,4 +146,28 @@ void Game::drawObjects(sf::RenderWindow& window)
     });
 
     window.display();
+}
+
+void Game::checkForEnemyCollision()
+{
+
+    if(player.getSprite().getGlobalBounds().intersects(enemies[0]->getSprite().getGlobalBounds()))
+    {
+        enemies.pop_back();
+    }
+
+    /*std::for_each(enemies.begin(), enemies.end(), [&](std::unique_ptr<Enemy>& e)
+    {
+        if(player.getSprite().getGlobalBounds().intersects(e->getSprite().getGlobalBounds()))
+        {
+            e.reset();
+        }
+
+        
+    });*/
+}
+
+std::vector<std::unique_ptr<Enemy>> Game::findNearbyEnemies() const
+{
+
 }

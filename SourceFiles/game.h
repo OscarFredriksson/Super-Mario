@@ -25,6 +25,10 @@ private:
 
     void drawObjects(sf::RenderWindow& window);
 
+    void checkForEnemyCollision();
+
+    std::vector<std::unique_ptr<Enemy>> findNearbyEnemies() const;
+
     bool gameOver = false;
 
     sf::RenderWindow window;
