@@ -7,7 +7,7 @@
 class Enemy: public Character
 {
 public:
-    Enemy(World& world);
+    Enemy(const int x, const int y, World& world);
 
     void updatePosition() override;
 

@@ -3,14 +3,14 @@
 #include <iostream>
 
 
-Enemy::Enemy(World& world):
+Enemy::Enemy(const int x, const int y, World& world):
     Character(world, width, height),
     sprite(width, height, 0.1)
 {
     setHorisontalVelocity(moveSpeed);
     setStopSpeed(0);
 
-    Character::setPosition(40.f, 2.f);
+    Character::setPosition(x, y);
 
     sf::Texture texture;
     const std::string texture_path = "Textures/Goomba.png";

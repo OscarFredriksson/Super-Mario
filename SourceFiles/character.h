@@ -77,6 +77,11 @@ public:
         return positionY;
     }
 
+    float bottomBoundary() const
+    {
+        return positionY + height;
+    }
+
 private:
 
     void checkForGround();

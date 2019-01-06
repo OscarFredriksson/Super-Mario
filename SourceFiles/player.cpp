@@ -6,7 +6,8 @@
 Player::Player(World& world):
     Character(world, width, height),
     sprite(width, height),
-    jumpSound(jumpSound_path)
+    jumpSound(jumpSound_path),
+    stompSound(stompSound_path)
 {
     setMaxSpeed(maxSpeed);
     setMoveSpeed(moveSpeed);
@@ -14,8 +15,7 @@ Player::Player(World& world):
 
     sf::Texture texture;
     const std::string texture_path = "Textures/Mario.png";
-    if(!texture.loadFromFile(texture_path))
-        std::cerr << "Failed to load \"" << texture_path << "\"\n";
+    texture.loadFromFile(texture_path);
 
     sprite.setTexture(texture);
 }

@@ -3,6 +3,7 @@
 #include <SFML/System/Time.hpp>
 #include <iostream>
 #include <SFML/Audio.hpp>
+#include <cmath>
 
 Game::Game(const int width, const int height, const std::string title):
     window(sf::VideoMode(width, height), title),
@@ -10,7 +11,10 @@ Game::Game(const int width, const int height, const std::string title):
 {
     window.setFramerateLimit(60);
 
-    enemies.emplace_back(std::make_unique<Enemy>(world));
+    enemies.emplace_back(std::make_unique<Enemy>(40.f, 2.f, world));
+    
+    enemies.emplace_back(std::make_unique<Enemy>(20.f, 2.f, world));
+
 
     world.loadMap("map.txt");
 }
@@ -22,10 +26,10 @@ void Game::run()
     view.setSize(window.getSize().x * viewZoom, window.getSize().y * viewZoom);
     window.setView(view);
 
-    if(!music.openFromFile(music_path))
-        std::cerr << "Failed to open \"" << music_path << "\"\n";
+    music.openFromFile(music_path);
     
     music.setLoop(true);
+    music.setVolume(25);
     music.play();
 
     while (window.isOpen())
@@ -150,24 +154,26 @@ void Game::drawObjects(sf::RenderWindow& window)
 
 void Game::checkForEnemyCollision()
 {
-
-    if(player.getSprite().getGlobalBounds().intersects(enemies[0]->getSprite().getGlobalBounds()))
-    {
-        enemies.pop_back();
-    }
-
-    /*std::for_each(enemies.begin(), enemies.end(), [&](std::unique_ptr<Enemy>& e)
+    std::for_each(enemies.begin(), enemies.end(), [&](std::unique_ptr<Enemy>& e)
     {
         if(player.getSprite().getGlobalBounds().intersects(e->getSprite().getGlobalBounds()))
         {
-            e.reset();
-        }
 
-        
-    });*/
+            float slope = fabsf((e->getPositionY()-player.getPositionY())/(e->getPositionX()-player.getPositionX()));
+
+            if((slope >= 1) && player.bottomBoundary() < e->bottomBoundary())
+            {
+                enemies.erase(std::remove(enemies.begin(), enemies.end(), e));  //Leta reda på elementet och ta bort det
+                player.stomp();
+            }
+            else
+                gameOver = true;
+            
+        } 
+    });
 }
 
-std::vector<std::unique_ptr<Enemy>> Game::findNearbyEnemies() const
+/*std::vector<std::unique_ptr<Enemy>> Game::findNearbyEnemies() const
 {
 
-}
+}*/

@@ -23,6 +23,12 @@ public:
     void draw(sf::RenderWindow& window) override;
 
     sf::Sprite getSprite() const;
+
+    void stomp()
+    {
+        setVerticalVelocity(jumpSpeed/2);
+        stompSound.play();
+    }
      
 private:
     void setDirection(Direction dir);
@@ -34,6 +40,9 @@ private:
 
     std::string jumpSound_path = "Sounds/jump.wav";
     Sound jumpSound;
+
+    std::string stompSound_path = "Sounds/stomp.wav";
+    Sound stompSound;
 
     static const int height = 2;
     static const int width = 1;
