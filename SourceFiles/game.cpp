@@ -21,8 +21,8 @@ Game::Game(const int width, const int height, const std::string title):
 
 void Game::initializeView()
 {
-    const double viewZoom = 0.5;
-    view.setSize(window.getSize().x * viewZoom, window.getSize().y * viewZoom);
+    view.setSize(window.getSize().x, window.getSize().y);
+    view.zoom(0.5f);
     window.setView(view);
 }
 
@@ -59,7 +59,6 @@ void Game::run()
 void Game::displayGameOver()
 {
     sf::Font font;
-    const std::string font_path = "Fonts/SuperMario.ttf";
     if(!font.loadFromFile(font_path))
         std::cerr << "Failed to load \"" << font_path << "\"\n";
     
@@ -79,7 +78,7 @@ void Game::displayGameOver()
     if(!gameOver_music.openFromFile(music_path))
         std::cerr << "Failed to open \"" << music_path << "\"\n";
     
-    music.stop();
+    music.pause();
     gameOver_music.play();
 
     sf::sleep(sf::seconds(1));
@@ -91,15 +90,57 @@ void Game::displayGameOver()
     sf::sleep(sf::seconds(2));
 }
 
-void Game::handleInputs()
+void Game::pause()
 {
-    //-------Handle window events-------
-    sf::Event event;
+    music.pause();
+
+    Sound pauseSound(pauseSound_path);
+    pauseSound.play();
+
+
+    sf::Font font;
+    font.loadFromFile(font_path);
+
+    sf::Text text("PAUSED", font);
+    text.setCharacterSize(50);
+    text.setFillColor(sf::Color::Black);
+
+    text.setPosition(view.getSize().x/1.25, view.getCenter().y);
+
+    //Byter vyn, sätter texten, och byter tillbaka för att texten inte ska bli suddig
+    window.setView(window.getDefaultView());
+    window.draw(text);
+    window.setView(view);
+
+    window.display();
+
+    while(window.isOpen())
+    {
+        sf::Event event;
+        pollWindowEvents(event);
+
+        if(event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::P)
+        {   
+            music.play(); 
+            return;
+        }
+    }
+}
+
+void Game::pollWindowEvents(sf::Event& event)
+{
     while (window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
             window.close();
     }
+}
+
+void Game::handleInputs()
+{
+    //-------Handle window events-------
+    sf::Event event;
+    pollWindowEvents(event);
 
     //--------Handle isKeypressed------
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    player.jump();
@@ -116,13 +157,15 @@ void Game::handleInputs()
     {
         switch(event.key.code)
         {
-
             case sf::Keyboard::Up:  
                 player.endJump();
                 break;
             case sf::Keyboard::Left:
             case sf::Keyboard::Right:
                 player.endWalk();
+                break;
+            case sf::Keyboard::P:
+                pause();
                 break;
             case sf::Keyboard::M:
                 Audio_Controller::toggleMute();
