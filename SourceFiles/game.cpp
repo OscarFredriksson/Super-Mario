@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SFML/Audio.hpp>
 #include <cmath>
+#include "audio_controller.h"
 
 Game::Game(const int width, const int height, const std::string title):
     window(sf::VideoMode(width, height), title),
@@ -18,37 +19,44 @@ Game::Game(const int width, const int height, const std::string title):
     world.loadMap("Levels/Level-1.txt");
 }
 
-void Game::run()
+void Game::initializeView()
 {
-    sf::View view;
     const double viewZoom = 0.5;
     view.setSize(window.getSize().x * viewZoom, window.getSize().y * viewZoom);
     window.setView(view);
+}
 
-    music.openFromFile(music_path);
-    
+void Game::startMusic()
+{
+    music.openFromFile(music_path); 
     music.setLoop(true);
     music.setVolume(25);
     music.play();
+}
+
+void Game::run()
+{
+    initializeView();
+    startMusic();
 
     while (window.isOpen())
     {
-        handleInputs(window);
+        handleInputs();
 
-        updateObjects(window, view);
+        updateObjects();
 
         if(gameOver)    
         {
-            displayGameOver(window);
+            displayGameOver();
             return;
         }
 
-        drawObjects(window);
+        drawObjects();
     }
 
 }
 
-void Game::displayGameOver(sf::RenderWindow& window)
+void Game::displayGameOver()
 {
     sf::Font font;
     const std::string font_path = "Fonts/SuperMario.ttf";
@@ -83,7 +91,7 @@ void Game::displayGameOver(sf::RenderWindow& window)
     sf::sleep(sf::seconds(2));
 }
 
-void Game::handleInputs(sf::RenderWindow& window)
+void Game::handleInputs()
 {
     //-------Handle window events-------
     sf::Event event;
@@ -93,7 +101,7 @@ void Game::handleInputs(sf::RenderWindow& window)
             window.close();
     }
 
-    //--------Handle keypress------
+    //--------Handle isKeypressed------
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    player.jump();
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -106,14 +114,32 @@ void Game::handleInputs(sf::RenderWindow& window)
     //----------Handle keyrelease---------
     if( event.type == sf::Event::KeyReleased)
     {
-        if(event.key.code == sf::Keyboard::Up)  
-            player.endJump();
-        if(event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right)
-            player.endWalk();
+        switch(event.key.code)
+        {
+
+            case sf::Keyboard::Up:  
+                player.endJump();
+                break;
+            case sf::Keyboard::Left:
+            case sf::Keyboard::Right:
+                player.endWalk();
+                break;
+            case sf::Keyboard::M:
+                Audio_Controller::toggleMute();
+                break;
+            case sf::Keyboard::B:
+                Audio_Controller::decreaseVolume();
+                break;
+            case sf::Keyboard::N:
+                Audio_Controller::increaseVolume();
+                break;
+            default:
+                break;
+        }
     }
 }
 
-void Game::updateObjects(sf::RenderWindow& window, sf::View& view)
+void Game::updateObjects()
 {
     player.updatePosition();
 
@@ -136,14 +162,14 @@ void Game::updateObjects(sf::RenderWindow& window, sf::View& view)
     window.setView(view);
 }
 
-void Game::drawObjects(sf::RenderWindow& window)
+void Game::drawObjects()
 {
     window.clear(sf::Color::Cyan);
 
     world.draw(window);
     player.draw(window);
 
-    std::for_each(enemies.begin(), enemies.end(), [&window](std::unique_ptr<Enemy>& e)
+    std::for_each(enemies.begin(), enemies.end(), [this](std::unique_ptr<Enemy>& e)
     {
         e->draw(window);
     });
@@ -153,14 +179,14 @@ void Game::drawObjects(sf::RenderWindow& window)
 
 void Game::checkForEnemyCollision()
 {
-    std::for_each(enemies.begin(), enemies.end(), [&](std::unique_ptr<Enemy>& e)
+    std::for_each(enemies.begin(), enemies.end(), [this](std::unique_ptr<Enemy>& e)
     {
         if(player.getSprite().getGlobalBounds().intersects(e->getSprite().getGlobalBounds()))
         {
 
             float slope = fabsf((e->getPositionY()-player.getPositionY())/(e->getPositionX()-player.getPositionX()));
 
-            if((slope >= 1) && player.bottomBoundary() < e->bottomBoundary())
+            if((slope >= 1) && player.bottomBoundary() < e->bottomBoundary() && player.getVerticalVelocity() > 0)
             {
                 enemies.erase(std::remove(enemies.begin(), enemies.end(), e));  //Leta reda på elementet och ta bort det
                 player.stomp();
@@ -171,8 +197,3 @@ void Game::checkForEnemyCollision()
         } 
     });
 }
-
-/*std::vector<std::unique_ptr<Enemy>> Game::findNearbyEnemies() const
-{
-
-}*/

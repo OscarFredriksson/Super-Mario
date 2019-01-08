@@ -17,13 +17,18 @@ public:
     void run();
 
 private:
-    void displayGameOver(sf::RenderWindow& window);
 
-    void handleInputs(sf::RenderWindow& window);
+    void initializeView();
 
-    void updateObjects(sf::RenderWindow& window, sf::View& view);
+    void startMusic();
 
-    void drawObjects(sf::RenderWindow& window);
+    void displayGameOver();
+
+    void handleInputs();
+
+    void updateObjects();
+
+    void drawObjects();
 
     void checkForEnemyCollision();
 
@@ -32,14 +37,15 @@ private:
     bool gameOver = false;
 
     sf::RenderWindow window;
+    sf::View view;
+    
     World world;
     Player player;
-
     std::vector<std::unique_ptr<Enemy>> enemies;
+
 
     sf::Music music;
     const std::string music_path = "Sounds/main_theme.wav";
-
 };
 
 #endif
