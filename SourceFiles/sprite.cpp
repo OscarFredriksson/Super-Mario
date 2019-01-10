@@ -1,11 +1,6 @@
 #include "sprite.h"
 #include <iostream>
 
-int Sprite::getTextureSize() const
-{
-    return textureSize;
-}
-
 void Sprite::flip()
 {
     if(getScale().x > 0)
@@ -31,7 +26,12 @@ void Sprite::setTexture(sf::Texture _texture)
     sf::Sprite::setTexture(texture);
 };
 
-float Sprite::convertCoords(const float c) const
+int Sprite::getTextureSize()
+{
+    return textureSize;
+}
+
+float Sprite::convertCoords(const float c)
 {
     return c*textureSize;
 }

@@ -22,7 +22,7 @@ private:
 
     bool goingRight = true;
     
-    const double speed = .1;
+    const double speed;
 
     const int width, height;
 

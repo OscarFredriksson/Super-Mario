@@ -9,13 +9,13 @@ class Sprite: public sf::Sprite
 public:
     Sprite() = default;
 
-    int getTextureSize() const;
-
     void flip();
 
     void setPosition(float x, float y);
 
     void setTexture(sf::Texture _texture);
+
+    static int getTextureSize();
 
 protected:
     sf::Texture texture;    //Behöver nås av grundklassen sf::Sprite
@@ -23,7 +23,7 @@ protected:
 private:
     static constexpr int textureSize = 16;
 
-    float convertCoords(const float c) const;
+    static float convertCoords(const float c);
 };
 
 #endif

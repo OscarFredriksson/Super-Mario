@@ -4,7 +4,7 @@
 #include <string>
 #include "sprite.h"
 
-class Block: public Sprite
+class Block
 {
 public:
     enum Type
@@ -26,13 +26,11 @@ public:
         Pipe_Right
     };
     
-    Block(Type type, const int x, const int y); //, const int xPosInFile, const int yPosInFile);
+    Block(Type type, const int x, const int y);
 
-    sf::Sprite getSprite() const;
+    void draw(sf::RenderWindow& window);
 
 private:
-    static constexpr float scale = 1;
-
     Sprite block;
 
     const std::string filename = "Textures/Blocks.png";

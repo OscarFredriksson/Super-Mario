@@ -14,34 +14,52 @@ void World::loadMap(std::string filename)
     }
     for(int i = 0; !file.eof(); i++)
     {   
-        std::string str;
-        file >> str;
+        std::string read_row;
+        file >> read_row;
 
-        std::vector<std::unique_ptr<Block>> row;
+        std::vector<std::unique_ptr<Block>> map_row;
 
-        for(int j = 0; j < str.length(); j++)
+        for(int j = 0; j < read_row.length(); j++)
         {
-            if(str[j] == '-')   row.push_back(nullptr);
-            else {
-                Block::Type type;
-                if(str[j] == '1')   type = Block::Brick;
-                if(str[j] == '2')   type = Block::Question;
-                if(str[j] == '3')   type = Block::Empty;
-                if(str[j] == '4')   type = Block::Grass_Top;
-                if(str[j] == '5')   type = Block::Grass_Left_Corner;
-                if(str[j] == '6')   type = Block::Grass_Left;
-                if(str[j] == '7')   type = Block::Dirt;
-                if(str[j] == '8')   type = Block::Grass_Right;
-                if(str[j] == '9')   type = Block::Grass_Right_Corner;
-                if(str[j] == 'A')   type = Block::Pipe_Top_Left;
-                if(str[j] == 'B')   type = Block::Pipe_Top_Right;
-                if(str[j] == 'C')   type = Block::Pipe_Left;
-                if(str[j] == 'D')   type = Block::Pipe_Right;
-
-               row.emplace_back(std::make_unique<Block>(type, j, i)); 
+            Block::Type type;
+            
+            switch(read_row[j])
+            {
+                case '-':   map_row.push_back(nullptr);
+                            continue;
+                case '1':   type = Block::Brick;
+                            break;
+                case '2':   type = Block::Question;
+                            break;
+                case '3':   type = Block::Empty;
+                            break;
+                case '4':   type = Block::Grass_Top;
+                            break;
+                case '5':   type = Block::Grass_Left_Corner;
+                            break;
+                case '6':   type = Block::Grass_Left;
+                            break;
+                case '7':   type = Block::Dirt;
+                            break;
+                case '8':   type = Block::Grass_Right;
+                            break;
+                case '9':   type = Block::Grass_Right_Corner;
+                            break;
+                case 'A':   type = Block::Pipe_Top_Left;
+                            break;
+                case 'B':   type = Block::Pipe_Top_Right;
+                            break;
+                case 'C':   type = Block::Pipe_Left;
+                            break;
+                case 'D':   type = Block::Pipe_Right;
+                            break;
+                default:    break;
             }
+
+            map_row.emplace_back(std::make_unique<Block>(type, j, i)); 
+            
         }
-        map.push_back(std::move(row));
+        map.push_back(std::move(map_row));
     }
 
     file.close();
@@ -53,7 +71,7 @@ void World::draw(sf::RenderWindow& window)
     {
         std::for_each(row.begin(), row.end(), [&window](const std::unique_ptr<Block>& block)
         {
-            if(block)    window.draw(block->getSprite());
+            if(block)    block->draw(window); //window.draw(block->getSprite());
         });
     });
 }
