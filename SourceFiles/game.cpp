@@ -1,8 +1,8 @@
 #include "game.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include <iostream>
 #include <SFML/Audio.hpp>
+#include <iostream>
 #include <cmath>
 #include "audio_controller.h"
 
@@ -13,7 +13,6 @@ Game::Game(const int width, const int height, const std::string title):
     window.setFramerateLimit(60);
 
     enemies.emplace_back(std::make_unique<Enemy>(40.f, 2.f, world));
-    
     enemies.emplace_back(std::make_unique<Enemy>(20.f, 2.f, world));
 
     world.loadMap("Levels/Level-1.txt");
@@ -53,7 +52,6 @@ void Game::run()
 
         drawObjects();
     }
-
 }
 
 void Game::displayGameOver()
@@ -117,33 +115,24 @@ void Game::pause()
     while(window.isOpen())
     {
         sf::Event event;
-        pollWindowEvents(event);
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
 
-        if(event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::P)
-        {   
-            music.play(); 
-            return;
+            if(event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::P)
+            {   
+                music.play(); 
+                return;
+            }
         }
-    }
-}
-
-void Game::pollWindowEvents(sf::Event& event)
-{
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-            window.close();
     }
 }
 
 void Game::handleInputs()
 {
-    //-------Handle window events-------
-    sf::Event event;
-    pollWindowEvents(event);
-
-    //--------Handle isKeypressed------
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    player.jump();
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    
+        player.jump();
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         player.endWalk();
@@ -152,33 +141,47 @@ void Game::handleInputs()
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  
         player.move(Player::Left);
 
-    //----------Handle keyrelease---------
-    if( event.type == sf::Event::KeyReleased)
+    sf::Event event;
+    while (window.pollEvent(event))
     {
-        switch(event.key.code)
-        {
-            case sf::Keyboard::Up:  
-                player.endJump();
+        switch(event.type)  
+        {  
+            case sf::Event::Closed:
+                window.close();
                 break;
-            case sf::Keyboard::Left:
-            case sf::Keyboard::Right:
-                player.endWalk();
-                break;
-            case sf::Keyboard::P:
-                pause();
-                break;
-            case sf::Keyboard::M:
-                Audio_Controller::toggleMute();
-                break;
-            case sf::Keyboard::B:
-                Audio_Controller::decreaseVolume();
-                break;
-            case sf::Keyboard::N:
-                Audio_Controller::increaseVolume();
-                break;
+            case sf::Event::KeyReleased:
+                handleButtonEvents(event);
             default:
                 break;
         }
+    }
+}
+
+void Game::handleButtonEvents(sf::Event& event)
+{
+    switch(event.key.code)
+    {
+        case sf::Keyboard::Up:  
+            player.endJump();
+            break;
+        case sf::Keyboard::Left:
+        case sf::Keyboard::Right:
+            player.endWalk();
+            break;
+        case sf::Keyboard::P:
+            pause();
+            break;
+        case sf::Keyboard::M:
+            Audio_Controller::toggleMute();
+            break;
+        case sf::Keyboard::B:
+            Audio_Controller::decreaseVolume();
+            break;
+        case sf::Keyboard::N:
+            Audio_Controller::increaseVolume();
+            break;
+        default:
+            break;
     }
 }
 
@@ -222,21 +225,31 @@ void Game::drawObjects()
 
 void Game::checkForEnemyCollision()
 {
+
     std::for_each(enemies.begin(), enemies.end(), [this](std::unique_ptr<Enemy>& e)
     {
         if(player.getSprite().getGlobalBounds().intersects(e->getSprite().getGlobalBounds()))
         {
-
-            float slope = fabsf((e->getPositionY()-player.getPositionY())/(e->getPositionX()-player.getPositionX()));
-
-            if((slope >= 1) && player.bottomBoundary() < e->bottomBoundary() && player.getVerticalVelocity() > 0)
+            if(playerStompsEnemy(e))
             {
-                enemies.erase(std::remove(enemies.begin(), enemies.end(), e));  //Leta reda på elementet och ta bort det
+                e->kill();
                 player.stomp();
             }
-            else
-                gameOver = true;
-            
-        } 
+            else    gameOver = true;
+        }
     });
+    
+    //Rensa upp efter döda goombas
+    enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](const std::unique_ptr<Enemy>& e)
+    {
+        if(!e->isAlive())   return true;
+        else                return false;
+    }), enemies.end());
+}
+
+bool Game::playerStompsEnemy(const std::unique_ptr<Enemy>& e)
+{
+    float slope = fabsf((e->getPositionY()-player.getPositionY())/(e->getPositionX()-player.getPositionX()));
+    
+    return (slope >= 1) && player.bottomBoundary() < e->bottomBoundary() && player.getVerticalVelocity() > 0;
 }

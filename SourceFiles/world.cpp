@@ -17,7 +17,7 @@ void World::loadMap(std::string filename)
         std::string str;
         file >> str;
 
-        std::vector<Block*> row;
+        std::vector<std::unique_ptr<Block>> row;
 
         for(int j = 0; j < str.length(); j++)
         {
@@ -38,10 +38,10 @@ void World::loadMap(std::string filename)
                 if(str[j] == 'C')   type = Block::Pipe_Left;
                 if(str[j] == 'D')   type = Block::Pipe_Right;
 
-               row.push_back(new Block(type, j, i)); 
+               row.emplace_back(std::make_unique<Block>(type, j, i)); 
             }
         }
-        map.push_back(row);
+        map.push_back(std::move(row));
     }
 
     file.close();
@@ -49,10 +49,13 @@ void World::loadMap(std::string filename)
 
 void World::draw(sf::RenderWindow& window)
 {
-    for(int i = 0; i < map.size(); i++)
-        for(int j = 0; j < map[i].size(); j++)
-            if(map[i][j] != nullptr)
-                window.draw(map[i][j]->getSprite());
+    std::for_each(map.begin(), map.end(), [&window](const std::vector<std::unique_ptr<Block>>& row)
+    {
+        std::for_each(row.begin(), row.end(), [&window](const std::unique_ptr<Block>& block)
+        {
+            if(block)    window.draw(block->getSprite());
+        });
+    });
 }
 
 int World::leftBoundary() const

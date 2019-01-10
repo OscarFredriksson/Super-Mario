@@ -13,7 +13,7 @@ public:
 
     void draw(sf::RenderWindow& window) override;
 
-    sf::Sprite getSprite() const
+    sf::Sprite getSprite() const override
     {
         return sprite;
     }

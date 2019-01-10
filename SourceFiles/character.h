@@ -12,9 +12,6 @@ class Character
 public:
     Character(World& world, const int width, const int height);
 
-    virtual ~Character()
-    {};
-
     void setJumpSpeed(const float value);
 
     void setMoveSpeed(const float value);
@@ -36,6 +33,8 @@ public:
     float getPositionY() const;
 
     void setPosition(const float x, const float y);
+
+    virtual sf::Sprite getSprite() const  = 0;
 
     enum Direction
     {
@@ -80,6 +79,11 @@ public:
     float bottomBoundary() const
     {
         return positionY + height;
+    }
+
+    void kill()
+    {
+        _isAlive = false;
     }
 
 private:

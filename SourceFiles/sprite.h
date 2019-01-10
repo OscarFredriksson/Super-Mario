@@ -21,7 +21,7 @@ protected:
     sf::Texture texture;    //Behöver nås av grundklassen sf::Sprite
 
 private:
-    const int textureSize = 16;
+    static constexpr int textureSize = 16;
 
     float convertCoords(const float c) const;
 };

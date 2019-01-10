@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "block.h"
+#include <memory>
 
 class World
 {
@@ -28,7 +29,7 @@ public:
     float getGravity() const;  
 
 private:
-    std::vector<std::vector<Block*>> map;
+    std::vector<std::vector<std::unique_ptr<Block>>> map;
 
     const float gravity = 0.0075f;
 

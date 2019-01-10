@@ -8,7 +8,6 @@
 #include "enemy.h"
 
 
-
 class Game
 {
 public:
@@ -30,12 +29,15 @@ private:
 
     void handleInputs();
 
+    void handleButtonEvents(sf::Event& event);
+
     void updateObjects();
 
     void drawObjects();
 
     void checkForEnemyCollision();
 
+    bool playerStompsEnemy(const std::unique_ptr<Enemy>& e);
 
     bool gameOver = false;
 
