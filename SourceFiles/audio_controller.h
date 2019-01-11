@@ -9,12 +9,14 @@ public:
 
     static void toggleMute();
 
+    static bool muted();
+
     static void increaseVolume(const float amount = 10.f);
 
     static void decreaseVolume(const float amount = 10.f);
 
 private:
-    inline static bool muted = false;
+    inline static bool _muted = false;
 };
 
 #endif
