@@ -20,9 +20,8 @@ void Sprite::setPosition(float x, float y)
     sf::Sprite::setPosition(convertCoords(x), convertCoords(y));
 }
 
-void Sprite::setTexture(sf::Texture _texture)
+void Sprite::setTexture(sf::Texture& texture)
 {
-    texture = _texture;
     sf::Sprite::setTexture(texture);
 };
 

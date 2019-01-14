@@ -13,16 +13,11 @@ public:
 
     void setPosition(float x, float y);
 
-    void setTexture(sf::Texture _texture);
+    void setTexture(sf::Texture& texture);
 
     static int getTextureSize();
 
-protected:
-    sf::Texture texture;    //Behöver nås av grundklassen sf::Sprite
-
 private:
-    sf::Sprite sprite;
-
     static constexpr int textureSize = 16;
 
     static float convertCoords(const float c);

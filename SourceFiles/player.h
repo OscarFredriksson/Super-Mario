@@ -35,7 +35,7 @@ private:
 
     
     //-----Variabler och konstanter------------
-
+    const std::string texturePath = "Textures/Mario.png";
     AnimatedSprite sprite;
 
     std::string jumpSound_path = "Sounds/jump.wav";

@@ -31,9 +31,9 @@ public:
     void draw(sf::RenderWindow& window);
 
 private:
-    Sprite block;
+    const std::string texturePath = "Textures/Blocks.png";
 
-    const std::string filename = "Textures/Blocks.png";
+    Sprite block;
 };
 
 #endif

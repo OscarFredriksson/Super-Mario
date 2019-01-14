@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <SFML/Graphics.hpp>
+#include "resource_manager.h"
 
 Player::Player(World& world):
     Character(world, width, height),
@@ -13,11 +14,11 @@ Player::Player(World& world):
     setMoveSpeed(moveSpeed);
     setJumpSpeed(jumpSpeed);
 
-    sf::Texture texture;
-    const std::string texture_path = "Textures/Mario.png";
-    texture.loadFromFile(texture_path);
+    const std::string key = "player";
 
-    sprite.setTexture(texture);
+    Resource_Manager::loadTexture(texturePath, key);
+
+    sprite.setTexture(Resource_Manager::getTexture(key));
 }
 
 void Player::jump()
