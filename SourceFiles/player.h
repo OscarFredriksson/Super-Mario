@@ -3,6 +3,7 @@
 
 #include "character.h"
 #include "animated_sprite.h"
+#include "resource_manager.h"
 
 
 class Player: public Character
@@ -35,7 +36,9 @@ private:
 
     
     //-----Variabler och konstanter------------
-    const std::string texturePath = "Textures/Mario.png";
+    const std::string texture_path = "Textures/Mario.png";
+    Resource_Holder<sf::Texture, std::string> textures;
+
     AnimatedSprite sprite;
 
     std::string jumpSound_path = "Sounds/jump.wav";

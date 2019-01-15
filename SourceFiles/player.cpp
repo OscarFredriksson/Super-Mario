@@ -2,7 +2,6 @@
 #include <iostream>
 #include <cmath>
 #include <SFML/Graphics.hpp>
-#include "resource_manager.h"
 
 Player::Player(World& world):
     Character(world, width, height),
@@ -14,16 +13,16 @@ Player::Player(World& world):
     setMoveSpeed(moveSpeed);
     setJumpSpeed(jumpSpeed);
 
-    const std::string key = "player";
+    const std::string id = "player";
+    textures.load(id, texture_path);
 
-    Resource_Manager::loadTexture(texturePath, key);
-
-    sprite.setTexture(Resource_Manager::getTexture(key));
+    sprite.setTexture(textures.get(id));
 }
 
 void Player::jump()
 {
     if(!jumpKeyReleased)    return;
+    
     jumpKeyReleased = false;
 
     if(onGround())

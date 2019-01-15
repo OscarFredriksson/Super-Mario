@@ -3,6 +3,7 @@
 
 #include <string>
 #include "sprite.h"
+#include "resource_manager.h"
 
 class Block
 {
@@ -31,9 +32,11 @@ public:
     void draw(sf::RenderWindow& window);
 
 private:
-    const std::string texturePath = "Textures/Blocks.png";
+    const std::string texture_path = "Textures/Blocks.png";
 
-    Sprite block;
+    Resource_Holder<sf::Texture, Type> textures;
+
+    Sprite sprite;
 };
 
 #endif

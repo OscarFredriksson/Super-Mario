@@ -1,7 +1,6 @@
 #include "enemy.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "resource_manager.h"
 
 
 Enemy::Enemy(const int x, const int y, World& world):
@@ -13,14 +12,10 @@ Enemy::Enemy(const int x, const int y, World& world):
 
     Character::setPosition(x, y);
 
-    //sf::Texture texture;
-    const std::string texture_path = "Textures/Goomba.png";
-    /*if(!texture.loadFromFile(texture_path))
-        std::cerr << "Failed to load \"" << texture_path << "\"\n";*/
-    
-    Resource_Manager::loadTexture(texture_path, "goomba");
-    
-    sprite.setTexture(Resource_Manager::getTexture("goomba"));
+    const std::string id = "goomba";
+    textures.load(id, texture_path);
+
+    sprite.setTexture(textures.get(id));
 }
 
 void Enemy::updatePosition()

@@ -3,6 +3,7 @@
 
 #include "character.h"
 #include "animated_sprite.h"
+#include "resource_manager.h"
 
 class Enemy: public Character
 {
@@ -25,6 +26,9 @@ private:
 
     const float moveSpeed = .04f;
 
+    const std::string texture_path = "Textures/Goomba.png";
+    Resource_Holder<sf::Texture, std::string> textures;
+    
     AnimatedSprite sprite;
 
     void flip();
