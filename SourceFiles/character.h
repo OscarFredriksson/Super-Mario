@@ -46,45 +46,27 @@ public:
 
     virtual void move(Direction dir);
 
-    void jump();
+    virtual void jump();
 
     virtual void updatePosition();
 
     Direction getDirection() const;
     
-    void setDirection(Direction dir);
+    virtual void setDirection(Direction dir);
 
     bool onGround() const;
 
-    bool isAlive() const
-    {
-        return _isAlive;
-    }
+    bool isAlive() const;
 
-    float leftBoundary() const
-    {
-        return positionX;
-    }
+    float leftBoundary() const;
 
-    float rightBoundary() const
-    {
-        return positionX + width;
-    }
+    float rightBoundary() const;
 
-    float topBoundary() const
-    {
-        return positionY;
-    }
+    float topBoundary() const;
 
-    float bottomBoundary() const
-    {
-        return positionY + height;
-    }
+    float bottomBoundary() const;
 
-    void kill()
-    {
-        _isAlive = false;
-    }
+    void kill();
 
 private:
 

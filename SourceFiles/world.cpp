@@ -25,8 +25,9 @@ void World::loadMap(std::string filename)
             
             switch(read_row[j])
             {
+                case 'F':   finishLine = j;
                 case '-':   map_row.push_back(nullptr);
-                            continue;
+                            continue;       
                 case '1':   type = Block::Brick;
                             break;
                 case '2':   type = Block::Question;
@@ -99,6 +100,11 @@ int World::bottomBoundary() const
 bool World::isSolidBlock(const int x, const int y) const
 {
     return map[x][y] != nullptr;
+}
+
+bool World::reachedFinish(const int x) const
+{
+    return x > finishLine;
 }
 
 float World::getGravity() const

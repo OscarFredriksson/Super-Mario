@@ -26,12 +26,16 @@ public:
 
     bool isSolidBlock(const int x, const int y) const;  
 
+    bool reachedFinish(const int x) const;
+
     float getGravity() const;  
 
 private:
     std::vector<std::vector<std::unique_ptr<Block>>> map;
 
     const float gravity = 0.0075f;
+
+    int finishLine;
 
 };
 

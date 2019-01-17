@@ -8,13 +8,15 @@
 
 Game::Game(const int width, const int height, const std::string title):
     window(sf::VideoMode(width, height), title),
-    world(new World()),
-    player(new Player(world))
+    world(std::make_unique<World>()),
+    player(std::make_unique<Player>(world))
 {
     window.setFramerateLimit(60);
 
     enemies.emplace_back(std::make_unique<Enemy>(40.f, 2.f, world));
     enemies.emplace_back(std::make_unique<Enemy>(20.f, 2.f, world));
+    enemies.emplace_back(std::make_unique<Enemy>(55.f, 2.f, world));
+    enemies.emplace_back(std::make_unique<Enemy>(100.f, 2.f, world));
 
     world->loadMap("Levels/Level-1.txt");
 }
@@ -28,7 +30,7 @@ void Game::initializeView()
 
 void Game::startMusic()
 {
-    music.openFromFile(music_path); 
+    music.openFromFile(music_path);
     music.setLoop(true);
     music.setVolume(25);
     music.play();
@@ -51,17 +53,29 @@ void Game::run()
             return;
         }
 
+        if(gameWon)
+        {
+            displayGameWon();
+            return;
+        }
+
         drawObjects();
     }
 }
 
 void Game::displayGameOver()
 {
-    sf::Font font;
-    if(!font.loadFromFile(font_path))
-        std::cerr << "Failed to load \"" << font_path << "\"\n";
+    try
+    {
+        fonts.load(font1_id, font1_path);
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << "Exception: " << e.what() << "\n";
+    }
     
-    sf::Text text("GAME OVER", font);
+    sf::Text text("GAME OVER", fonts.get(font1_id));
+
     text.setCharacterSize(50);
     text.setFillColor(sf::Color::White);
     text.setOrigin(text.getGlobalBounds().width/2, text.getGlobalBounds().height/2);
@@ -89,6 +103,48 @@ void Game::displayGameOver()
     sf::sleep(sf::seconds(2));
 }
 
+void Game::displayGameWon()
+{
+    try
+    {
+        fonts.load(font1_id, font1_path);
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << "Exception: " << e.what() << "\n";
+    }
+
+    sf::Text text("VICTORY", fonts.get(font1_id));
+
+    text.setCharacterSize(50);
+    text.setFillColor(sf::Color::Black);
+
+    text.setPosition(view.getSize().x/1.25, view.getCenter().y);
+
+    auto toggleTextColor = [&text]()
+    {
+        if(text.getFillColor() == sf::Color::Black)     text.setFillColor(sf::Color::Yellow);
+        else                                            text.setFillColor(sf::Color::Black);
+    };
+
+
+
+    for(int i = 0; i < 10; i++)
+    {
+        toggleTextColor();
+
+        //Byter vyn, sätter texten, och byter tillbaka för att texten inte ska bli suddig
+        window.setView(window.getDefaultView());
+        window.draw(text);
+        window.setView(view);
+
+        window.display();
+
+        sf::sleep(sf::milliseconds(250));
+    }
+
+}
+
 void Game::pause()
 {
     music.pause();
@@ -96,11 +152,16 @@ void Game::pause()
     Sound pauseSound(pauseSound_path);
     pauseSound.play();
 
+    try
+    {
+        fonts.load(font1_id, font1_path);
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << "Exception: " << e.what() << "\n";
+    }
 
-    sf::Font font;
-    font.loadFromFile(font_path);
-
-    sf::Text text("PAUSED", font);
+    sf::Text text("PAUSED", fonts.get(font1_id));
     text.setCharacterSize(50);
     text.setFillColor(sf::Color::Black);
 
@@ -190,7 +251,17 @@ void Game::updateObjects()
 {
     player->updatePosition();
 
-    if(!player->isAlive())   gameOver = true;
+    if(world->reachedFinish(player->getPositionX())) 
+    {
+        gameWon = true;
+        return;
+    }
+
+    if(!player->isAlive())   
+    {
+        gameOver = true;
+        return;
+    }
         
     std::for_each(enemies.begin(), enemies.end(), [](std::unique_ptr<Enemy>& e)
     {
@@ -198,6 +269,7 @@ void Game::updateObjects()
     });
 
     checkForEnemyCollision();
+    cleanupDeadEnemies();
 
     const int viewHeight = 175;
     
@@ -237,9 +309,11 @@ void Game::checkForEnemyCollision()
             }
             else    gameOver = true;
         }
-    });
-    
-    //Rensa upp efter döda goombas
+    }); 
+}
+
+void Game::cleanupDeadEnemies()
+{
     enemies.erase(std::remove_if(enemies.begin(), enemies.end(), [](const std::unique_ptr<Enemy>& e)
     {
         if(!e->isAlive())   return true;

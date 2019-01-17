@@ -24,6 +24,8 @@ private:
 
     void displayGameOver();
 
+    void displayGameWon();
+
     void pause();
 
     void pollWindowEvents(sf::Event& event);
@@ -38,9 +40,12 @@ private:
 
     void checkForEnemyCollision();
 
+    void cleanupDeadEnemies();
+
     bool playerStompsEnemy(const std::unique_ptr<Enemy>& e);
 
     bool gameOver = false;
+    bool gameWon = false;
 
     sf::RenderWindow window;
     sf::View view;
@@ -49,13 +54,15 @@ private:
     std::unique_ptr<Player> player;
     std::vector<std::unique_ptr<Enemy>> enemies;
 
-    const std::string font_path = "Fonts/SuperMario.ttf";
+    Resource_Holder<sf::Font, std::string> fonts;
+
+    const std::string font1_path = "Fonts/SuperMario.ttf";
+    const std::string font1_id = "font1";
 
     sf::Music music;
     const std::string music_path = "Sounds/main_theme.wav";
 
     const std::string pauseSound_path = "Sounds/pause.wav";
-
 };
 
 #endif

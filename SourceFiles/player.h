@@ -11,7 +11,7 @@ class Player: public Character
 public:
     Player(const std::shared_ptr<World>& world);
 
-    void jump();
+    void jump() override;
 
     void endJump();
 
@@ -25,14 +25,10 @@ public:
 
     sf::Sprite getSprite() const override;
 
-    void stomp()
-    {
-        setVerticalVelocity(jumpSpeed/2);
-        stompSound.play();
-    }
+    void stomp();
      
 private:
-    void setDirection(Direction dir);
+    void setDirection(Direction dir) override;
 
     
     //-----Variabler och konstanter------------

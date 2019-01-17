@@ -66,7 +66,7 @@ void Player::updatePosition()
     else                                        sprite.update(0, 0);
     
     Character::updatePosition();
-
+    
     sprite.setPosition(getPositionX(), getPositionY());
 }
 
@@ -78,6 +78,12 @@ void Player::draw(sf::RenderWindow& window)
 sf::Sprite Player::getSprite() const
 {
     return sprite;
+}
+
+void Player::stomp()
+{
+    setVerticalVelocity(jumpSpeed/2);
+    stompSound.play();
 }
 
 void Player::setDirection(Direction new_dir)

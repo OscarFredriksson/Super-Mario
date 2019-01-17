@@ -14,10 +14,7 @@ public:
 
     void draw(sf::RenderWindow& window) override;
 
-    sf::Sprite getSprite() const override
-    {
-        return sprite;
-    }
+    sf::Sprite getSprite() const override;
 
 private:
     static const int height = 1;

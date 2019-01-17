@@ -82,6 +82,7 @@ void Character::updatePosition()
         velocityY += world->getGravity();
         positionY += velocityY;
         checkForGround();
+        
         if(!isAlive())  return;
 
         checkForRoof();
@@ -109,6 +110,35 @@ bool Character::onGround() const
     return _onGround;
 }
 
+bool Character::isAlive() const
+{
+    return _isAlive;
+}
+
+float Character::leftBoundary() const
+{
+    return positionX;
+}
+
+float Character::rightBoundary() const
+{
+    return positionX + width;
+}
+
+float Character::topBoundary() const
+{
+    return positionY;
+}
+
+float Character::bottomBoundary() const
+{
+    return positionY + height;
+}
+
+void Character::kill()
+{
+    _isAlive = false;
+}
 
 //---------Privata funktioner---------------
 

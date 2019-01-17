@@ -41,6 +41,11 @@ void Enemy::updatePosition()
     sprite.setPosition(getPositionX(), getPositionY());
 }
 
+sf::Sprite Enemy::getSprite() const
+{
+    return sprite;
+}
+
 void Enemy::flip()
 {
     if(getDirection() == Left)  setDirection(Right);
