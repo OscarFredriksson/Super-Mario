@@ -87,8 +87,7 @@ void Game::displayGameOver()
 
 
     sf::Music gameOver_music;
-    const std::string music_path = "Sounds/game_over.wav";
-    if(!gameOver_music.openFromFile(music_path))
+    if(!gameOver_music.openFromFile(gameOverMusic_path))
         std::cerr << "Failed to open \"" << music_path << "\"\n";
     
     music.pause();
@@ -105,6 +104,13 @@ void Game::displayGameOver()
 
 void Game::displayGameWon()
 {
+    sf::Music win_music;
+    if(!win_music.openFromFile(winMusic_path))
+        std::cerr << "Failed to open \"" << music_path << "\"\n";
+
+    music.stop();
+    win_music.play();
+
     try
     {
         fonts.load(font1_id, font1_path);
@@ -121,15 +127,14 @@ void Game::displayGameWon()
 
     text.setPosition(view.getSize().x/1.25, view.getCenter().y);
 
+    
     auto toggleTextColor = [&text]()
     {
         if(text.getFillColor() == sf::Color::Black)     text.setFillColor(sf::Color::Yellow);
         else                                            text.setFillColor(sf::Color::Black);
     };
 
-
-
-    for(int i = 0; i < 10; i++)
+    while(win_music.getStatus() == sf::Music::Playing)
     {
         toggleTextColor();
 

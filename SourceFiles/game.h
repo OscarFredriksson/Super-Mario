@@ -61,6 +61,9 @@ private:
 
     sf::Music music;
     const std::string music_path = "Sounds/main_theme.wav";
+    const std::string gameOverMusic_path = "Sounds/game_over.wav";
+    const std::string winMusic_path = "Sounds/win.wav";
+
 
     const std::string pauseSound_path = "Sounds/pause.wav";
 };
