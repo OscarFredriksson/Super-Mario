@@ -3,7 +3,7 @@
 
 #include <string>
 #include "sprite.h"
-#include "resource_manager.h"
+#include "resource_holder.h"
 
 class Block
 {

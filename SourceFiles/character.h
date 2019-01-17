@@ -10,7 +10,7 @@
 class Character
 {
 public:
-    Character(World& world, const int width, const int height);
+    Character(const std::shared_ptr<World>& world, const int width, const int height);
 
     void setJumpSpeed(const float value);
 
@@ -34,7 +34,9 @@ public:
 
     void setPosition(const float x, const float y);
 
-    virtual sf::Sprite getSprite() const  = 0;
+    virtual sf::Sprite getSprite() const = 0;
+
+    virtual void draw(sf::RenderWindow& window) = 0;
 
     enum Direction
     {
@@ -53,8 +55,6 @@ public:
     void setDirection(Direction dir);
 
     bool onGround() const;
-
-    virtual void draw(sf::RenderWindow& window) = 0;
 
     bool isAlive() const
     {
@@ -107,7 +107,7 @@ private:
 
     //-----Variabler och konstanter------------
     
-    World& world;
+    const std::shared_ptr<World> world;
 
     const int height;
     const int width;

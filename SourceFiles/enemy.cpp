@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-Enemy::Enemy(const int x, const int y, World& world):
+Enemy::Enemy(const int x, const int y, const std::shared_ptr<World>& world):
     Character(world, width, height),
     sprite(width, height, 0.1)
 {
@@ -13,7 +13,15 @@ Enemy::Enemy(const int x, const int y, World& world):
     Character::setPosition(x, y);
 
     const std::string id = "goomba";
-    textures.load(id, texture_path);
+    
+    try
+    {
+        textures.load(id, texture_path);
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << "Exception: " << e.what() << "\n";
+    }
 
     sprite.setTexture(textures.get(id));
 }

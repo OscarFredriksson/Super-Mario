@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-Character::Character(World& world, const int width, const int height):
+Character::Character(const std::shared_ptr<World>& world, const int width, const int height):
     world(world),
     width(width),
     height(height)
@@ -79,7 +79,7 @@ void Character::jump()
 void Character::updatePosition()
 {   
 
-        velocityY += world.getGravity();
+        velocityY += world->getGravity();
         positionY += velocityY;
         checkForGround();
         if(!isAlive())  return;
@@ -138,14 +138,14 @@ int Character::bottom() const
 
 void Character::checkForGround()
 {
-    if(positionY > world.bottomBoundary() - height)
+    if(positionY > world->bottomBoundary() - height)
     {
         _isAlive = false;
         return;
     }
 
-    if( world.isSolidBlock(bottom(), left()) ||    //Kolla vänster hörn
-        world.isSolidBlock(bottom(), right()))      //Kolla höger hörn
+    if( world->isSolidBlock(bottom(), left()) ||    //Kolla vänster hörn
+        world->isSolidBlock(bottom(), right()))      //Kolla höger hörn
     {
         positionY = top();
         velocityY = 0;
@@ -156,8 +156,8 @@ void Character::checkForGround()
 
 void Character::checkForRoof()
 {
-    if( world.isSolidBlock( top(), left() ) ||   //Kolla vänster hörn
-        world.isSolidBlock( top(), right() ) )   //Kolla höger hörn
+    if( world->isSolidBlock( top(), left() ) ||   //Kolla vänster hörn
+        world->isSolidBlock( top(), right() ) )   //Kolla höger hörn
     {
         positionY = top() + 1;
         velocityY = -velocityY;
@@ -168,26 +168,26 @@ void Character::checkForWall()
 {
 
     //Kolla vänster världgräns
-    if(positionX < world.leftBoundary())
+    if(positionX < world->leftBoundary())
     {
-        positionX = world.leftBoundary();
+        positionX = world->leftBoundary();
         velocityX = 0;
     }
 
     //Kolla höger världsgräns
-    if(positionX > world.rightBoundary() - width)
+    if(positionX > world->rightBoundary() - width)
     {
-        positionX = world.rightBoundary() - width;
+        positionX = world->rightBoundary() - width;
         velocityX = 0;
     }
 
     auto isWall = [&](const float x)
     {
         for(int i = 0; i < height; i++)
-            if(world.isSolidBlock(top() + i, x))
+            if(world->isSolidBlock(top() + i, x))
                 return true;
         
-        if(world.isSolidBlock(bottom(), x)) return true;
+        if(world->isSolidBlock(bottom(), x)) return true;
         return false;
     };
 

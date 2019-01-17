@@ -3,13 +3,13 @@
 
 #include "character.h"
 #include "animated_sprite.h"
-#include "resource_manager.h"
+#include "resource_holder.h"
 
 
 class Player: public Character
 {
 public:
-    Player(World& world);
+    Player(const std::shared_ptr<World>& world);
 
     void jump();
 

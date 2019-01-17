@@ -4,7 +4,14 @@
 
 Block::Block(Type type, const int x, const int y)
 { 
-    textures.load(type, texture_path, sf::IntRect(Sprite::getTextureSize() * type, 0, Sprite::getTextureSize(), Sprite::getTextureSize()));
+    try
+    {
+        textures.load(type, texture_path, sf::IntRect(Sprite::getTextureSize() * type, 0, Sprite::getTextureSize(), Sprite::getTextureSize()));
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << "Exception: " << e.what() << "\n";
+    }
 
     sprite.setTexture(textures.get(type));
 

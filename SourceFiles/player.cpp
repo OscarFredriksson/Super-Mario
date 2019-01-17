@@ -3,7 +3,7 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
-Player::Player(World& world):
+Player::Player(const std::shared_ptr<World>& world):
     Character(world, width, height),
     sprite(width, height),
     jumpSound(jumpSound_path),
@@ -14,7 +14,15 @@ Player::Player(World& world):
     setJumpSpeed(jumpSpeed);
 
     const std::string id = "player";
-    textures.load(id, texture_path);
+
+    try 
+    {
+        textures.load(id, texture_path);
+    }
+    catch(std::runtime_error& e)
+    {
+        std::cout << "Exception: " << e.what() << "\n";
+    }
 
     sprite.setTexture(textures.get(id));
 }
@@ -34,8 +42,9 @@ void Player::jump()
 
 void Player::endJump()
 {    
-    if(getVerticalVelocity() < jumpSpeed/2) setVerticalVelocity(jumpSpeed/2);
     jumpKeyReleased = true;
+
+    if(getVerticalVelocity() < jumpSpeed/2) setVerticalVelocity(jumpSpeed/2);
 }
 
 void Player::move(Direction dir)
@@ -74,6 +83,7 @@ sf::Sprite Player::getSprite() const
 void Player::setDirection(Direction new_dir)
 {
     horisontalButtonHeld = true;
+    
     if(getDirection() != new_dir)
     {
         sprite.flip();

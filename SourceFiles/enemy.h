@@ -3,12 +3,12 @@
 
 #include "character.h"
 #include "animated_sprite.h"
-#include "resource_manager.h"
+#include "resource_holder.h"
 
 class Enemy: public Character
 {
 public:
-    Enemy(const int x, const int y, World& world);
+    Enemy(const int x, const int y, const std::shared_ptr<World>& world);
 
     void updatePosition() override;
 
@@ -18,7 +18,6 @@ public:
     {
         return sprite;
     }
-
 
 private:
     static const int height = 1;

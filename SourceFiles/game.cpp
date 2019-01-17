@@ -8,14 +8,15 @@
 
 Game::Game(const int width, const int height, const std::string title):
     window(sf::VideoMode(width, height), title),
-    player(world)
+    world(new World()),
+    player(new Player(world))
 {
     window.setFramerateLimit(60);
 
     enemies.emplace_back(std::make_unique<Enemy>(40.f, 2.f, world));
     enemies.emplace_back(std::make_unique<Enemy>(20.f, 2.f, world));
 
-    world.loadMap("Levels/Level-1.txt");
+    world->loadMap("Levels/Level-1.txt");
 }
 
 void Game::initializeView()
@@ -132,14 +133,14 @@ void Game::pause()
 void Game::handleInputs()
 {
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    
-        player.jump();
+        player->jump();
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        player.endWalk();
+        player->endWalk();
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) 
-        player.move(Player::Right);
+        player->move(Player::Right);
     else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))  
-        player.move(Player::Left);
+        player->move(Player::Left);
 
     sf::Event event;
     while (window.pollEvent(event))
@@ -162,11 +163,11 @@ void Game::handleButtonEvents(sf::Event& event)
     switch(event.key.code)
     {
         case sf::Keyboard::Up:  
-            player.endJump();
+            player->endJump();
             break;
         case sf::Keyboard::Left:
         case sf::Keyboard::Right:
-            player.endWalk();
+            player->endWalk();
             break;
         case sf::Keyboard::P:
             pause();
@@ -187,9 +188,9 @@ void Game::handleButtonEvents(sf::Event& event)
 
 void Game::updateObjects()
 {
-    player.updatePosition();
+    player->updatePosition();
 
-    if(!player.isAlive())   gameOver = true;
+    if(!player->isAlive())   gameOver = true;
         
     std::for_each(enemies.begin(), enemies.end(), [](std::unique_ptr<Enemy>& e)
     {
@@ -200,7 +201,7 @@ void Game::updateObjects()
 
     const int viewHeight = 175;
     
-    view.setCenter(sf::Vector2f(player.getSprite().getPosition().x, viewHeight));
+    view.setCenter(sf::Vector2f(player->getSprite().getPosition().x, viewHeight));
     
     if(view.getCenter().x < view.getSize().x/2)
         view.setCenter(sf::Vector2f(view.getSize().x/2, viewHeight));
@@ -212,8 +213,8 @@ void Game::drawObjects()
 {
     window.clear(sf::Color::Cyan);
 
-    world.draw(window);
-    player.draw(window);
+    world->draw(window);
+    player->draw(window);
 
     std::for_each(enemies.begin(), enemies.end(), [this](std::unique_ptr<Enemy>& e)
     {
@@ -225,15 +226,14 @@ void Game::drawObjects()
 
 void Game::checkForEnemyCollision()
 {
-
     std::for_each(enemies.begin(), enemies.end(), [this](std::unique_ptr<Enemy>& e)
     {
-        if(player.getSprite().getGlobalBounds().intersects(e->getSprite().getGlobalBounds()))
+        if(player->getSprite().getGlobalBounds().intersects(e->getSprite().getGlobalBounds()))
         {
             if(playerStompsEnemy(e))
             {
                 e->kill();
-                player.stomp();
+                player->stomp();
             }
             else    gameOver = true;
         }
@@ -249,7 +249,7 @@ void Game::checkForEnemyCollision()
 
 bool Game::playerStompsEnemy(const std::unique_ptr<Enemy>& e)
 {
-    float slope = fabsf((e->getPositionY()-player.getPositionY())/(e->getPositionX()-player.getPositionX()));
+    float slope = fabsf((e->getPositionY()-player->getPositionY())/(e->getPositionX()-player->getPositionX()));
     
-    return (slope >= 1) && player.bottomBoundary() < e->bottomBoundary() && player.getVerticalVelocity() > 0;
+    return (slope >= 1) && player->bottomBoundary() < e->bottomBoundary() && player->getVerticalVelocity() > 0;
 }

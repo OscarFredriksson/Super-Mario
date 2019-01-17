@@ -6,6 +6,7 @@
 #include <string>
 #include "player.h"
 #include "enemy.h"
+#include "resource_holder.h"
 
 
 class Game
@@ -44,8 +45,8 @@ private:
     sf::RenderWindow window;
     sf::View view;
     
-    World world;
-    Player player;
+    std::shared_ptr<World> world;
+    std::unique_ptr<Player> player;
     std::vector<std::unique_ptr<Enemy>> enemies;
 
     const std::string font_path = "Fonts/SuperMario.ttf";
