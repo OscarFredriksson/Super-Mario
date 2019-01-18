@@ -13,10 +13,12 @@ Game::Game(const int width, const int height, const std::string title):
 {
     window.setFramerateLimit(60);
 
-    enemies.emplace_back(std::make_unique<Enemy>(40.f, 2.f, world));
-    enemies.emplace_back(std::make_unique<Enemy>(20.f, 2.f, world));
-    enemies.emplace_back(std::make_unique<Enemy>(55.f, 2.f, world));
-    enemies.emplace_back(std::make_unique<Enemy>(100.f, 2.f, world));
+    enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(40.f, 2.f), world));
+    enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(20.f, 2.f), world));
+    enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(55.f, 2.f), world));
+    enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(100.f, 2.f), world));
+    enemies.emplace_back(std::make_unique<Enemy>(sf::Vector2f(175.f, 2.f), world));
+
 
     world->loadMap("Levels/Level-1.txt");
 }
@@ -256,7 +258,7 @@ void Game::updateObjects()
 {
     player->updatePosition();
 
-    if(world->reachedFinish(player->getPositionX())) 
+    if(world->reachedFinish(player->getPosition().x)) 
     {
         gameWon = true;
         return;
@@ -328,7 +330,7 @@ void Game::cleanupDeadEnemies()
 
 bool Game::playerStompsEnemy(const std::unique_ptr<Enemy>& e)
 {
-    float slope = fabsf((e->getPositionY()-player->getPositionY())/(e->getPositionX()-player->getPositionX()));
+    float slope = fabsf((e->getPosition().y-player->getPosition().y)/(e->getPosition().y-player->getPosition().y));
     
-    return (slope >= 1) && player->bottomBoundary() < e->bottomBoundary() && player->getVerticalVelocity() > 0;
+    return (slope >= 1) && player->bottomBoundary() < e->bottomBoundary() && player->getVelocity().y > 0;
 }

@@ -18,9 +18,9 @@ void AnimatedSprite::set(const int texture)
 void AnimatedSprite::update(const int startTexture, const int endTexture)
 {   
     if(currentTexture == endTexture || currentTexture == 0)
-        goingRight = !goingRight;
+        nextTextureRight = !nextTextureRight;
 
-    if(currentTexture <= endTexture && goingRight)
+    if(currentTexture <= endTexture && nextTextureRight)
         animate(endTexture);
     else                               
         animate(startTexture);  

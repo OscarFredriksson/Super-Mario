@@ -8,9 +8,8 @@
 class Block
 {
 public:
-    enum Type
+    enum Type   //Olika typer av block, ordningen motsvarar dess plats i texturfilen
     {
-        //Byt INTE plats på dessa, ordningen motsvarar dess plats i texturfilen
         Brick,
         Stone,
         Empty,
@@ -27,9 +26,9 @@ public:
         Pipe_Right
     };
     
-    Block(Type type, const int x, const int y);
+    Block(Type type, const int x, const int y); //Konstruera ett block med en given typ och på en given koordinat
 
-    void draw(sf::RenderWindow& window);
+    void draw(sf::RenderWindow& window);    //Rita ut ett block på givet fönster
 
 private:
     const std::string texture_path = "Textures/Blocks.png";

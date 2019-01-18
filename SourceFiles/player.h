@@ -49,6 +49,7 @@ private:
     const float jumpSpeed = -.25f;
     const float moveSpeed = .01f;
     const float maxSpeed = .15f;
+    const float stopSpeed = 0.005f;
     
     bool animateJump = false;
 

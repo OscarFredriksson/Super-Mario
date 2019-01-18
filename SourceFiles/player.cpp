@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 Player::Player(const std::shared_ptr<World>& world):
-    Character(world, width, height),
+    Character(width, height, world),
     sprite(width, height),
     jumpSound(jumpSound_path),
     stompSound(stompSound_path)
@@ -12,6 +12,7 @@ Player::Player(const std::shared_ptr<World>& world):
     setMaxSpeed(maxSpeed);
     setMoveSpeed(moveSpeed);
     setJumpSpeed(jumpSpeed);
+    setStopSpeed(stopSpeed);
 
     const std::string id = "player";
 
@@ -44,7 +45,7 @@ void Player::endJump()
 {    
     jumpKeyReleased = true;
 
-    if(getVerticalVelocity() < jumpSpeed/2) setVerticalVelocity(jumpSpeed/2);
+    if(getVelocity().y < jumpSpeed/2) setVerticalVelocity(jumpSpeed/2);
 }
 
 void Player::move(Direction dir)
@@ -67,7 +68,7 @@ void Player::updatePosition()
     
     Character::updatePosition();
     
-    sprite.setPosition(getPositionX(), getPositionY());
+    sprite.setPosition(getPosition().x, getPosition().y);
 }
 
 void Player::draw(sf::RenderWindow& window)

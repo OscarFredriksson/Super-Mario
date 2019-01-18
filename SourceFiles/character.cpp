@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-Character::Character(const std::shared_ptr<World>& world, const int width, const int height):
+Character::Character( const int width, const int height, const std::shared_ptr<World>& world):
     world(world),
     width(width),
     height(height)
@@ -30,45 +30,40 @@ void Character::setStopSpeed(const float value)
 
 void Character::setVerticalVelocity(const float value)
 {
-    velocityY = value;
+    velocity.y = value;
 }
 
 void Character::setHorisontalVelocity(const float value)
 {
-    velocityX = value;
+    velocity.x = value;
 }
 
-float Character::getVerticalVelocity() const
+void Character::setVelocity(const sf::Vector2f _velocity)
 {
-    return velocityY;
+    velocity = _velocity;
 }
 
-float Character::getHorisontalVelocity() const
+sf::Vector2f Character::getVelocity() const
 {
-    return velocityX;
+    return velocity;
 }
 
-float Character::getPositionX() const
+sf::Vector2f Character::getPosition() const
 {
-    return positionX;
+    return position;
 }
 
-float Character::getPositionY() const
+void Character::setPosition(const sf::Vector2f _position)
 {
-    return positionY;
-}
-
-void Character::setPosition(const float x, const float y)
-{
-    positionX = x;
-    positionY = y;
+    position = _position;
 }
 
 void Character::move(Direction dir)
 {
     setDirection(dir);
-    velocityX = velocityX + dir * moveSpeed;
-    if(fabsf(velocityX) > maxSpeed) velocityX = dir * maxSpeed;
+    velocity.x = velocity.x + dir * moveSpeed;
+    
+    if(fabsf(velocity.x) > maxSpeed) velocity.x = dir * maxSpeed;
 }
 
 void Character::jump()
@@ -79,18 +74,18 @@ void Character::jump()
 void Character::updatePosition()
 {   
 
-        velocityY += world->getGravity();
-        positionY += velocityY;
+        velocity.y += world->getGravity();
+        position.y += velocity.y;
         checkForGround();
         
         if(!isAlive())  return;
 
         checkForRoof();
 
-        if(fabsf(velocityX) < stopSpeed)    velocityX = 0;
-        else if(velocityX > 0)              velocityX -= stopSpeed;
-        else                                velocityX += stopSpeed;
-        positionX += velocityX; 
+        if(fabsf(velocity.x) < stopSpeed)    velocity.x = 0;
+        else if(velocity.x > 0)              velocity.x -= stopSpeed;
+        else                                velocity.x += stopSpeed;
+        position.x += velocity.x;
         checkForWall();
     
 }
@@ -117,22 +112,22 @@ bool Character::isAlive() const
 
 float Character::leftBoundary() const
 {
-    return positionX;
+    return position.x;  //positionX;
 }
 
 float Character::rightBoundary() const
 {
-    return positionX + width;
+    return position.x + width;  //positionX + width;
 }
 
 float Character::topBoundary() const
 {
-    return positionY;
+    return position.y;  //positionY;
 }
 
 float Character::bottomBoundary() const
 {
-    return positionY + height;
+    return position.y + height; //positionY + height;
 }
 
 void Character::kill()
@@ -151,24 +146,25 @@ int Character::bufferedRoundoff(float i) const
 
 int Character::left() const
 {
-    return positionX;
+    return position.x;  //positionX;
 }
 int Character::right() const
 {
-    return bufferedRoundoff(positionX + width);
+    return bufferedRoundoff(position.x + width);    //positionX + width);
 }
 int Character::top() const
 {
-    return positionY;
+    return position.y;   //positionY;
 }
 int Character::bottom() const
 {
-    return bufferedRoundoff(positionY + height);
+    return bufferedRoundoff(position.y + height);    //positionY + height);
 }
 
 void Character::checkForGround()
 {
-    if(positionY > world->bottomBoundary() - height)
+    //if(positionY > world->bottomBoundary() - height)
+    if(position.y > world->bottomBoundary() - height)
     {
         _isAlive = false;
         return;
@@ -177,8 +173,8 @@ void Character::checkForGround()
     if( world->isSolidBlock(bottom(), left()) ||    //Kolla vänster hörn
         world->isSolidBlock(bottom(), right()))      //Kolla höger hörn
     {
-        positionY = top();
-        velocityY = 0;
+        position.y = top();
+        velocity.y = 0;
         _onGround = true;
     }
     else    _onGround = false;
@@ -189,8 +185,8 @@ void Character::checkForRoof()
     if( world->isSolidBlock( top(), left() ) ||   //Kolla vänster hörn
         world->isSolidBlock( top(), right() ) )   //Kolla höger hörn
     {
-        positionY = top() + 1;
-        velocityY = -velocityY;
+        position.y = top() + 1;
+        velocity.y = -velocity.y;
     }
 }
 
@@ -198,17 +194,17 @@ void Character::checkForWall()
 {
 
     //Kolla vänster världgräns
-    if(positionX < world->leftBoundary())
+    if(position.x < world->leftBoundary())
     {
-        positionX = world->leftBoundary();
-        velocityX = 0;
+        position.x = world->leftBoundary();
+        velocity.x = 0;
     }
 
     //Kolla höger världsgräns
-    if(positionX > world->rightBoundary() - width)
+    if(position.x > world->rightBoundary() - width)
     {
-        positionX = world->rightBoundary() - width;
-        velocityX = 0;
+        position.x = world->rightBoundary() - width;
+        velocity.x = 0;
     }
 
     auto isWall = [&](const float x)
@@ -224,15 +220,15 @@ void Character::checkForWall()
     //Kolla vänster
     if(isWall(left()))
     {
-        positionX = left() + 1;
-        velocityX = 0;
+        position.x = left() + 1;
+        velocity.x = 0;
     }
 
     //Kollar höger
     if(isWall(right()))
     {
-        positionX = right() - 1;
-        velocityX = 0;
+        position.x = right() - 1;
+        velocity.x = 0;
     }
 }
 

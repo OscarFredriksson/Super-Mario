@@ -8,7 +8,7 @@
 class Enemy: public Character
 {
 public:
-    Enemy(const int x, const int y, const std::shared_ptr<World>& world);
+    Enemy(const sf::Vector2f position, const std::shared_ptr<World>& world);
 
     void updatePosition() override;
 

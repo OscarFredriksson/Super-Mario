@@ -3,14 +3,14 @@
 #include <iostream>
 
 
-Enemy::Enemy(const int x, const int y, const std::shared_ptr<World>& world):
-    Character(world, width, height),
+Enemy::Enemy(const sf::Vector2f position, const std::shared_ptr<World>& world):
+    Character(width, height, world),
     sprite(width, height, 0.1)
 {
     setHorisontalVelocity(moveSpeed);
     setStopSpeed(0);
 
-    Character::setPosition(x, y);
+    Character::setPosition(position);
 
     const std::string id = "goomba";
     
@@ -30,7 +30,7 @@ void Enemy::updatePosition()
 {
     sprite.update(0, 1);
 
-    if(getHorisontalVelocity() == 0)
+    if(getVelocity().x == 0)
     {
         flip();
         setHorisontalVelocity(moveSpeed * getDirection());
@@ -38,7 +38,8 @@ void Enemy::updatePosition()
 
     Character::updatePosition();
 
-    sprite.setPosition(getPositionX(), getPositionY());
+    //sprite.setPosition(getPositionX(), getPositionY());
+    sprite.setPosition(getPosition().x, getPosition().y);
 }
 
 sf::Sprite Enemy::getSprite() const
