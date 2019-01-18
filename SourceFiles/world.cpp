@@ -3,6 +3,10 @@
 #include <fstream>
 #include <iostream>
 
+World::World(const float gravity):
+        gravity(gravity)
+{}
+
 void World::loadMap(std::string filename)
 {
     std::ifstream file;
@@ -72,7 +76,7 @@ void World::draw(sf::RenderWindow& window)
     {
         std::for_each(row.begin(), row.end(), [&window](const std::unique_ptr<Block>& block)
         {
-            if(block)    block->draw(window); //window.draw(block->getSprite());
+            if(block)    block->draw(window);
         });
     });
 }

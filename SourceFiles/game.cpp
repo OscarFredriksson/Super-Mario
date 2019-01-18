@@ -8,7 +8,7 @@
 
 Game::Game(const int width, const int height, const std::string title):
     window(sf::VideoMode(width, height), title),
-    world(std::make_unique<World>()),
+    world(std::make_unique<World>(gravity)),
     player(std::make_unique<Player>(world))
 {
     window.setFramerateLimit(60);
@@ -32,7 +32,7 @@ void Game::initializeView()
 
 void Game::startMusic()
 {
-    music.openFromFile(music_path);
+    music.openFromFile(themeMusic_path);
     music.setLoop(true);
     music.setVolume(25);
     music.play();
@@ -89,8 +89,7 @@ void Game::displayGameOver()
 
 
     sf::Music gameOver_music;
-    if(!gameOver_music.openFromFile(gameOverMusic_path))
-        std::cerr << "Failed to open \"" << music_path << "\"\n";
+    gameOver_music.openFromFile(gameOverMusic_path);
     
     music.pause();
     gameOver_music.play();
@@ -106,12 +105,11 @@ void Game::displayGameOver()
 
 void Game::displayGameWon()
 {
-    sf::Music win_music;
-    if(!win_music.openFromFile(winMusic_path))
-        std::cerr << "Failed to open \"" << music_path << "\"\n";
+    sf::Music victory_music;
+    victory_music.openFromFile(victoryMusic_path);
 
     music.stop();
-    win_music.play();
+    victory_music.play();
 
     try
     {
@@ -136,7 +134,7 @@ void Game::displayGameWon()
         else                                            text.setFillColor(sf::Color::Black);
     };
 
-    while(win_music.getStatus() == sf::Music::Playing)
+    while(victory_music.getStatus() == sf::Music::Playing)
     {
         toggleTextColor();
 
@@ -200,8 +198,7 @@ void Game::pause()
 
 void Game::handleInputs()
 {
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    
-        player->jump();
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))    player->jump();
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         player->endWalk();
@@ -230,27 +227,20 @@ void Game::handleButtonEvents(sf::Event& event)
 {
     switch(event.key.code)
     {
-        case sf::Keyboard::Up:  
-            player->endJump();
-            break;
+        case sf::Keyboard::Up:      player->endJump();
+                                    break;
         case sf::Keyboard::Left:
-        case sf::Keyboard::Right:
-            player->endWalk();
-            break;
-        case sf::Keyboard::P:
-            pause();
-            break;
-        case sf::Keyboard::M:
-            Audio_Controller::toggleMute();
-            break;
-        case sf::Keyboard::B:
-            Audio_Controller::decreaseVolume();
-            break;
-        case sf::Keyboard::N:
-            Audio_Controller::increaseVolume();
-            break;
-        default:
-            break;
+        case sf::Keyboard::Right:   player->endWalk();
+                                    break;
+        case sf::Keyboard::P:       pause();
+                                    break;
+        case sf::Keyboard::M:       Audio_Controller::toggleMute();
+                                    break;
+        case sf::Keyboard::B:       Audio_Controller::decreaseVolume();
+                                    break;
+        case sf::Keyboard::N:       Audio_Controller::increaseVolume();
+                                    break;
+        default:                    break;
     }
 }
 

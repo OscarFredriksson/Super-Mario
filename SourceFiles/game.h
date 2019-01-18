@@ -8,12 +8,22 @@
 #include "enemy.h"
 #include "resource_holder.h"
 
-
+//! Håller spelet och alla dess resurser
+/*!
+*/
 class Game
 {
 public:
+    //! Skapar en instans av spelet 
+    /*
+        @param width    Bredden av fönstret som spelet körs i
+        @param height   Höjden av fönstret som spelet körs i
+        @param titel    Spelets titel, visas på fönstrets ram
+
+    */
     Game(const int width, const int height, const std::string title);
 
+    //! Starta spelet
     void run();
 
 private:
@@ -47,6 +57,8 @@ private:
     bool gameOver = false;
     bool gameWon = false;
 
+    const float gravity = 0.0075f;
+
     sf::RenderWindow window;
     sf::View view;
     
@@ -60,10 +72,9 @@ private:
     const std::string font1_id = "font1";
 
     sf::Music music;
-    const std::string music_path = "Sounds/main_theme.wav";
+    const std::string themeMusic_path = "Sounds/main_theme.wav";
     const std::string gameOverMusic_path = "Sounds/game_over.wav";
-    const std::string winMusic_path = "Sounds/win.wav";
-
+    const std::string victoryMusic_path = "Sounds/win.wav";
 
     const std::string pauseSound_path = "Sounds/pause.wav";
 };

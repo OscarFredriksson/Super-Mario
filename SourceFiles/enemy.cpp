@@ -38,7 +38,6 @@ void Enemy::updatePosition()
 
     Character::updatePosition();
 
-    //sprite.setPosition(getPositionX(), getPositionY());
     sprite.setPosition(getPosition().x, getPosition().y);
 }
 

@@ -51,8 +51,6 @@ private:
     const float maxSpeed = .15f;
     const float stopSpeed = 0.005f;
     
-    bool animateJump = false;
-
     bool horisontalButtonHeld = false;
 
     bool jumpKeyReleased = true;

@@ -10,7 +10,7 @@ class Block
 public:
     enum Type   //Olika typer av block, ordningen motsvarar dess plats i texturfilen
     {
-        Brick,
+        Brick, /**< 1D */
         Stone,
         Empty,
         Question,
